@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dentino/bloc/getProfileBloc.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
 import 'package:dentino/models/DrawerModel.dart';
+import 'package:dentino/screen/ComplimentCreateScreen.dart';
 import 'package:dentino/screen/ProfileScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -50,7 +51,7 @@ class DrawerWidget extends StatelessWidget {
       id: 1,
       title: "ثبت شکایت",
       icon: Icons.article_outlined,
-        // func: Container(),
+      func: ComplimentCreateScreen(),
     ),
     DrawerModel(
       id: 1,
@@ -87,7 +88,12 @@ class DrawerWidget extends StatelessWidget {
               height: size.height * .02,
             ),
             AutoSizeText(
-              (getProfileBlocInstance.profile.name == null && getProfileBlocInstance.profile.family == null )?" ":getProfileBlocInstance.profile.name + " " +getProfileBlocInstance.profile.family,
+              (getProfileBlocInstance.profile.name == null &&
+                      getProfileBlocInstance.profile.family == null)
+                  ? " "
+                  : getProfileBlocInstance.profile.name +
+                      " " +
+                      getProfileBlocInstance.profile.family,
               maxFontSize: 24,
               minFontSize: 12,
               maxLines: 1,
@@ -110,7 +116,7 @@ class DrawerWidget extends StatelessWidget {
     return Align(
       alignment: Alignment.topRight,
       child: Container(
-      alignment: Alignment.topCenter,
+        alignment: Alignment.topCenter,
         height: size.height * .5,
         width: size.width,
         child: ListView.builder(
@@ -126,18 +132,20 @@ class DrawerWidget extends StatelessWidget {
                 height: size.height * .05,
                 width: size.width,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: size.width * .05),
+                  padding: EdgeInsets.symmetric(horizontal: size.width * .05),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
                             children: [
-                              Icon(item.icon,color: ColorsHelper.mainColor,size: size.width * .06,),
+                              Icon(
+                                item.icon,
+                                color: ColorsHelper.mainColor,
+                                size: size.width * .06,
+                              ),
                               SizedBox(
                                 width: size.width * .03,
                               ),

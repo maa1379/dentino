@@ -6,7 +6,6 @@ import 'package:dentino/helpers/ViewHelpers.dart';
 import 'package:dentino/models/CategoryModel.dart';
 import 'package:dentino/screen/ClinicListScreen.dart';
 import 'package:dentino/screen/CommonCourseScreen.dart';
-import 'package:dentino/screen/CostEstimationScreen.dart';
 import 'package:dentino/screen/InsuranceCompaniesScreen.dart';
 import 'package:dentino/screen/OrganizationScreen.dart';
 import 'package:dentino/screen/PrescriptionsScreen.dart';

@@ -34,6 +34,9 @@ enum WebControllers {
   delete_cart,
   doctor_profile,
   reserve_list,
+  compliment_create,
+  order_create,
+  bank,
 }
 // enum WebMethods {
 //
@@ -458,6 +461,21 @@ class RequestHelper {
     );
   }
 
+  static Future<ApiResult> ToBank(
+      {String order_id, String token}) async {
+    return await RequestHelper._makeRequest(
+        webController: WebControllers.bank,
+        body: {
+          "order_id": order_id,
+        },
+        header: {
+          'Authorization': 'Bearer $token',
+        }).timeout(
+      Duration(seconds: 50),
+    );
+  }
+
+
   static Future<ApiResult> commonCourseList() async {
     return await RequestHelper._makeRequestGet(
       webController: WebControllers.common_course,
@@ -525,6 +543,18 @@ class RequestHelper {
     );
   }
 
+
+  static Future<ApiResult> complimentCreate({String text}) async {
+    return await RequestHelper._makeRequest(
+      webController: WebControllers.compliment_create,
+      body: {
+        "text": text,
+      },
+    ).timeout(
+      Duration(seconds: 50),
+    );
+  }
+
   static Future<ApiResult> reserveList({String token}) async {
     return await RequestHelper._makeRequestGet(
         webController: WebControllers.reserve_list,
@@ -534,6 +564,22 @@ class RequestHelper {
       Duration(seconds: 50),
     );
   }
+
+
+  static Future<ApiResult> orderCreate({String address,String token}) async {
+    return await RequestHelper._makeRequest(
+      webController: WebControllers.order_create,
+      body: {
+        "address": address,
+      },
+        header: {
+          'Authorization': 'Bearer $token',
+        }
+    ).timeout(
+      Duration(seconds: 50),
+    );
+  }
+
 }
 
 class ApiResult {
