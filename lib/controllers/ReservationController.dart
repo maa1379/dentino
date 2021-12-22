@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dentino/bloc/timeBloc.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
 import 'package:dentino/helpers/RequestHelper.dart';
+import 'package:dentino/helpers/prefHelper.dart';
 import 'package:dentino/helpers/widgetHelper.dart';
 import 'package:dentino/models/DataFilterListModel.dart';
 import 'package:dentino/models/DoctorDateListModel.dart';
@@ -15,6 +16,8 @@ import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
+
+import 'DoctorController.dart';
 
 class ExertiseController extends GetxController {
   @override
@@ -172,10 +175,11 @@ class DoctorController extends GetxController {
             national_code: nationalCodeController.text,
             date_id: date_id.toString(),
             doctor_id: doctor_id.toString(),
+            token: await PrefHelper.getToken(),
             time: time.toString())
         .then(
       (value) {
-        if (value.isDone == false) {
+        if (value.statusCode == 201) {
           loadingDate.value = true;
           Get.back();
           Get.back();
@@ -187,6 +191,9 @@ class DoctorController extends GetxController {
               borderWidth: 2,
               borderColor: Colors.green,
               borderRadius: 15);
+          Get.find<reserveListController>().reserveListData.clear();
+          Get.find<reserveListController>().reserveList();
+          reserveListController().reserveList();
         } else {
           loadingDate.value = false;
           Get.back();

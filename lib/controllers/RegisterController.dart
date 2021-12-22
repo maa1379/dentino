@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dentino/bloc/getProfileBloc.dart';
 import 'package:dentino/helpers/RequestHelper.dart';
+import 'package:dentino/helpers/ViewHelpers.dart';
 import 'package:dentino/helpers/prefHelper.dart';
 import 'package:dentino/models/GetProfileModel.dart';
 import 'package:dentino/screen/HomeScreen.dart';
@@ -67,6 +68,7 @@ class VerifyController extends GetxController {
         print(value.data);
         if (value.statusCode == 201){
           PrefHelper.setToken(value.data['access']);
+          PrefHelper.setMobile(mobile);
           getProfile();
           Get.off(HomeScreen());
         } else {
@@ -89,8 +91,14 @@ class VerifyController extends GetxController {
       if (value.isDone) {
         getProfileBlocInstance
             .getProfile(GetProfileModel.fromJson(value.data));
-      } else {
+      } else if(value.statusCode == 410){
+        getProfileBlocInstance.profile.name == "";
+        getProfileBlocInstance.profile.family == " ";
+        getProfileBlocInstance.profile.nationalCode == " ";
+        getProfileBlocInstance.profile.birthday == " ";
         print("not ok");
+      }else{
+        ViewHelper.showErrorDialog(Get.context,"عدم اتصال با سرور دوباره تلاش کنید");
       }
     });
   }

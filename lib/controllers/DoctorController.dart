@@ -33,13 +33,17 @@ class DoctorProfileController extends GetxController {
 class reserveListController extends GetxController {
   RxList<ReserveListModel> reserveListData = <ReserveListModel>[].obs;
 
+  RxBool loading = false.obs;
+
   reserveList() async {
     RequestHelper.reserveList(token: await PrefHelper.getToken()).then((value) {
       if (value.isDone) {
         for (var i in value.data) {
           reserveListData.add(ReserveListModel.fromJson(i));
+          loading.value = true;
         }
       } else {
+        loading.value = false;
         ViewHelper.showErrorDialog(
             Get.context, "دریافت اطلاعات با مشکل مواجه شد");
       }

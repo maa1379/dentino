@@ -61,23 +61,6 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
 
   @override
-  void initState() {
-    nameController.text = (getProfileBlocInstance.profile.name == null)
-        ? ""
-        : getProfileBlocInstance.profile.name;
-    familyController.text = (getProfileBlocInstance.profile.name == null)
-        ? ""
-        : getProfileBlocInstance.profile.family;
-    codeController.text = (getProfileBlocInstance.profile.name == null)
-        ? ""
-        : getProfileBlocInstance.profile.nationalCode.toString();
-    bDayController.text = (getProfileBlocInstance.profile.name == null)
-        ? ""
-        : getProfileBlocInstance.profile.birthday;
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     return Directionality(

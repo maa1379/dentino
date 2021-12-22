@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
 import 'IntroScreen.dart';
+import 'LoginScreen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -19,7 +20,26 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   Size size;
 
+  Retoken() async {
+    if (await PrefHelper.getToken() == null) {
 
+      Get.off(LoginScreen());
+
+    }else{
+      RequestHelper.Toekn(
+          password: "1234", username: await PrefHelper.getMobile())
+          .then((value) async {
+        if (value.statusCode == 200) {
+          PrefHelper.removeToken();
+          PrefHelper.setToken(value.data2['access']);
+        } else {
+          Get.off(LoginScreen());
+        }
+      });
+    }
+
+
+  }
 
   @override
   void initState() {
@@ -27,19 +47,22 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
   }
 
-  getDate()async{
-   await Get.put(SliderController()).getSlider();
-   startTimer();
+  getDate() async {
+    await Get.put(SliderController()).getSlider();
+    startTimer();
   }
 
-  getProfile()async{
-    RequestHelper.getProfile(token: await PrefHelper.getToken()).then((value){
-      if(value.isDone){
-        getProfileBlocInstance.getProfile(GetProfileModel.fromJson(value.data));
-      }else{
-        print("not ok");
-      }
-    });
+  getProfile() async {
+      RequestHelper.getProfile(token: await PrefHelper.getToken())
+          .then((value) async {
+        if (value.isDone) {
+          await Retoken();
+          getProfileBlocInstance
+              .getProfile(GetProfileModel.fromJson(value.data));
+        } else {
+          print("not ok");
+        }
+      });
     getDate();
   }
 
@@ -81,9 +104,9 @@ class _SplashScreenState extends State<SplashScreen> {
     return Future.delayed(Duration(seconds: 5)).then(
       (value) async {
         if (await PrefHelper.getToken() != null) {
-         NavHelper.pushR(context, HomeScreen());
+          NavHelper.pushR(context, HomeScreen());
         } else {
-         NavHelper.pushR(context, IntroScreen());
+          NavHelper.pushR(context, IntroScreen());
           // Get.off(IntroScreen());
         }
       },

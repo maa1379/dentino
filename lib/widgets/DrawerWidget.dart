@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dentino/bloc/getProfileBloc.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
+import 'package:dentino/helpers/prefHelper.dart';
 import 'package:dentino/models/DrawerModel.dart';
 import 'package:dentino/screen/ComplimentCreateScreen.dart';
+import 'package:dentino/screen/LoginScreen.dart';
 import 'package:dentino/screen/ProfileScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -54,7 +56,7 @@ class DrawerWidget extends StatelessWidget {
       func: ComplimentCreateScreen(),
     ),
     DrawerModel(
-      id: 1,
+      id: 8,
       title: "خروج",
       icon: Icons.exit_to_app_outlined,
       // func: exit(0),
@@ -125,7 +127,12 @@ class DrawerWidget extends StatelessWidget {
             var item = DrawerList[index];
             return GestureDetector(
               onTap: () {
+                if(item.id == 8){
+                  PrefHelper.removeToken();
+                  Get.off(LoginScreen());
+                }else{
                 Get.to(item.func);
+                }
               },
               child: Container(
                 margin: EdgeInsets.only(top: 5),

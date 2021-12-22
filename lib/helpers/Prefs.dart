@@ -11,4 +11,10 @@ class Prefs {
     SharedPreferences instance = await SharedPreferences.getInstance();
     return instance.getString(name);
   }
+
+  static Future clear(String name) async {
+    SharedPreferences instance = await SharedPreferences.getInstance();
+    return instance.remove(name);
+  }
+
 }

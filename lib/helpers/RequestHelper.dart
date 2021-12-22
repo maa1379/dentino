@@ -7,7 +7,7 @@ enum WebControllers {
   doctor,
   register,
   exertise,
-  verify,
+  verify_user_register,
   date_list,
   time,
   reserve,
@@ -37,6 +37,7 @@ enum WebControllers {
   compliment_create,
   order_create,
   bank,
+  token,
 }
 // enum WebMethods {
 //
@@ -74,6 +75,7 @@ class RequestHelper {
         apiResult.isDone = data['isDone'] == true;
         apiResult.requestedMethod = data['requestedMethod'].toString();
         apiResult.data = data['data'];
+        apiResult.data2 = jsonDecode(response.body);
       } catch (e) {
         apiResult.isDone = false;
         print(response.body);
@@ -241,7 +243,7 @@ class RequestHelper {
 
   static Future<ApiResult> verify({String code, String mobile}) async {
     return await RequestHelper._makeRequest(
-      webController: WebControllers.verify,
+      webController: WebControllers.verify_user_register,
       body: {"phone_number": mobile, "verify_code": code},
     ).timeout(
       Duration(seconds: 50),
@@ -515,9 +517,13 @@ class RequestHelper {
       String name,
       String family,
       String phone_number,
+        String token,
       String national_code}) async {
     return await RequestHelper._makeRequest(
       webController: WebControllers.reserve,
+      header: {
+        'Authorization': 'Bearer $token',
+      },
       body: {
         "time": time,
         "doctor_id": doctor_id,
@@ -580,12 +586,25 @@ class RequestHelper {
     );
   }
 
+  static Future<ApiResult> Toekn({String username,String password}) async {
+    return await RequestHelper._makeRequest(
+        webController: WebControllers.token,
+        body: {
+          "username": username,
+          "password": password
+        },
+    ).timeout(
+      Duration(seconds: 50),
+    );
+  }
+
 }
 
 class ApiResult {
   bool isDone;
   String requestedMethod;
   dynamic data;
+  dynamic data2;
   var statusCode;
 
   ApiResult({
@@ -593,5 +612,6 @@ class ApiResult {
     this.isDone,
     this.requestedMethod,
     this.data,
+    this.data2,
   });
 }

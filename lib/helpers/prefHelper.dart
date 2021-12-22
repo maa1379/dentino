@@ -17,4 +17,10 @@ class PrefHelper {
     return await Prefs.get('mobile');
   }
 
+
+  static void removeToken()async{
+    return await Prefs.clear('token');
+  }
+
+
 }

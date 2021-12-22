@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      if (getProfileBlocInstance.profile.name == null) {
+      if (getProfileBlocInstance.profile.name == "") {
         AlertHelpers.UpdateProfileDialog(
             size: Get.size,
             context: Get.context,

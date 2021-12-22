@@ -18,13 +18,57 @@ class MyTurnScreen extends StatelessWidget {
       height: size.height,
       width: size.width,
       color: Colors.white,
-      child: Column(
-        children: [
-          _buildDoctorList(),
-        ],
-      ),
+      child: _buildBody()
     );
   }
+
+
+  _buildBody() {
+    return Obx(
+          () {
+        if (!ReserveListController.loading.value) {
+          return Align(
+            alignment: Alignment.center,
+            child: Container(
+              height: Get.height * .08,
+              width: Get.width * .15,
+              child: CircularProgressIndicator(),
+            ),
+          );
+        } else {
+          return (ReserveListController.reserveListData.length == 0)
+              ? Stack(
+            children: [
+              Center(
+                child: AutoSizeText(
+                  "هیچ محصولی ثبت نشده است",
+                  maxFontSize: 24,
+                  minFontSize: 6,
+                  maxLines: 1,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ],
+          )
+              : Container(
+            height: Get.height,
+            width: Get.width,
+            margin: EdgeInsets.only(top: Get.height * .015),
+            child: Column(
+              children: [
+                _buildDoctorList(),
+              ],
+            ),
+          );
+        }
+      },
+    );
+  }
+
 
   _buildDoctorList() {
     return Expanded(
