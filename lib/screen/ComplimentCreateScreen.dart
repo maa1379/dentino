@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dentino/controllers/MainController.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,9 @@ import 'package:get/get.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class ComplimentCreateScreen extends StatelessWidget {
+
+  ComplimentCreate complimentCreate = Get.put(ComplimentCreate());
+
   TextEditingController answerTextEditingController = TextEditingController();
 
   final RoundedLoadingButtonController btnController2 =
@@ -138,7 +142,9 @@ class ComplimentCreateScreen extends StatelessWidget {
           animateOnTap: true,
           resetAfterDuration: true,
           resetDuration: Duration(seconds: 2),
-          onPressed: () {}),
+          onPressed: () {
+            complimentCreate.compliment(text: answerTextEditingController.text);
+          }),
     );
   }
 }

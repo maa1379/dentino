@@ -3,8 +3,8 @@ import 'package:dentino/controllers/ShopController.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
 import 'package:dentino/helpers/ViewHelpers.dart';
 import 'package:dentino/screen/ProductDetailScreen.dart';
+import 'package:dentino/widgets/BasketWidget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 
@@ -14,6 +14,7 @@ class ProductListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: BasketWidget(),
       appBar: AppBar(
         elevation: 5,
         backgroundColor: Colors.white,

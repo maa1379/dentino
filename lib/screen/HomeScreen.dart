@@ -40,27 +40,27 @@ class _HomeScreenState extends State<HomeScreen> {
   Gradient unselectedGradient =
       const LinearGradient(colors: [Colors.red, Colors.blueGrey]);
 
-
-  @override
-  void initState() {
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      if (getProfileBlocInstance.profile.name == "") {
-        AlertHelpers.UpdateProfileDialog(
-            size: Get.size,
-            context: Get.context,
-            func: () {
-              Get.back();
-              NavHelper.push(context, ProfileScreen());
-            },
-            func2: () {
-              Navigator.of(context).pop();
-            });
-      } else {
-        print("profile ok***");
-      }
-    });
-    super.initState();
-  }
+  //
+  // @override
+  // void initState() {
+  //   SchedulerBinding.instance.addPostFrameCallback((_) {
+  //     if (getProfileBlocInstance.profile.name == "") {
+  //       AlertHelpers.UpdateProfileDialog(
+  //           size: Get.size,
+  //           context: Get.context,
+  //           func: () {
+  //             Get.back();
+  //             NavHelper.push(context, ProfileScreen());
+  //           },
+  //           func2: () {
+  //             Navigator.of(context).pop();
+  //           });
+  //     } else {
+  //       print("profile ok***");
+  //     }
+  //   });
+  //   super.initState();
+  // }
 
 
   @override

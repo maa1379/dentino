@@ -18,14 +18,25 @@ class ProfileWidget extends StatefulWidget {
 }
 
 class _ProfileWidgetState extends State<ProfileWidget> {
-  PickedFile _imageFile;
 
-  TextEditingController nameController = TextEditingController();
-  TextEditingController familyController = TextEditingController();
-  TextEditingController codeController = TextEditingController();
-  TextEditingController bDayController = TextEditingController();
 
-  final ImagePicker _picker = ImagePicker();
+
+
+
+  @override
+  void initState() {
+    profileController.nameController.text = getProfileBlocInstance.profile.name;
+    profileController.familyController.text = getProfileBlocInstance.profile.family;
+    profileController.codeController.text = getProfileBlocInstance.profile.nationalCode.toString();
+    super.initState();
+  }
+
+
+  // PickedFile _imageFile;
+
+
+
+  // final ImagePicker _picker = ImagePicker();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -33,12 +44,12 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
   final profileController = Get.put(ProfileController());
 
-  void takePhoto(ImageSource source) async {
-    final pickedFile = await _picker.getImage(source: source);
-    // setState(() {
-    //   _imageFile = pickedFile;
-    // });
-  }
+  // void takePhoto(ImageSource source) async {
+  //   final pickedFile = await _picker.getImage(source: source);
+  //   // setState(() {
+  //   //   _imageFile = pickedFile;
+  //   // });
+  // }
 
   final RoundedLoadingButtonController _btnController1 =
       RoundedLoadingButtonController();
@@ -48,10 +59,10 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   void _doSomething(RoundedLoadingButtonController controller) async {
     if(_formKey.currentState.validate()){
       profileController.updateProfile(
-          name: nameController.text,
-          family: familyController.text,
-          birthday: bDayController.text,
-          national_code: codeController.text);
+          name: profileController.nameController.text,
+          family: profileController.familyController.text,
+          birthday: "1379-12-04",
+          national_code: profileController.codeController.text);
     }else{
       print("field");
     }
@@ -82,18 +93,18 @@ class _ProfileWidgetState extends State<ProfileWidget> {
           child: Column(
             children: [
               SizedBox(
-                height: size.height * .02,
+                height: size.height * .18,
               ),
-              _buildAvatar(),
+              // _buildAvatar(),
               SizedBox(
                 height: size.height * .04,
               ),
               _buildNameField(),
               _buildLNameField(),
               _buildNationalCodeField(),
-              _buildBrDayField(),
+              // _buildBrDayField(),
               SizedBox(
-                height: size.height * .12,
+                height: size.height * .18,
               ),
               _submitBtn(),
             ],
@@ -103,35 +114,35 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     );
   }
 
-  _buildAvatar() {
-    return GestureDetector(
-        onTap: () {
-          AlertHelpers.noDesignAlertDialog(
-              size: size,
-              context: Get.context,
-              camFunc: () {
-                takePhoto(ImageSource.camera);
-              },
-              galleryFunc: () {
-                takePhoto(ImageSource.gallery);
-              });
-        },
-        child: CircleAvatar(
-          radius: size.width * .18,
-          child: _imageFile == null
-              ? Text(
-                  "+",
-                  style: TextStyle(
-                    fontSize: 40,
-                    color: Colors.white,
-                  ),
-                )
-              : null,
-          backgroundColor: ColorsHelper.mainColor,
-          backgroundImage:
-              _imageFile == null ? null : FileImage(File(_imageFile.path)),
-        ));
-  }
+  // _buildAvatar() {
+  //   return GestureDetector(
+  //       onTap: () {
+  //         AlertHelpers.noDesignAlertDialog(
+  //             size: size,
+  //             context: Get.context,
+  //             camFunc: () {
+  //               takePhoto(ImageSource.camera);
+  //             },
+  //             galleryFunc: () {
+  //               takePhoto(ImageSource.gallery);
+  //             });
+  //       },
+  //       child: CircleAvatar(
+  //         radius: size.width * .18,
+  //         child: _imageFile == null
+  //             ? Text(
+  //                 "+",
+  //                 style: TextStyle(
+  //                   fontSize: 40,
+  //                   color: Colors.white,
+  //                 ),
+  //               )
+  //             : null,
+  //         backgroundColor: ColorsHelper.mainColor,
+  //         backgroundImage:
+  //             _imageFile == null ? null : FileImage(File(_imageFile.path)),
+  //       ));
+  // }
 
   _buildNameField() {
     return WidgetHelper.profileTextField(
@@ -139,7 +150,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
       height: size.height * .09,
       color: Colors.transparent,
       fontSize: 12,
-      controller: nameController,
+      controller: profileController.nameController,
       hintText: "نام خود را وارد کنید",
       enabled: true,
       text: "نام",
@@ -168,7 +179,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
       width: size.width,
       height: size.height * .09,
       color: Colors.transparent,
-      controller: familyController,
+      controller: profileController.familyController,
       fontSize: 12,
       hintText: "نام خانوادگی خود را وارد کنید",
       enabled: true,
@@ -194,7 +205,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
       height: size.height * .09,
       color: Colors.transparent,
       fontSize: 12,
-      controller: codeController,
+      controller: profileController.codeController,
       hintText: "کد ملی خود را وارد کنید",
       enabled: true,
       text: "کد ملی",
@@ -218,7 +229,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
       width: size.width,
       height: size.height * .09,
       color: Colors.transparent,
-      controller: bDayController,
+      controller: profileController.bDayController,
       fontSize: 12,
       hintText: "تاریخ تولد خود را وارد کنید",
       enabled: true,

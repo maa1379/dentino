@@ -369,8 +369,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           EasyLoading.show(indicator: CircularProgressIndicator(),dismissOnTap: false);
           detailProductController.AddToCartProduct(
               quantity: quantity.toString());
-          Get.find<BasketController>().CartList.clear();
-          Get.find<BasketController>().GetCartList();
 
         }
       },

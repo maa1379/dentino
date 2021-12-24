@@ -6,69 +6,42 @@ import 'package:get/get.dart';
 import 'package:chewie/chewie.dart';
 import 'package:video_player/video_player.dart';
 
-
-
 class CommonCourseDetailScreen extends StatefulWidget {
-
   @override
-  _CommonCourseDetailScreenState createState() => _CommonCourseDetailScreenState();
+  _CommonCourseDetailScreenState createState() =>
+      _CommonCourseDetailScreenState();
 }
 
 class _CommonCourseDetailScreenState extends State<CommonCourseDetailScreen> {
   final commonCourseController = Get.put(CommonCourseDetailController());
 
-  TargetPlatform _platform;
-
-  VideoPlayerController _videoPlayerController1;
-
-
-  ChewieController _chewieController;
+  VideoPlayerController _controller;
 
   @override
   void initState() {
     super.initState();
-    _videoPlayerController1 = VideoPlayerController.network(
-        'https://dentino-app.darkube.app/media/common_course/video/2_1.mp4'
+    _controller = VideoPlayerController.network(
+      'https://dentino.app/media/common_course/video/16197165-732685233.mp4',
+      videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
     );
-    _chewieController = ChewieController(
-      videoPlayerController: _videoPlayerController1,
-      aspectRatio: 2 / 1,
-      autoPlay: true,
-      looping: true,
-      showControls: true,
-      materialProgressColors: ChewieProgressColors(
-        playedColor: Colors.red,
-        handleColor: Colors.blue,
-        backgroundColor: Colors.grey,
-        bufferedColor: Colors.lightGreen,
-      ),
-      placeholder: Container(
-        color: Colors.white,
-        width: Get.width,
-      ),
-      autoInitialize: true,
-    );
-
-    _videoPlayerController1.addListener(() {
-      if (_videoPlayerController1.value.position ==
-          _videoPlayerController1.value.duration) {
-        print('video Ended');
-      }
+    _controller.play();
+    _controller.addListener(() {
+      setState(() {});
     });
+    _controller.setLooping(true);
+    _controller.initialize();
   }
 
   @override
   void dispose() {
-    _videoPlayerController1.dispose();
-    _chewieController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return Obx((){
-      if(commonCourseController.loading == true){
+    return Obx(() {
+      if (commonCourseController.loading == true) {
         return Scaffold(
           appBar: AppBar(
             elevation: 5,
@@ -97,7 +70,7 @@ class _CommonCourseDetailScreenState extends State<CommonCourseDetailScreen> {
           backgroundColor: Colors.white,
           body: _buildBody(),
         );
-      }else{
+      } else {
         return Align(
           alignment: Alignment.center,
           child: Container(
@@ -107,13 +80,12 @@ class _CommonCourseDetailScreenState extends State<CommonCourseDetailScreen> {
           ),
         );
       }
-
     });
   }
 
   _buildBody() {
     return Obx(
-          () {
+      () {
         if (!commonCourseController.loading.value) {
           return Align(
             alignment: Alignment.center,
@@ -124,7 +96,7 @@ class _CommonCourseDetailScreenState extends State<CommonCourseDetailScreen> {
             ),
           );
         }
-          return _buildItem();
+        return _buildItem();
       },
     );
   }
@@ -157,10 +129,15 @@ class _CommonCourseDetailScreenState extends State<CommonCourseDetailScreen> {
       height: Get.height * .25,
       width: Get.width,
       margin: EdgeInsets.only(top: Get.height * .03),
-      child: Chewie(
-        controller: _chewieController,
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: <Widget>[
+          VideoPlayer(_controller),
+          ClosedCaption(text: _controller.value.caption.text),
+          _ControlsOverlay(controller: _controller),
+          VideoProgressIndicator(_controller, allowScrubbing: true),
+        ],
       ),
-
     );
   }
 
@@ -229,7 +206,6 @@ class _CommonCourseDetailScreenState extends State<CommonCourseDetailScreen> {
     );
   }
 
-
   _buildDescription() {
     return Column(
       children: [
@@ -285,6 +261,82 @@ class _CommonCourseDetailScreenState extends State<CommonCourseDetailScreen> {
                 color: Colors.black87,
                 fontSize: 12,
               ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ControlsOverlay extends StatelessWidget {
+  const _ControlsOverlay({this.controller});
+
+  static const _examplePlaybackRates = [
+    0.25,
+    0.5,
+    1.0,
+    1.5,
+    2.0,
+    3.0,
+    5.0,
+    10.0,
+  ];
+
+  final VideoPlayerController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        AnimatedSwitcher(
+          duration: Duration(milliseconds: 50),
+          reverseDuration: Duration(milliseconds: 200),
+          child: controller.value.isPlaying
+              ? SizedBox.shrink()
+              : Container(
+                  color: Colors.black26,
+                  child: Center(
+                    child: Icon(
+                      Icons.play_arrow,
+                      color: Colors.white,
+                      size: 100.0,
+                      semanticLabel: 'Play',
+                    ),
+                  ),
+                ),
+        ),
+        GestureDetector(
+          onTap: () {
+            controller.value.isPlaying ? controller.pause() : controller.play();
+          },
+        ),
+        Align(
+          alignment: Alignment.topRight,
+          child: PopupMenuButton<double>(
+            initialValue: controller.value.playbackSpeed,
+            tooltip: 'Playback speed',
+            onSelected: (speed) {
+              controller.setPlaybackSpeed(speed);
+            },
+            itemBuilder: (context) {
+              return [
+                for (final speed in _examplePlaybackRates)
+                  PopupMenuItem(
+                    value: speed,
+                    child: Text('${speed}x'),
+                  )
+              ];
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                // Using less vertical padding as the text is also longer
+                // horizontally, so it feels like it would need more spacing
+                // horizontally (matching the aspect ratio of the video).
+                vertical: 12,
+                horizontal: 16,
+              ),
+              child: Text('${controller.value.playbackSpeed}x'),
             ),
           ),
         ),

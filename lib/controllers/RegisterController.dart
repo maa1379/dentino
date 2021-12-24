@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
+import 'ProfileController.dart';
+
 class RegisterController extends GetxController {
   final RoundedLoadingButtonController btnController1 =
       RoundedLoadingButtonController();
@@ -92,6 +94,10 @@ class VerifyController extends GetxController {
         getProfileBlocInstance
             .getProfile(GetProfileModel.fromJson(value.data));
       } else if(value.statusCode == 410){
+        ProfileController().codeController.text = " ";
+        ProfileController().familyController.text = " ";
+        ProfileController().nameController.text = " ";
+
         getProfileBlocInstance.profile.name == "";
         getProfileBlocInstance.profile.family == " ";
         getProfileBlocInstance.profile.nationalCode == " ";

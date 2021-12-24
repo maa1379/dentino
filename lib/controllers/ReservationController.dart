@@ -2,12 +2,14 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dentino/bloc/timeBloc.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
 import 'package:dentino/helpers/RequestHelper.dart';
+import 'package:dentino/helpers/ViewHelpers.dart';
 import 'package:dentino/helpers/prefHelper.dart';
 import 'package:dentino/helpers/widgetHelper.dart';
 import 'package:dentino/models/DataFilterListModel.dart';
 import 'package:dentino/models/DoctorDateListModel.dart';
 import 'package:dentino/models/DoctorListModel.dart';
 import 'package:dentino/models/DoctorTimeListModel.dart';
+import 'package:dentino/models/LocationModel.dart';
 import 'package:dentino/models/exertiseListModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -53,11 +55,13 @@ class DoctorController extends GetxController {
     // doctorList();
     doctorFilter();
     dataFilterList();
+    locationListApi();
     super.onInit();
   }
 
-  final dropDownValue1 = "".obs;
-  final dropDownValue2 = "".obs;
+  final dropDownValue1 = "انتخاب کنید".obs;
+  final dropDownValue2 = "انتخاب کنید".obs;
+  final dropDownValue3 = "انتخاب کنید".obs;
 
   void setSelected1(String value) {
     dropDownValue1.value = value;
@@ -65,6 +69,10 @@ class DoctorController extends GetxController {
 
   void setSelected2(String value) {
     dropDownValue2.value = value;
+  }
+
+  void setSelected3(String value) {
+    dropDownValue3.value = value;
   }
 
   TextEditingController phoneController = TextEditingController();
@@ -80,6 +88,7 @@ class DoctorController extends GetxController {
   RxBool loading = false.obs;
   RxBool loadingDate = false.obs;
   RxList<DoctorListModel> doctorListData = <DoctorListModel>[].obs;
+  RxList<LocationModel> locationList = <LocationModel>[].obs;
   RxList<DataList> doctorDateListData = <DataList>[].obs;
   RxList<DoctorTimeListModel> doctorTimeListData = <DoctorTimeListModel>[].obs;
   RxList<ClinicFilterModel> clinicFilterList = <ClinicFilterModel>[].obs;
@@ -88,20 +97,34 @@ class DoctorController extends GetxController {
 
   doctorFilter() async {
     RequestHelper.doctorFilter(
-            expertise_id: Get.arguments['expertise_id'].toString(),
-            clinic: dropDownValue2.value.toString(),
-            insurance: dropDownValue1.value.toString())
-        .then(
+      expertise_id: Get.arguments['expertise_id'].toString(),
+      clinic: dropDownValue2.value.toString(),
+      insurance: dropDownValue1.value.toString(),
+      location: dropDownValue3.value.toString(),
+    ).then(
       (value) {
         if (value.isDone == true) {
           for (var list in value.data) {
             doctorListData.add(DoctorListModel.fromJson(list));
           }
 
-
           loading.value = true;
         } else {
           loading.value = false;
+        }
+      },
+    );
+  }
+
+  locationListApi() async {
+    RequestHelper.location().then(
+      (value) {
+        if (value.isDone) {
+          for (var i in value.data) {
+            locationList.add(LocationModel.fromJson(i));
+          }
+        } else {
+          ViewHelper.showErrorDialog(Get.context, "ارتباط برقرار نشد");
         }
       },
     );
@@ -242,7 +265,6 @@ class DoctorController extends GetxController {
   showDateTimeModal() {
     return showCupertinoModalBottomSheet(
       context: Get.context,
-
       backgroundColor: Colors.transparent,
       elevation: 0,
       enableDrag: false,

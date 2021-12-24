@@ -1,6 +1,9 @@
+import 'package:chewie/chewie.dart';
 import 'package:dentino/helpers/RequestHelper.dart';
 import 'package:dentino/models/CommonCourseModel.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:video_player/video_player.dart';
 
 class CommonCourseController extends GetxController{
 
@@ -39,19 +42,14 @@ class CommonCourseDetailController extends GetxController{
     RequestHelper.getCommonCourse(id: Get.arguments["commonCourse_id"]).then((value){
       if(value.isDone) {
         commonCourseList = CommonCourseModel.fromJson(value.data);
-        print(commonCourseList.video);
         loading.value = true;
+        print(commonCourseList.video);
       }else{
         loading.value = false;
         print("faild");
       }
     });
   }
-
-
-
-
-
 
 
 

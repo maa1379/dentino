@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dentino/controllers/ShopController.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
+import 'package:dentino/widgets/BasketWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,12 +11,12 @@ import 'ProductListScreen.dart';
 class Shopscreen extends StatelessWidget {
 
   ShopController shopController = Get.put(ShopController());
-  BasketController shop2Controller = Get.put(BasketController());
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: _buildBasket(),
+      floatingActionButton: BasketWidget(),
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 5,
@@ -120,22 +121,7 @@ class Shopscreen extends StatelessWidget {
     }
 
 
-  _buildBasket() {
-    return GestureDetector(
-      onTap: (){
-        shop2Controller.BasketModal();
-      },
-      child: Container(
-        height: Get.height * .15,
-        width: Get.width * .15,
-        decoration: BoxDecoration(
-            color: ColorsHelper.mainColor,
-            shape: BoxShape.circle
-        ),
-        child: Center(child: Image.asset("assets/images/carts.png"),),
-      ),
-    );
-  }
+
 
 }
 

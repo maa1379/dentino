@@ -5,11 +5,16 @@ import 'package:dentino/helpers/prefHelper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'RegisterController.dart';
+
 
 class ProfileController extends GetxController{
 
 
-
+  TextEditingController nameController = TextEditingController();
+  TextEditingController familyController = TextEditingController();
+  TextEditingController codeController = TextEditingController();
+  TextEditingController bDayController = TextEditingController(text: " ");
 
 
   updateProfile(
@@ -22,6 +27,7 @@ class ProfileController extends GetxController{
       if(value.isDone){
         print("ok");
         ViewHelper.showSuccessDialog(Get.context, "پروفایل شما با موفقیت ثبت شد");
+        VerifyController().getProfile();
       }else{
         print("faild");
         ViewHelper.showErrorDialog(Get.context, "پروفایل شما با موفقیت ثبت نشد");

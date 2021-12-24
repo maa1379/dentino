@@ -3,6 +3,7 @@ import 'package:dentino/helpers/ColorHelpers.dart';
 import 'package:dentino/helpers/RequestHelper.dart';
 import 'package:dentino/helpers/ViewHelpers.dart';
 import 'package:dentino/helpers/prefHelper.dart';
+import 'package:dentino/helpers/widgetHelper.dart';
 import 'package:dentino/models/GetCartListModel.dart';
 import 'package:dentino/models/GetCategoryShop.dart';
 import 'package:dentino/models/GetDetailProductModel.dart';
@@ -101,6 +102,8 @@ class DetailProductController extends GetxController {
         EasyLoading.dismiss();
         ViewHelper.showSuccessDialog(
             Get.context, "محصول با موفقیت به سبد خرید اضافه شد");
+        Get.find<BasketController>().CartList.clear();
+        Get.find<BasketController>().GetCartList();
       } else {
         ViewHelper.showErrorDialog(Get.context, "ارتباط برقرار نشد");
       }
@@ -118,7 +121,13 @@ class DetailProductController extends GetxController {
 class BasketController extends GetxController {
   RxList<ItemList> CartList = <ItemList>[].obs;
   RxBool isRemove = false.obs;
+
   TextEditingController addressTextController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController familyController = TextEditingController();
+  TextEditingController codeController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+
   final RoundedLoadingButtonController btnController2 =
       RoundedLoadingButtonController();
 
@@ -221,7 +230,7 @@ class BasketController extends GetxController {
               alignment: Alignment.bottomCenter,
               child: Padding(
                 padding: EdgeInsets.only(bottom: Get.height * .02),
-                child: _submitBtn(),
+                child: (CartList.length == 0) ? Container() : _submitBtn(),
               ),
             ),
           ],
@@ -266,7 +275,7 @@ class BasketController extends GetxController {
       builder: (context) => Padding(
         padding: MediaQuery.of(context).viewInsets,
         child: Container(
-          height: Get.height * .5,
+          height: Get.height * .8,
           margin: EdgeInsets.all(Get.width * .02),
           width: Get.width,
           decoration: BoxDecoration(
@@ -306,11 +315,19 @@ class BasketController extends GetxController {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
-                  height: Get.height * .4,
+                  height: Get.height * .65,
                   width: Get.width,
                   padding: EdgeInsets.symmetric(
                       horizontal: Get.width * .04, vertical: Get.height * .02),
-                  child: _messageTextField(),
+                  child: Column(
+                    children: [
+                      _buildNameField(),
+                      _buildLNameField(),
+                      _buildPostCodeField(),
+                      _buildEmailField(),
+                      _messageTextField(),
+                    ],
+                  ),
                 ),
               ),
               Align(
@@ -348,9 +365,118 @@ class BasketController extends GetxController {
           resetAfterDuration: true,
           resetDuration: Duration(seconds: 3),
           onPressed: () {
-            OrderCreateController()
-                .OrderCreateData(address: addressTextController.text);
+            OrderCreateController().OrderCreateData(
+                address: addressTextController.text,
+                code: codeController.text,
+                email: emailController.text,
+                family: familyController.text,
+                name: nameController.text);
           }),
+    );
+  }
+
+  _buildLNameField() {
+    return WidgetHelper.profileTextField(
+      width: Get.width,
+      height: Get.height * .09,
+      color: Colors.transparent,
+      controller: familyController,
+      fontSize: 12,
+      hintText: "نام خانوادگی خود را وارد کنید",
+      enabled: true,
+      text: "نام خانوادگی",
+      function: (value) {
+        if (value == "") {
+          return "نام خانوادگی خود را وارد کنید";
+        }
+      },
+      size: Get.size,
+      maxLine: 1,
+      maxLength: 120,
+      icon: Icon(Icons.mobile_friendly_rounded),
+      obscureText: false,
+      keyBoardType: TextInputType.text,
+      margin: EdgeInsets.symmetric(horizontal: Get.width * .1),
+    );
+  }
+
+  _buildNameField() {
+    return WidgetHelper.profileTextField(
+      width: Get.width,
+      height: Get.height * .09,
+      color: Colors.transparent,
+      fontSize: 12,
+      controller: nameController,
+      hintText: "نام خود را وارد کنید",
+      enabled: true,
+      text: "نام",
+      onChange: (value) {
+        // WidgetHelper.onChange(value, mobileController);
+      },
+      // controller: mobileController,
+      // errorText: "شماره موبایل خود را وارد کنید!",
+      function: (value) {
+        if (value == "") {
+          return "نام خود را وارد کنید";
+        }
+      },
+      size: Get.size,
+      maxLine: 1,
+      maxLength: 120,
+      icon: Icon(Icons.mobile_friendly_rounded),
+      obscureText: false,
+      keyBoardType: TextInputType.text,
+      margin: EdgeInsets.symmetric(horizontal: Get.width * .1),
+    );
+  }
+
+  _buildPostCodeField() {
+    return WidgetHelper.profileTextField(
+      width: Get.width,
+      height: Get.height * .09,
+      color: Colors.transparent,
+      fontSize: 16,
+      controller: codeController,
+      hintText: "کد پستی خود را وارد کنید",
+      enabled: true,
+      text: "کد پستی",
+      function: (value) {
+        if (value == "") {
+          return "کد پستی خود را وارد کنید";
+        }
+      },
+      size: Get.size,
+      maxLine: 1,
+      maxLength: 15,
+      icon: Icon(Icons.mobile_friendly_rounded),
+      obscureText: false,
+      keyBoardType: TextInputType.number,
+      margin: EdgeInsets.symmetric(horizontal: Get.width * .1),
+    );
+  }
+
+  _buildEmailField() {
+    return WidgetHelper.profileTextField(
+      width: Get.width,
+      height: Get.height * .09,
+      color: Colors.transparent,
+      fontSize: 12,
+      controller: emailController,
+      hintText: "ایمیل خود را وارد کنید",
+      enabled: true,
+      text: "ایمیل",
+      function: (value) {
+        if (value == "") {
+          return "ایمیل خود را وارد کنید";
+        }
+      },
+      size: Get.size,
+      maxLine: 1,
+      maxLength: 15,
+      icon: Icon(Icons.mobile_friendly_rounded),
+      obscureText: false,
+      keyBoardType: TextInputType.emailAddress,
+      margin: EdgeInsets.symmetric(horizontal: Get.width * .1),
     );
   }
 
@@ -363,8 +489,9 @@ class BasketController extends GetxController {
             maxWidth: Get.width,
             minHeight: Get.height * .15),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: Get.width * .05),
+          padding: EdgeInsets.symmetric(horizontal: Get.width * .1),
           child: TextField(
+            textAlign: TextAlign.center,
             keyboardType: TextInputType.text,
             maxLines: null,
             textDirection: TextDirection.rtl,
@@ -372,42 +499,38 @@ class BasketController extends GetxController {
             maxLength: 500,
             minLines: 1,
             decoration: InputDecoration(
-              disabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white.withOpacity(.40)),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              labelText: "آدرس خود را وارد کنید",
-              hintText: "آدرس",
-              // contentPadding: EdgeInsets.all(size.width * .03),
-              labelStyle: TextStyle(
-                fontSize: 12,
-                color: Colors.black.withOpacity(.40),
-              ),
-              counter: Offstage(),
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey.withOpacity(.40)),
-                borderRadius: const BorderRadius.all(
-                  const Radius.circular(30.0),
-                ),
-              ),
+              labelText: "آدرس",
+              border: InputBorder.none,
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.grey.withOpacity(.40),
-                ),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(30),
-                ),
-              ),
-              filled: true,
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide:
+                      BorderSide(color: ColorsHelper.mainColor, width: 3)),
+              disabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide:
+                      BorderSide(color: ColorsHelper.mainColor, width: 3)),
+              errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: BorderSide(color: Colors.red, width: 3)),
+              focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: BorderSide(color: Colors.red, width: 3)),
+              enabled: true,
               focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey.withOpacity(.40)),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(30),
-                ),
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide:
+                      BorderSide(color: ColorsHelper.mainColor, width: 3)),
+              // labelText: text,
+              hintText: "آدرس خود را وارد کنید",
+              contentPadding:
+                  EdgeInsets.only(top: Get.width * .01, right: Get.width * .05),
+              counter: Offstage(),
+              filled: true,
+              hintStyle: TextStyle(
+                fontSize: 18,
+                color: Colors.grey,
               ),
-              hintStyle:
-                  TextStyle(fontSize: 12, color: Colors.grey.withOpacity(.20)),
-              fillColor: Colors.white,
+              fillColor: Colors.transparent,
             ),
           ),
         ),
@@ -523,9 +646,14 @@ class OrderCreateController extends GetxController {
     await launch(url);
   }
 
-  OrderCreateData({String address}) async {
+  OrderCreateData(
+      {String address,
+      String name,
+      String family,
+      String code,
+      String email}) async {
     RequestHelper.orderCreate(
-            token: await PrefHelper.getToken(), address: address)
+            token: await PrefHelper.getToken(), address: address,name: name,family: family,email: email,code: code)
         .then((value) {
       if (value.isDone) {
         orderIdModel = OrderIdModel.fromJson(value.data);
@@ -543,9 +671,9 @@ class OrderCreateController extends GetxController {
             token: await PrefHelper.getToken(),
             order_id: orderIdModel.orderId.toString())
         .then((value) {
-          if(value.isDone){
-            _launchURL(value.data);
-          }
+      if (value.isDone) {
+        _launchURL(value.data);
+      }
     });
   }
 }

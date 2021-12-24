@@ -90,12 +90,7 @@ class DrawerWidget extends StatelessWidget {
               height: size.height * .02,
             ),
             AutoSizeText(
-              (getProfileBlocInstance.profile.name == null &&
-                      getProfileBlocInstance.profile.family == null)
-                  ? " "
-                  : getProfileBlocInstance.profile.name +
-                      " " +
-                      getProfileBlocInstance.profile.family,
+              "منو",
               maxFontSize: 24,
               minFontSize: 12,
               maxLines: 1,
@@ -127,11 +122,11 @@ class DrawerWidget extends StatelessWidget {
             var item = DrawerList[index];
             return GestureDetector(
               onTap: () {
-                if(item.id == 8){
+                if (item.id == 8) {
                   PrefHelper.removeToken();
                   Get.off(LoginScreen());
-                }else{
-                Get.to(item.func);
+                } else {
+                  Get.to(item.func);
                 }
               },
               child: Container(

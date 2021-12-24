@@ -38,6 +38,7 @@ enum WebControllers {
   order_create,
   bank,
   token,
+  location,
 }
 // enum WebMethods {
 //
@@ -237,7 +238,7 @@ class RequestHelper {
       webController: WebControllers.register,
       body: {"phone_number": mobile},
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -246,7 +247,7 @@ class RequestHelper {
       webController: WebControllers.verify_user_register,
       body: {"phone_number": mobile, "verify_code": code},
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -254,7 +255,7 @@ class RequestHelper {
     return await RequestHelper._makeRequestGet(
       webController: WebControllers.exertise,
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -262,7 +263,7 @@ class RequestHelper {
     return await RequestHelper._makeRequestGet(
       webController: WebControllers.Prescriptions,
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -270,7 +271,7 @@ class RequestHelper {
     return await RequestHelper._makeRequestGet(
       webController: WebControllers.category_list,
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -281,7 +282,7 @@ class RequestHelper {
         "pk": id,
       },
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -292,7 +293,7 @@ class RequestHelper {
         "doctor_id": id,
       },
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -305,7 +306,7 @@ class RequestHelper {
         "date_id": dateId,
       },
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -326,7 +327,7 @@ class RequestHelper {
         header: {
           'Authorization': 'Bearer $token',
         }).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -334,7 +335,7 @@ class RequestHelper {
     return await RequestHelper._makeRequestGet(
       webController: WebControllers.contact_us,
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -342,7 +343,7 @@ class RequestHelper {
     return await RequestHelper._makeRequestGet(
       webController: WebControllers.about_us,
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -350,7 +351,7 @@ class RequestHelper {
     return await RequestHelper._makeRequestGet(
       webController: WebControllers.clinic_list,
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -358,7 +359,7 @@ class RequestHelper {
     return await RequestHelper._makeRequestGet(
       webController: WebControllers.slider,
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -368,7 +369,7 @@ class RequestHelper {
         header: {
           'Authorization': 'Bearer $token',
         }).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -376,7 +377,7 @@ class RequestHelper {
     return await RequestHelper._makeRequestGet(
       webController: WebControllers.insurance,
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -384,21 +385,25 @@ class RequestHelper {
     return await RequestHelper._makeRequestGet(
       webController: WebControllers.company,
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
   static Future<ApiResult> doctorFilter(
-      {String clinic, String insurance, String expertise_id}) async {
+      {String clinic,
+      String insurance,
+      String expertise_id,
+      String location}) async {
     return await RequestHelper._makeRequest(
       webController: WebControllers.doctor_filter,
       body: {
         "clinic": clinic,
         "insurance": insurance,
         "expertise_id": expertise_id,
+        "location": location
       },
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -409,7 +414,7 @@ class RequestHelper {
         "id": id,
       },
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -417,7 +422,7 @@ class RequestHelper {
     return await RequestHelper._makeRequestGet(
       webController: WebControllers.filter_list,
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -426,7 +431,7 @@ class RequestHelper {
       webController: WebControllers.common_course_detail,
       body: {"id": id},
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -435,7 +440,7 @@ class RequestHelper {
       webController: WebControllers.product_list,
       body: {"category_id": id},
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -444,7 +449,7 @@ class RequestHelper {
       webController: WebControllers.product_detail,
       body: {"id": product_id},
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -459,12 +464,11 @@ class RequestHelper {
         header: {
           'Authorization': 'Bearer $token',
         }).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
-  static Future<ApiResult> ToBank(
-      {String order_id, String token}) async {
+  static Future<ApiResult> ToBank({String order_id, String token}) async {
     return await RequestHelper._makeRequest(
         webController: WebControllers.bank,
         body: {
@@ -473,16 +477,15 @@ class RequestHelper {
         header: {
           'Authorization': 'Bearer $token',
         }).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
-
 
   static Future<ApiResult> commonCourseList() async {
     return await RequestHelper._makeRequestGet(
       webController: WebControllers.common_course,
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -492,10 +495,9 @@ class RequestHelper {
         header: {
           'Authorization': 'Bearer $token',
         }).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
-
 
   static Future<ApiResult> ClearITemCart({String token, String row_id}) async {
     return await RequestHelper._makeRequest(
@@ -506,7 +508,7 @@ class RequestHelper {
         header: {
           'Authorization': 'Bearer $token',
         }).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -517,7 +519,7 @@ class RequestHelper {
       String name,
       String family,
       String phone_number,
-        String token,
+      String token,
       String national_code}) async {
     return await RequestHelper._makeRequest(
       webController: WebControllers.reserve,
@@ -534,7 +536,7 @@ class RequestHelper {
         "national_code": national_code,
       },
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -545,19 +547,21 @@ class RequestHelper {
         "id": doctor_id,
       },
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
-
-  static Future<ApiResult> complimentCreate({String text}) async {
+  static Future<ApiResult> complimentCreate({String text , String token}) async {
     return await RequestHelper._makeRequest(
       webController: WebControllers.compliment_create,
       body: {
         "text": text,
       },
+      header: {
+        'Authorization': 'Bearer $token',
+      },
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
@@ -567,37 +571,49 @@ class RequestHelper {
         header: {
           'Authorization': 'Bearer $token',
         }).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
 
+  static Future<ApiResult> location({String token}) async {
+    return await RequestHelper._makeRequestGet(
+        webController: WebControllers.location,
+        ).timeout(
+      Duration(seconds: 180),
+    );
+  }
 
-  static Future<ApiResult> orderCreate({String address,String token}) async {
+  static Future<ApiResult> orderCreate(
+      {String address,
+      String token,
+      String name,
+      String family,
+      String code,
+      String email}) async {
     return await RequestHelper._makeRequest(
-      webController: WebControllers.order_create,
-      body: {
-        "address": address,
-      },
+        webController: WebControllers.order_create,
+        body: {
+          "address": address,
+          "name": name,
+          "family": family,
+          "code": code,
+          "email": email,
+        },
         header: {
           'Authorization': 'Bearer $token',
-        }
-    ).timeout(
-      Duration(seconds: 50),
+        }).timeout(
+      Duration(seconds: 180),
     );
   }
 
-  static Future<ApiResult> Toekn({String username,String password}) async {
+  static Future<ApiResult> Token({String username, String password}) async {
     return await RequestHelper._makeRequest(
-        webController: WebControllers.token,
-        body: {
-          "username": username,
-          "password": password
-        },
+      webController: WebControllers.token,
+      body: {"username": username, "password": password},
     ).timeout(
-      Duration(seconds: 50),
+      Duration(seconds: 180),
     );
   }
-
 }
 
 class ApiResult {

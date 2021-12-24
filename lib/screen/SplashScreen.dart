@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Get.off(LoginScreen());
 
     }else{
-      RequestHelper.Toekn(
+      RequestHelper.Token(
           password: "1234", username: await PrefHelper.getMobile())
           .then((value) async {
         if (value.statusCode == 200) {

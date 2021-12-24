@@ -385,6 +385,7 @@ class ReserveScreen extends StatelessWidget {
           ),
           _buildClinicDropDown(),
           _buildInsuranceListDropDown(),
+          _buildLocationDropDown(),
           SizedBox(
             height: size.height * .05,
           ),
@@ -436,7 +437,7 @@ class ReserveScreen extends StatelessWidget {
                 () => DropdownButton(
                   hint: Center(
                     child: doctorController.dropDownValue2.value == null
-                        ? Text('Dropdown')
+                        ? Text('انتخاب کنید')
                         : Center(
                             child: Text(
                               doctorController.dropDownValue2.value,
@@ -458,6 +459,74 @@ class ReserveScreen extends StatelessWidget {
                   ).toList(),
                   onChanged: (val) {
                     doctorController.setSelected2(val);
+                  },
+                ),
+              )),
+        ),
+      ],
+    );
+  }
+
+  _buildLocationDropDown() {
+    return Column(
+      children: [
+        SizedBox(
+          height: size.height * .02,
+        ),
+        AutoSizeText(
+          ":منطقه خود را انتخاب کنید",
+          maxFontSize: 24,
+          minFontSize: 6,
+          maxLines: 1,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.black87,
+            fontSize: 14,
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: size.width * .1, vertical: size.height * .02),
+          child: Container(
+              height: size.height * .05,
+              width: size.width,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                  ),
+                ],
+              ),
+              child: Obx(
+                () => DropdownButton(
+                  hint: Center(
+                    child: doctorController.dropDownValue3.value == null
+                        ? Text('انتخاب کنید')
+                        : Center(
+                            child: Text(
+                              doctorController.dropDownValue3.value,
+                              style: TextStyle(color: ColorsHelper.mainColor),
+                            ),
+                          ),
+                  ),
+                  isExpanded: true,
+                  iconSize: 30.0,
+                  underline: Container(),
+                  style: TextStyle(color: Colors.blue),
+                  items: doctorController.locationList.map(
+                    (val) {
+                      return DropdownMenuItem<String>(
+                        value: val.id.toString(),
+                        child: Center(child: Text(val.name)),
+                      );
+                    },
+                  ).toList(),
+                  onChanged: (val) {
+                    doctorController.setSelected3(val);
                   },
                 ),
               )),
@@ -533,7 +602,7 @@ class ReserveScreen extends StatelessWidget {
               () => DropdownButton(
                 hint: Center(
                   child: doctorController.dropDownValue1.value == null
-                      ? Text('Dropdown')
+                      ? Text('انتخاب کنید')
                       : Center(
                           child: Text(
                             doctorController.dropDownValue1.value,

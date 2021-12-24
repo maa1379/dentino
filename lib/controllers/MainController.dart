@@ -1,4 +1,6 @@
 import 'package:dentino/helpers/RequestHelper.dart';
+import 'package:dentino/helpers/ViewHelpers.dart';
+import 'package:dentino/helpers/prefHelper.dart';
 import 'package:dentino/models/ContactUsModel.dart';
 import 'package:get/get.dart';
 
@@ -97,4 +99,20 @@ class SliderController extends GetxController {
 //   }
 //
 // }
+
+
+class ComplimentCreate extends GetxController{
+
+  compliment({String text})async{
+    RequestHelper.complimentCreate(text: text,token: await PrefHelper.getToken()).then((value){
+      if(value.isDone){
+        ViewHelper.showSuccessDialog(Get.context, "پیام شما با موفقیت ثبت شد");
+      }else{
+        ViewHelper.showErrorDialog(Get.context,"ارتباط برقرار نشد");
+      }
+    });
+  }
+
+
+}
 
