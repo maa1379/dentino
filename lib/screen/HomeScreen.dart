@@ -1,16 +1,10 @@
-import 'package:dentino/bloc/getProfileBloc.dart';
-import 'package:dentino/helpers/AlertHelper.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
-import 'package:dentino/helpers/NavHelper.dart';
 import 'package:dentino/widgets/DrawerWidget.dart';
 import 'package:dentino/widgets/MainWidget.dart';
-import 'package:dentino/widgets/PofileWidget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:get/get.dart';
 import 'MyTurnScreen.dart';
-import 'ProfileScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -62,7 +56,6 @@ class _HomeScreenState extends State<HomeScreen> {
   //   super.initState();
   // }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
               )
             : (this._selectedItemPosition == 0)
                 ? Text(
-                    "پروفایل",
+                    "لیست سفارشات",
                     style: TextStyle(color: ColorsHelper.mainColor),
                   )
                 : (this._selectedItemPosition == 2)
@@ -120,7 +113,8 @@ class _HomeScreenState extends State<HomeScreen> {
             });
           },
           children: [
-            ProfileWidget(),
+            // ProfileWidget(),
+            Container(),
             MainWidget(),
             MyTurnScreen(),
           ],
@@ -177,6 +171,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-
-

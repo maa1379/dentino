@@ -56,14 +56,14 @@ class _SplashScreenState extends State<SplashScreen> {
       RequestHelper.getProfile(token: await PrefHelper.getToken())
           .then((value) async {
         if (value.isDone) {
-          await Retoken();
+          Retoken();
           getProfileBlocInstance
               .getProfile(GetProfileModel.fromJson(value.data));
+          getDate();
         } else {
           print("not ok");
         }
       });
-    getDate();
   }
 
   @override

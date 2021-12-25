@@ -39,6 +39,9 @@ enum WebControllers {
   bank,
   token,
   location,
+  zone_list,
+  city_list,
+  province_list,
 }
 // enum WebMethods {
 //
@@ -311,7 +314,7 @@ class RequestHelper {
   }
 
   static Future<ApiResult> updateProfile(
-      {String birthday,
+      {
       String name,
       String family,
       String national_code,
@@ -319,7 +322,6 @@ class RequestHelper {
     return await RequestHelper._makeRequestPut(
         webController: WebControllers.update_profile,
         body: {
-          "birthday": birthday,
           "name": name,
           "family": family,
           "national_code": national_code,
@@ -583,6 +585,14 @@ class RequestHelper {
     );
   }
 
+  static Future<ApiResult> provinceList() async {
+    return await RequestHelper._makeRequestGet(
+        webController: WebControllers.province_list,
+        ).timeout(
+      Duration(seconds: 180),
+    );
+  }
+
   static Future<ApiResult> orderCreate(
       {String address,
       String token,
@@ -610,6 +620,24 @@ class RequestHelper {
     return await RequestHelper._makeRequest(
       webController: WebControllers.token,
       body: {"username": username, "password": password},
+    ).timeout(
+      Duration(seconds: 180),
+    );
+  }
+
+  static Future<ApiResult> CityList({String province_id}) async {
+    return await RequestHelper._makeRequest(
+      webController: WebControllers.city_list,
+      body: {"province_id": province_id},
+    ).timeout(
+      Duration(seconds: 180),
+    );
+  }
+
+  static Future<ApiResult> ZoneList({String city_id}) async {
+    return await RequestHelper._makeRequest(
+      webController: WebControllers.zone_list,
+      body: {"city_id": city_id},
     ).timeout(
       Duration(seconds: 180),
     );

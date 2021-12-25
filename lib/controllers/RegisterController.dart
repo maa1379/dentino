@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:dentino/bloc/getProfileBloc.dart';
 import 'package:dentino/helpers/RequestHelper.dart';
 import 'package:dentino/helpers/ViewHelpers.dart';
@@ -67,12 +66,15 @@ class VerifyController extends GetxController {
   verifyCode({String code, mobile}) async {
     RequestHelper.verify(code: code, mobile: mobile).then(
       (value) {
-        print(value.data);
-        if (value.statusCode == 201){
+        if (value.statusCode == 201) {
           PrefHelper.setToken(value.data['access']);
           PrefHelper.setMobile(mobile);
-          getProfile();
-          Get.off(HomeScreen());
+          if (value.data['registerd'] == "True") {
+            getProfile();
+            Get.off(HomeScreen());
+          } else {
+            ProfileController().showRegisterFormModal();
+          }
         } else {
           btnController2.reset();
           Get.snackbar("", "ورود با خطا مواجه شد",
@@ -87,28 +89,18 @@ class VerifyController extends GetxController {
     );
   }
 
-  getProfile()async{
-    RequestHelper.getProfile(token: await PrefHelper.getToken())
-        .then((value) {
+  getProfile() async {
+    RequestHelper.getProfile(token: await PrefHelper.getToken()).then((value) {
       if (value.isDone) {
-        getProfileBlocInstance
-            .getProfile(GetProfileModel.fromJson(value.data));
-      } else if(value.statusCode == 410){
-        ProfileController().codeController.text = " ";
-        ProfileController().familyController.text = " ";
-        ProfileController().nameController.text = " ";
-
-        getProfileBlocInstance.profile.name == "";
-        getProfileBlocInstance.profile.family == " ";
-        getProfileBlocInstance.profile.nationalCode == " ";
-        getProfileBlocInstance.profile.birthday == " ";
+        getProfileBlocInstance.getProfile(GetProfileModel.fromJson(value.data));
+      } else if (value.statusCode == 410) {
         print("not ok");
-      }else{
-        ViewHelper.showErrorDialog(Get.context,"عدم اتصال با سرور دوباره تلاش کنید");
+      } else {
+        ViewHelper.showErrorDialog(
+            Get.context, "عدم اتصال با سرور دوباره تلاش کنید");
       }
     });
   }
-
 
   Timer timer;
   RxInt start = 59.obs;

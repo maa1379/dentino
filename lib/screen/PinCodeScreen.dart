@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dentino/controllers/ProfileController.dart';
 import 'package:dentino/controllers/RegisterController.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
 import 'package:flutter/material.dart';
