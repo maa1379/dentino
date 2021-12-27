@@ -7,58 +7,53 @@ import 'package:dentino/helpers/prefHelper.dart';
 import 'package:dentino/helpers/widgetHelper.dart';
 import 'package:dentino/screen/HomeScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import 'RegisterController.dart';
 
-
-class ProfileController extends GetxController{
-
-
-
-  @override
-  void onInit() {
-    nameController.text = getProfileBlocInstance.profile.name;
-    familyController.text = getProfileBlocInstance.profile.family;
-    codeController.text = getProfileBlocInstance.profile.nationalCode.toString();
-    super.onInit();
-  }
+class ProfileController extends GetxController {
 
 
   final RoundedLoadingButtonController _btnController1 =
-  RoundedLoadingButtonController();
+      RoundedLoadingButtonController();
   final _formKey = GlobalKey<FormState>();
 
-
   void _doSomething(RoundedLoadingButtonController controller) async {
-    if(_formKey.currentState.validate()){
-      updateProfile(family: familyController.text,name: nameController.text,national_code: codeController.text);
+    if (_formKey.currentState.validate()) {
+      updateProfile(
+          family: familyController.text,
+          name: nameController.text,
+          national_code: codeController.text);
       Get.off(HomeScreen());
     }
     _formKey.currentState.save();
   }
 
-
   TextEditingController nameController = TextEditingController();
   TextEditingController familyController = TextEditingController();
   TextEditingController codeController = TextEditingController();
 
-
-  updateProfile(
-      {String name,
-      String family,
-      String national_code})async{
-    RequestHelper.updateProfile(national_code:national_code ,name: name,family: family,token: await PrefHelper.getToken()).then((value){
+  updateProfile({String name, String family, String national_code}) async {
+    RequestHelper.updateProfile(
+            national_code: national_code,
+            name: name,
+            family: family,
+            token: await PrefHelper.getToken())
+        .then((value) {
       print(value.data);
-      if(value.isDone){
+      if (value.isDone) {
         print("ok");
-        ViewHelper.showSuccessDialog(Get.context, "پروفایل شما با موفقیت ثبت شد");
+        ViewHelper.showSuccessDialog(
+            Get.context, "پروفایل شما با موفقیت ثبت شد");
         VerifyController().getProfile();
-      }else{
+        EasyLoading.dismiss();
+      } else {
         print("faild");
-        ViewHelper.showErrorDialog(Get.context, "پروفایل شما با موفقیت ثبت نشد");
+        ViewHelper.showErrorDialog(
+            Get.context, "پروفایل شما با موفقیت ثبت نشد");
       }
     });
   }
@@ -71,55 +66,59 @@ class ProfileController extends GetxController{
       enableDrag: false,
       isDismissible: true,
       builder: (context) => Container(
-        height: Get.height * .42,
-        margin: EdgeInsets.all(Get.width * .02),
         width: Get.width,
-        padding: MediaQuery.of(context).viewInsets,
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(25)),
-        child: Stack(
-          children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: EdgeInsets.only(top: Get.height * .005),
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: Icon(Icons.close),
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: EdgeInsets.only(top: Get.height * .02),
-                child: AutoSizeText(
-                  "تکمیل اطلاعات",
-                  maxFontSize: 24,
-                  minFontSize: 6,
-                  maxLines: 1,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: ColorsHelper.mainColor,
-                    fontSize: 18,
+        height: Get.height,
+        child: Container(
+          height: Get.height * .42,
+          padding: MediaQuery.of(context).viewInsets,
+          margin: EdgeInsets.all(Get.width * .02),
+          width: Get.width,
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(25)),
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: EdgeInsets.only(top: Get.height * .005),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: Icon(Icons.close),
+                    color: Colors.black,
                   ),
                 ),
               ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                height: Get.height * .5,
-                width: Get.width,
-                padding: EdgeInsets.symmetric(
-                    horizontal: Get.width * .05, vertical: Get.height * .02),
-                child: _buildBody(),
+              Align(
+                alignment: Alignment.topCenter,
+                child: Padding(
+                  padding: EdgeInsets.only(top: Get.height * .02),
+                  child: AutoSizeText(
+                    "تکمیل اطلاعات",
+                    maxFontSize: 24,
+                    minFontSize: 6,
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: ColorsHelper.mainColor,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ],
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  height: Get.height * .5,
+                  width: Get.width,
+                  padding: EdgeInsets.symmetric(
+                      horizontal: Get.width * .05, vertical: Get.height * .02),
+                  child: _buildBody(),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -144,7 +143,6 @@ class ProfileController extends GetxController{
       ),
     );
   }
-
 
   _buildNameField() {
     return WidgetHelper.profileTextField(
@@ -249,7 +247,4 @@ class ProfileController extends GetxController{
       ),
     );
   }
-
-
-
 }

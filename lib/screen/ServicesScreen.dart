@@ -1,17 +1,17 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dentino/controllers/ReservationController.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
+import 'package:dentino/screen/LocationScreen.dart';
 import 'package:dentino/screen/ReserveScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 class ServicesScreen extends StatelessWidget {
-
   Size size;
   final exertiseController = Get.put(ExertiseController());
 
   String url = "https://dentino.app";
+
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
@@ -63,8 +63,13 @@ class ServicesScreen extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(8.0),
       child: GestureDetector(
-        onTap: (){
-          Get.to(()=>ReserveScreen(),arguments: {"expertise_id": item.id});
+        onTap: () {
+          // Get.to(()=>ReserveScreen(),arguments: {"expertise_id": item.id.toString()});
+          Get.to(
+            () => LocationScreen(
+              expertise_id: item.id.toString(),
+            ),
+          );
           // Get.to(ReserveScreen(),arguments: {});
         },
         child: Column(
@@ -81,7 +86,8 @@ class ServicesScreen extends StatelessWidget {
               child: CircleAvatar(
                 backgroundColor: ColorsHelper.mainColor,
                 radius: size.width * .12,
-                child: Image.network(image,
+                child: Image.network(
+                  image,
                   width: size.width * .15,
                 ),
               ),
@@ -130,4 +136,3 @@ class ServicesScreen extends StatelessWidget {
     });
   }
 }
-

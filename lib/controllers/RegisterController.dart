@@ -7,9 +7,11 @@ import 'package:dentino/models/GetProfileModel.dart';
 import 'package:dentino/screen/HomeScreen.dart';
 import 'package:dentino/screen/PinCodeScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
+import 'MainController.dart';
 import 'ProfileController.dart';
 
 class RegisterController extends GetxController {
@@ -71,7 +73,6 @@ class VerifyController extends GetxController {
           PrefHelper.setMobile(mobile);
           if (value.data['registerd'] == "True") {
             getProfile();
-            Get.off(HomeScreen());
           } else {
             ProfileController().showRegisterFormModal();
           }
@@ -89,10 +90,20 @@ class VerifyController extends GetxController {
     );
   }
 
+
+  getDate() async {
+    await Get.put(SliderController()).getSlider();
+    startTimer();
+  }
+
   getProfile() async {
-    RequestHelper.getProfile(token: await PrefHelper.getToken()).then((value) {
-      if (value.isDone) {
+    RequestHelper.getProfile(token: await PrefHelper.getToken()).then((value)async {
+      if (value.isDone){
         getProfileBlocInstance.getProfile(GetProfileModel.fromJson(value.data));
+        getDate();
+        await Get.put(HomeScreen());
+        Get.to(HomeScreen());
+        EasyLoading.dismiss();
       } else if (value.statusCode == 410) {
         print("not ok");
       } else {

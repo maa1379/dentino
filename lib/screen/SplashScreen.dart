@@ -22,12 +22,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Retoken() async {
     if (await PrefHelper.getToken() == null) {
-
       Get.off(LoginScreen());
-
-    }else{
+    } else {
       RequestHelper.Token(
-          password: "1234", username: await PrefHelper.getMobile())
+              password: "1234", username: await PrefHelper.getMobile())
           .then((value) async {
         if (value.statusCode == 200) {
           PrefHelper.removeToken();
@@ -37,8 +35,6 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       });
     }
-
-
   }
 
   @override
@@ -53,17 +49,18 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   getProfile() async {
-      RequestHelper.getProfile(token: await PrefHelper.getToken())
-          .then((value) async {
-        if (value.isDone) {
-          Retoken();
-          getProfileBlocInstance
-              .getProfile(GetProfileModel.fromJson(value.data));
-          getDate();
-        } else {
-          print("not ok");
-        }
-      });
+    RequestHelper.getProfile(token: await PrefHelper.getToken())
+        .then((value) async {
+      if (value.isDone) {
+        Retoken();
+        getProfileBlocInstance.getProfile(GetProfileModel.fromJson(value.data));
+        getDate();
+      } else {
+        Get.off(IntroScreen());
+        getDate();
+        print("not ok");
+      }
+    });
   }
 
   @override
@@ -101,15 +98,11 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void startTimer() async {
-    return Future.delayed(Duration(seconds: 5)).then(
-      (value) async {
-        if (await PrefHelper.getToken() != null) {
-          NavHelper.pushR(context, HomeScreen());
-        } else {
-          NavHelper.pushR(context, IntroScreen());
-          // Get.off(IntroScreen());
-        }
-      },
-    );
+    if (await PrefHelper.getToken() != null) {
+      NavHelper.pushR(context, HomeScreen());
+    } else {
+      NavHelper.pushR(context, IntroScreen());
+      // Get.off(IntroScreen());
+    }
   }
 }

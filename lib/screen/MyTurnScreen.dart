@@ -36,7 +36,7 @@ class MyTurnScreen extends StatelessWidget {
             ),
           );
         } else {
-          return (ReserveListController.reserveListData.length == 0)
+          return (ReserveListController.reserveListData.length.isBlank)
               ? Stack(
             children: [
               Center(

@@ -1,4 +1,6 @@
 
+
+
 class DoctorListModel {
   DoctorListModel({
     this.id,
@@ -82,3 +84,4 @@ class Insurance {
     "image": image,
   };
 }
+

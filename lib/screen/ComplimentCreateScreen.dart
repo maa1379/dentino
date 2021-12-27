@@ -1,14 +1,16 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dentino/controllers/ClinicController.dart';
 import 'package:dentino/controllers/MainController.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class ComplimentCreateScreen extends StatelessWidget {
-
   ComplimentCreate complimentCreate = Get.put(ComplimentCreate());
+  ClinicController clinicController = Get.put(ClinicController());
 
   TextEditingController answerTextEditingController = TextEditingController();
 
@@ -46,20 +48,38 @@ class ComplimentCreateScreen extends StatelessWidget {
       body: Container(
         height: Get.height,
         width: Get.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: Get.height * .2,
+        child: Obx(() {
+          return SingleChildScrollView(
+            child: Container(
+              height: Get.height * .9,
+              width: Get.width,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: Get.height * .1,
+                  ),
+                  _buildClinicListDropDown(),
+                  SizedBox(
+                    height: Get.height * .03,
+                  ),
+                  (complimentCreate.loading.value == true)
+                      ? _buildDoctorListDropDown()
+                      : Container(),
+                  SizedBox(
+                    height: Get.height * .06,
+                  ),
+                  _messageTextField(),
+                  Spacer(),
+                  _submitBtn(),
+                  SizedBox(
+                    height: Get.height * .05,
+                  )
+                ],
+              ),
             ),
-            _messageTextField(),
-            Spacer(),
-            _submitBtn(),
-            SizedBox(
-              height: Get.height * .05,
-            )
-          ],
-        ),
+          );
+        }),
       ),
     );
   }
@@ -86,7 +106,7 @@ class ComplimentCreateScreen extends StatelessWidget {
             ),
             labelText: "متن شکایت خود را بنویسید",
             hintText: "متن شکایت",
-            // contentPadding: EdgeInsets.all(size.width * .03),
+            // contentPadding: EdgeInsets.all(Get.width * .03),
             labelStyle: TextStyle(
               fontSize: 12,
               color: Colors.black.withOpacity(.40),
@@ -145,6 +165,150 @@ class ComplimentCreateScreen extends StatelessWidget {
           onPressed: () {
             complimentCreate.compliment(text: answerTextEditingController.text);
           }),
+    );
+  }
+
+  _buildClinicListDropDown() {
+    return Column(
+      children: [
+        SizedBox(
+          height: Get.height * .02,
+        ),
+        AutoSizeText(
+          ":مرکز درمانی خود را انتخاب کنید",
+          maxFontSize: 24,
+          minFontSize: 6,
+          maxLines: 1,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.black87,
+            fontSize: 14,
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: Get.width * .1, vertical: Get.height * .02),
+          child: Container(
+            height: Get.height * .05,
+            width: Get.width,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                ),
+              ],
+            ),
+            child: Obx(
+              () => DropdownButton(
+                hint: Center(
+                  child: complimentCreate.dropDownValueClinic.value == null
+                      ? Text('انتخاب کنید')
+                      : Center(
+                          child: Text(
+                            complimentCreate.dropDownValueClinic.value,
+                            style: TextStyle(color: ColorsHelper.mainColor),
+                          ),
+                        ),
+                ),
+                isExpanded: true,
+                iconSize: 30.0,
+                underline: Container(),
+                style: TextStyle(color: Colors.blue),
+                items: clinicController.clinicList.map(
+                  (val) {
+                    return DropdownMenuItem<String>(
+                      value: val.id.toString(),
+                      child: Center(child: Text(val.name)),
+                    );
+                  },
+                ).toList(),
+                onChanged: (val) {
+                  complimentCreate.setSelected1(val);
+                  complimentCreate.DoctorList();
+                  EasyLoading.show(
+                      indicator: CircularProgressIndicator(),
+                      dismissOnTap: false);
+                },
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  _buildDoctorListDropDown() {
+    return Column(
+      children: [
+        SizedBox(
+          height: Get.height * .02,
+        ),
+        AutoSizeText(
+          "پزشک خود را انتخاب کنید",
+          maxFontSize: 24,
+          minFontSize: 6,
+          maxLines: 1,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.black87,
+            fontSize: 14,
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: Get.width * .1, vertical: Get.height * .02),
+          child: Container(
+            height: Get.height * .05,
+            width: Get.width,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                ),
+              ],
+            ),
+            child: Obx(
+              () => DropdownButton(
+                hint: Center(
+                  child: complimentCreate.dropDownValueDoctor.value == null
+                      ? Text('انتخاب کنید')
+                      : Center(
+                          child: Text(
+                            complimentCreate.dropDownValueDoctor.value,
+                            style: TextStyle(color: ColorsHelper.mainColor),
+                          ),
+                        ),
+                ),
+                isExpanded: true,
+                iconSize: 30.0,
+                underline: Container(),
+                style: TextStyle(color: Colors.blue),
+                items: complimentCreate.doctorList.map(
+                  (val) {
+                    return DropdownMenuItem<String>(
+                      value: val.id.toString(),
+                      child: Center(
+                        child: Text(val.name + " " + val.family),
+                      ),
+                    );
+                  },
+                ).toList(),
+                onChanged: (val) {
+                  complimentCreate.setSelected2(val);
+                },
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -2,6 +2,8 @@ import 'package:dentino/helpers/RequestHelper.dart';
 import 'package:dentino/helpers/ViewHelpers.dart';
 import 'package:dentino/helpers/prefHelper.dart';
 import 'package:dentino/models/ContactUsModel.dart';
+import 'package:dentino/models/DoctorProfileModel.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 class ContactUSController extends GetxController {
@@ -103,8 +105,25 @@ class SliderController extends GetxController {
 
 class ComplimentCreate extends GetxController{
 
+  final dropDownValueClinic = "انتخاب کنید".obs;
+  final dropDownValueDoctor = "انتخاب کنید".obs;
+
+  RxBool loading = false.obs;
+
+  RxList<DoctorProfileModel> doctorList = <DoctorProfileModel>[].obs;
+
+
+  void setSelected1(String value) {
+    dropDownValueClinic.value = value;
+  }
+
+  void setSelected2(String value) {
+    dropDownValueDoctor.value = value;
+  }
+
+
   compliment({String text})async{
-    RequestHelper.complimentCreate(text: text,token: await PrefHelper.getToken()).then((value){
+    RequestHelper.complimentCreate(text: text,token: await PrefHelper.getToken(),clinic_id: this.dropDownValueClinic.value.toString(),doctor_id: this.dropDownValueDoctor.value.toString()).then((value){
       if(value.isDone){
         ViewHelper.showSuccessDialog(Get.context, "پیام شما با موفقیت ثبت شد");
       }else{
@@ -112,6 +131,25 @@ class ComplimentCreate extends GetxController{
       }
     });
   }
+
+
+  DoctorList()async{
+    RequestHelper.clinicDoctorList(clinic_id: dropDownValueClinic.value.toString()).then((value){
+      if(value.isDone == true){
+        for(var i in value.data){
+          doctorList.add(DoctorProfileModel.fromJson(i));
+        }
+        loading.value = true;
+        EasyLoading.dismiss();
+      }else{
+        loading.value = false;
+        ViewHelper.showErrorDialog(Get.context,"ارتباط برقرار نشد");
+      }
+    });
+  }
+
+
+
 
 
 }

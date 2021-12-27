@@ -10,7 +10,9 @@ import 'package:dentino/models/DoctorDateListModel.dart';
 import 'package:dentino/models/DoctorListModel.dart';
 import 'package:dentino/models/DoctorTimeListModel.dart';
 import 'package:dentino/models/LocationModel.dart';
+import 'package:dentino/models/ProvinceModel.dart';
 import 'package:dentino/models/exertiseListModel.dart';
+import 'package:dentino/screen/ReserveScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -22,6 +24,8 @@ import 'package:snapping_sheet/snapping_sheet.dart';
 import 'DoctorController.dart';
 
 class ExertiseController extends GetxController {
+
+
   @override
   void onInit() {
     exertiseList();
@@ -29,7 +33,10 @@ class ExertiseController extends GetxController {
   }
 
   RxBool loading = false.obs;
+
   List<ExertiseListModel> exertiseListData = [];
+
+
 
   exertiseList() async {
     RequestHelper.exertiseGet().then(
@@ -52,16 +59,19 @@ class ExertiseController extends GetxController {
 class DoctorController extends GetxController {
   @override
   void onInit() {
-    // doctorList();
     doctorFilter();
     dataFilterList();
-    locationListApi();
     super.onInit();
   }
 
+
+
+
+
   final dropDownValue1 = "انتخاب کنید".obs;
   final dropDownValue2 = "انتخاب کنید".obs;
-  final dropDownValue3 = "انتخاب کنید".obs;
+  final dropDownValue6 = "انتخاب کنید".obs;
+
 
   void setSelected1(String value) {
     dropDownValue1.value = value;
@@ -70,10 +80,11 @@ class DoctorController extends GetxController {
   void setSelected2(String value) {
     dropDownValue2.value = value;
   }
-
-  void setSelected3(String value) {
-    dropDownValue3.value = value;
+  void setSelected6(String value) {
+    dropDownValue6.value = value;
   }
+
+
 
   TextEditingController phoneController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -85,7 +96,8 @@ class DoctorController extends GetxController {
   final RoundedLoadingButtonController btnController2 =
       RoundedLoadingButtonController();
 
-  RxBool loading = false.obs;
+  RxBool loading1 = false.obs;
+  RxBool loading2 = false.obs;
   RxBool loadingDate = false.obs;
   RxList<DoctorListModel> doctorListData = <DoctorListModel>[].obs;
   RxList<LocationModel> locationList = <LocationModel>[].obs;
@@ -97,34 +109,20 @@ class DoctorController extends GetxController {
 
   doctorFilter() async {
     RequestHelper.doctorFilter(
-      expertise_id: Get.arguments['expertise_id'].toString(),
-      clinic: dropDownValue2.value.toString(),
-      insurance: dropDownValue1.value.toString(),
-      location: dropDownValue3.value.toString(),
+      expertise_id: Get.arguments["expertise_id2"].toString(),
+      clinic: (dropDownValue2.value == "انتخاب کنید")?"":dropDownValue2.value.toString(),
+      insurance: (dropDownValue1.value == "انتخاب کنید")?"":dropDownValue1.value.toString(),
+      zone: Get.arguments["zone_id"],
+      clinic_type: (dropDownValue6.value == "انتخاب کنید")?"":dropDownValue6.value.toString(),
     ).then(
       (value) {
-        if (value.isDone == true) {
+        if (value.isDone == true || value.statusCode == 201) {
           for (var list in value.data) {
             doctorListData.add(DoctorListModel.fromJson(list));
           }
-
-          loading.value = true;
+          loading1.value = true;
         } else {
-          loading.value = false;
-        }
-      },
-    );
-  }
-
-  locationListApi() async {
-    RequestHelper.location().then(
-      (value) {
-        if (value.isDone) {
-          for (var i in value.data) {
-            locationList.add(LocationModel.fromJson(i));
-          }
-        } else {
-          ViewHelper.showErrorDialog(Get.context, "ارتباط برقرار نشد");
+          loading1.value = false;
         }
       },
     );
@@ -134,9 +132,6 @@ class DoctorController extends GetxController {
     RequestHelper.dataFilterList().then(
       (value) {
         if (value.isDone == true) {
-          print("***********************");
-          print(value.data);
-          print("***********************");
           for (var list in value.data['clinic']) {
             clinicFilterList.add(ClinicFilterModel.fromJson(list));
           }
@@ -144,9 +139,11 @@ class DoctorController extends GetxController {
             insuranceFilterList.add(InsuranceFilterModel.fromJson(list));
           }
 
-          loading.value = true;
+
+
+          loading2.value = true;
         } else {
-          loading.value = false;
+          loading2.value = false;
         }
       },
     );
@@ -261,6 +258,7 @@ class DoctorController extends GetxController {
       },
     );
   }
+
 
   showDateTimeModal() {
     return showCupertinoModalBottomSheet(
@@ -618,7 +616,7 @@ class DoctorController extends GetxController {
                       SizedBox(
                         height: Get.height * .1,
                       ),
-                      _submitBtn(
+                      submitBtn(
                           date_id: date_id, doctor_id: doctor_id, time: time),
                     ],
                   )),
@@ -629,7 +627,7 @@ class DoctorController extends GetxController {
     );
   }
 
-  _submitBtn({String time, String date_id, String doctor_id}) {
+  submitBtn({String time, String date_id, String doctor_id}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: Get.width * .05),
       child: RoundedLoadingButton(
@@ -749,4 +747,95 @@ class DoctorController extends GetxController {
       margin: EdgeInsets.symmetric(horizontal: Get.width * .1),
     );
   }
+
+
+}
+
+
+class CityController extends GetxController{
+
+
+  @override
+  void onInit() {
+    Province();
+    super.onInit();
+  }
+
+  final dropDownValue3 = "انتخاب کنید".obs;
+  final dropDownValue4 = "انتخاب کنید".obs;
+  final dropDownValue5 = "انتخاب کنید".obs;
+
+  RxList<ProvinceModel> ProvinceDataList = <ProvinceModel>[].obs;
+  RxList<CityModel> CityDataList = <CityModel>[].obs;
+  RxList<ZoneModel> zoneDataList = <ZoneModel>[].obs;
+
+
+  void setSelected3(String value) {
+    dropDownValue3.value = value;
+  }
+
+  void setSelected4(String value) {
+    dropDownValue4.value = value;
+  }
+
+  void setSelected5(String value) {
+    dropDownValue5.value = value;
+  }
+
+  RxBool loadingCity = false.obs;
+  RxBool loadingZone = false.obs;
+
+  Province() async {
+    RequestHelper.provinceList().then(
+          (value) {
+        if (value.isDone == true) {
+          ProvinceDataList.clear();
+          for (var list in value.data["province"]) {
+            ProvinceDataList.add(ProvinceModel.fromJson(list));
+          }
+          // loading.value = true;
+        } else {
+          // loading.value = false;
+        }
+      },
+    );
+  }
+
+  City({String province_id}) async {
+    RequestHelper.CityList(province_id: province_id).then(
+          (value) {
+        if (value.isDone == true) {
+          CityDataList.clear();
+          for (var list in value.data["city"]) {
+            CityDataList.add(CityModel.fromJson(list));
+          }
+          loadingCity.value = true;
+          EasyLoading.dismiss();
+        } else {
+          loadingCity.value = false;
+        }
+      },
+    );
+  }
+
+  Zone({String city_id}) async {
+    RequestHelper.ZoneList(city_id: city_id).then(
+          (value) {
+        if (value.isDone == true) {
+          zoneDataList.clear();
+          for (var list in value.data) {
+            zoneDataList.add(ZoneModel.fromJson(list));
+          }
+            loadingZone.value = true;
+          EasyLoading.dismiss();
+        } else {
+            loadingZone.value = false;
+        }
+      },
+    );
+  }
+
+
+
+
 }

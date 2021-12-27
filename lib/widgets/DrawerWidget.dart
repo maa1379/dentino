@@ -14,6 +14,7 @@ import 'package:get/get.dart';
 import 'AboutUsWidget.dart';
 import 'ContactUsWidget.dart';
 import 'MyCourseWidget.dart';
+import 'MyTurnsForDrawer.dart';
 
 class DrawerWidget extends StatelessWidget {
   Size size;
@@ -27,9 +28,9 @@ class DrawerWidget extends StatelessWidget {
     ),
     DrawerModel(
       id: 1,
-      title: "دوره های من",
+      title: "نوبت های من",
       icon: Icons.info_outline,
-      func: MyCourseWidget(),
+      func: MyTurnsForDrawer(),
     ),
     DrawerModel(
       id: 1,

@@ -52,7 +52,7 @@ class ReserveScreen extends StatelessWidget {
   _buildBody() {
     return Obx(
       () {
-        if (!doctorController.loading.value) {
+        if (doctorController.loading1.value == false) {
           return Align(
             alignment: Alignment.center,
             child: Container(
@@ -385,7 +385,7 @@ class ReserveScreen extends StatelessWidget {
           ),
           _buildClinicDropDown(),
           _buildInsuranceListDropDown(),
-          _buildLocationDropDown(),
+          _buildClinicTypeDropDown(),
           SizedBox(
             height: size.height * .05,
           ),
@@ -406,7 +406,7 @@ class ReserveScreen extends StatelessWidget {
           height: size.height * .02,
         ),
         AutoSizeText(
-          ":کلینیک خود را انتخاب کنید",
+          ":مرکز درمانی خود را انتخاب کنید",
           maxFontSize: 24,
           minFontSize: 6,
           maxLines: 1,
@@ -467,14 +467,15 @@ class ReserveScreen extends StatelessWidget {
     );
   }
 
-  _buildLocationDropDown() {
+
+  _buildClinicTypeDropDown() {
     return Column(
       children: [
         SizedBox(
           height: size.height * .02,
         ),
         AutoSizeText(
-          ":منطقه خود را انتخاب کنید",
+          ":نوع مرکز درمانی خود را انتخاب کنید",
           maxFontSize: 24,
           minFontSize: 6,
           maxLines: 1,
@@ -502,31 +503,31 @@ class ReserveScreen extends StatelessWidget {
                 ],
               ),
               child: Obx(
-                () => DropdownButton(
+                    () => DropdownButton(
                   hint: Center(
-                    child: doctorController.dropDownValue3.value == null
+                    child: doctorController.dropDownValue6.value == null
                         ? Text('انتخاب کنید')
                         : Center(
-                            child: Text(
-                              doctorController.dropDownValue3.value,
-                              style: TextStyle(color: ColorsHelper.mainColor),
-                            ),
-                          ),
+                      child: Text(
+                        doctorController.dropDownValue6.value,
+                        style: TextStyle(color: ColorsHelper.mainColor),
+                      ),
+                    ),
                   ),
                   isExpanded: true,
                   iconSize: 30.0,
                   underline: Container(),
                   style: TextStyle(color: Colors.blue),
-                  items: doctorController.locationList.map(
-                    (val) {
+                  items: ["کلینیک","مطب"].map(
+                        (val) {
                       return DropdownMenuItem<String>(
-                        value: val.id.toString(),
-                        child: Center(child: Text(val.name)),
+                        value: val,
+                        child: Center(child: Text(val)),
                       );
                     },
                   ).toList(),
                   onChanged: (val) {
-                    doctorController.setSelected3(val);
+                    doctorController.setSelected6(val);
                   },
                 ),
               )),
@@ -534,6 +535,8 @@ class ReserveScreen extends StatelessWidget {
       ],
     );
   }
+
+
 
   _submitFilterBtn() {
     return Padding(
@@ -633,3 +636,5 @@ class ReserveScreen extends StatelessWidget {
     );
   }
 }
+
+

@@ -42,6 +42,7 @@ enum WebControllers {
   zone_list,
   city_list,
   province_list,
+  clinic_doctor,
 }
 // enum WebMethods {
 //
@@ -395,14 +396,16 @@ class RequestHelper {
       {String clinic,
       String insurance,
       String expertise_id,
-      String location}) async {
+      String clinic_type,
+      String zone}) async {
     return await RequestHelper._makeRequest(
       webController: WebControllers.doctor_filter,
       body: {
         "clinic": clinic,
         "insurance": insurance,
         "expertise_id": expertise_id,
-        "location": location
+        "zone": zone,
+        "clinic_type": clinic_type
       },
     ).timeout(
       Duration(seconds: 180),
@@ -553,11 +556,13 @@ class RequestHelper {
     );
   }
 
-  static Future<ApiResult> complimentCreate({String text , String token}) async {
+  static Future<ApiResult> complimentCreate({String text , String token,String doctor_id,String clinic_id}) async {
     return await RequestHelper._makeRequest(
       webController: WebControllers.compliment_create,
       body: {
         "text": text,
+        "doctor_id": doctor_id,
+        "clinic_id": clinic_id
       },
       header: {
         'Authorization': 'Bearer $token',
@@ -585,13 +590,7 @@ class RequestHelper {
     );
   }
 
-  static Future<ApiResult> provinceList() async {
-    return await RequestHelper._makeRequestGet(
-        webController: WebControllers.province_list,
-        ).timeout(
-      Duration(seconds: 180),
-    );
-  }
+
 
   static Future<ApiResult> orderCreate(
       {String address,
@@ -624,6 +623,29 @@ class RequestHelper {
       Duration(seconds: 180),
     );
   }
+
+
+  static Future<ApiResult> provinceList() async {
+    return await RequestHelper._makeRequestGet(
+      webController: WebControllers.province_list,
+    ).timeout(
+      Duration(seconds: 180),
+    );
+  }
+
+
+
+  static Future<ApiResult> clinicDoctorList({String clinic_id}) async {
+    return await RequestHelper._makeRequest(
+      webController: WebControllers.clinic_doctor,
+      body: {
+        "clinic_id":clinic_id
+      }
+    ).timeout(
+      Duration(seconds: 180),
+    );
+  }
+
 
   static Future<ApiResult> CityList({String province_id}) async {
     return await RequestHelper._makeRequest(

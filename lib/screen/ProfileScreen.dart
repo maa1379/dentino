@@ -1,29 +1,55 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dentino/bloc/getProfileBloc.dart';
 import 'package:dentino/controllers/ProfileController.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
 import 'package:dentino/helpers/widgetHelper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
 
+
+
+
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   ProfileController profileController = Get.put(ProfileController());
 
 
-
-  final RoundedLoadingButtonController _btnController1 =
-  RoundedLoadingButtonController();
-  final _formKey = GlobalKey<FormState>();
-
-
-  void _doSomething(RoundedLoadingButtonController controller) async {
-    if(_formKey.currentState.validate()){
-      profileController.updateProfile(family: profileController.familyController.text,name: profileController.nameController.text,national_code: profileController.codeController.text);
-    }
-    _formKey.currentState.save();
+  @override
+  void initState() {
+    profileController.nameController.text = getProfileBlocInstance.profile.name;
+    profileController.familyController.text = getProfileBlocInstance.profile.family;
+    profileController.codeController.text =
+        getProfileBlocInstance.profile.nationalCode.toString();
+    super.initState();
   }
 
+
+  final RoundedLoadingButtonController _btnController1 =
+      RoundedLoadingButtonController();
+
+  final _formKey = GlobalKey<FormState>();
+
+  void _doSomething(RoundedLoadingButtonController controller) async {
+    if (_formKey.currentState.validate()) {
+      profileController.updateProfile(
+          family: profileController.familyController.text,
+          name: profileController.nameController.text,
+          national_code: profileController.codeController.text);
+    }
+    EasyLoading.show(
+      indicator: CircularProgressIndicator(),
+      dismissOnTap: false,
+    );
+    _formKey.currentState.save();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,12 +79,9 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
       ),
-
       body: _buildBody(),
     );
   }
-
-
 
   _buildBody() {
     return Container(
@@ -87,7 +110,6 @@ class ProfileScreen extends StatelessWidget {
       ),
     );
   }
-
 
   _buildNameField() {
     return WidgetHelper.profileTextField(
@@ -186,11 +208,10 @@ class ProfileScreen extends StatelessWidget {
           style: TextStyle(color: Colors.white, fontSize: 16),
         ),
         controller: _btnController1,
-        resetDuration: Duration(seconds: 3),
+        resetDuration: Duration(seconds: 10),
         animateOnTap: true,
         onPressed: () => _doSomething(_btnController1),
       ),
     );
   }
-
 }
