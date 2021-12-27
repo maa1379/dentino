@@ -55,6 +55,9 @@ class LocationScreen extends StatelessWidget {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(
+                  height: Get.height * .05,
+                ),
                 _buildProvinceDropDown(),
                 cityController.loadingCity.value == true
                     ? _buildCityDropDown()
@@ -62,8 +65,11 @@ class LocationScreen extends StatelessWidget {
                 cityController.loadingZone.value == true
                     ? _buildZoneDropDown()
                     : Container(),
-
+                Spacer(),
                 submitBtn(),
+                SizedBox(
+                  height: Get.height * .05,
+                ),
               ],
             );
           }),

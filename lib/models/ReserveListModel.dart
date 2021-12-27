@@ -1,15 +1,8 @@
-// To parse this JSON data, do
-//
-//     final reserveListModel = reserveListModelFromJson(jsonString);
 
-import 'dart:convert';
-
-ReserveListModel reserveListModelFromJson(String str) => ReserveListModel.fromJson(json.decode(str));
-
-String reserveListModelToJson(ReserveListModel data) => json.encode(data.toJson());
 
 class ReserveListModel {
   ReserveListModel({
+    this.id,
     this.name,
     this.family,
     this.phoneNumber,
@@ -24,6 +17,7 @@ class ReserveListModel {
     this.doctorId,
   });
 
+  int id;
   String name;
   String family;
   String phoneNumber;
@@ -38,6 +32,7 @@ class ReserveListModel {
   int doctorId;
 
   factory ReserveListModel.fromJson(Map<String, dynamic> json) => ReserveListModel(
+    id: json["id"],
     name: json["name"],
     family: json["family"],
     phoneNumber: json["phone_number"],
@@ -53,6 +48,7 @@ class ReserveListModel {
   );
 
   Map<String, dynamic> toJson() => {
+    "id": id,
     "name": name,
     "family": family,
     "phone_number": phoneNumber,
