@@ -102,7 +102,7 @@ class VerifyController extends GetxController {
         getProfileBlocInstance.getProfile(GetProfileModel.fromJson(value.data));
         getDate();
         await Get.put(HomeScreen());
-        Get.to(HomeScreen());
+        Get.off(HomeScreen());
         EasyLoading.dismiss();
       } else if (value.statusCode == 410) {
         print("not ok");

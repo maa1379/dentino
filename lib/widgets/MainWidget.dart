@@ -6,6 +6,7 @@ import 'package:dentino/helpers/ViewHelpers.dart';
 import 'package:dentino/models/CategoryModel.dart';
 import 'package:dentino/screen/ClinicListScreen.dart';
 import 'package:dentino/screen/CommonCourseScreen.dart';
+import 'package:dentino/screen/DirectoryScreen.dart';
 import 'package:dentino/screen/InsuranceCompaniesScreen.dart';
 import 'package:dentino/screen/OrganizationScreen.dart';
 import 'package:dentino/screen/PrescriptionsScreen.dart';
@@ -35,13 +36,12 @@ class _MainWidgetState extends State<MainWidget> {
   int _current = 0;
   final sliderController = Get.put(SliderController());
 
-
   List<CategoryModel> catItem = [
     CategoryModel(
-        id: 1,
-        image: "assets/images/reserved.png",
-        title: "رزرو نوبت",
-        func: ServicesScreen(),
+      id: 1,
+      image: "assets/images/reserved.png",
+      title: "رزرو نوبت",
+      func: ServicesScreen(),
     ),
     CategoryModel(
       id: 2,
@@ -52,7 +52,7 @@ class _MainWidgetState extends State<MainWidget> {
     CategoryModel(
       id: 3,
       image: "assets/images/dental-clinic.png",
-      title: "کلینیک ها",
+      title: "مراکز درمانی",
       func: ClinicListScreen(),
     ),
     CategoryModel(
@@ -77,15 +77,15 @@ class _MainWidgetState extends State<MainWidget> {
         id: 7, image: "assets/images/amozesh2.png", title: "دوره های آموزشی"),
     CategoryModel(
       id: 8,
-      image: "assets/images/sazman.png",
-      title: "سازمان های طرف قرارداد",
-      func: OrganizationScreen(),
+      image: "assets/images/folder.png",
+      title: "دایرکتوری پزشکان",
+      func: DirectoryScreen(),
     ),
     CategoryModel(
       id: 9,
-      image: "assets/images/bime.png",
-      title: "شرکت های بیمه",
-      func: InsuranceCompaniesScreen(),
+      image: "assets/images/gift.png",
+      title: "تخفیفات",
+      // func: InsuranceCompaniesScreen(),
     ),
   ];
 
@@ -164,7 +164,7 @@ class _MainWidgetState extends State<MainWidget> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
                         child: Image.network(
-                          "https://dentino.app" + i.picture,
+                          i.picture,
                           fit: BoxFit.fill,
                           width: double.maxFinite,
                         ),
@@ -239,15 +239,17 @@ class _MainWidgetState extends State<MainWidget> {
     var item = catItem[index];
     return GestureDetector(
       onTap: () {
-        if(item.id == 7){
-          ViewHelper.showSuccessDialog(context, "تا چند لحظه دیگر به سایت دوره ها منتقل میشوید");
+        if (item.id == 7) {
+          ViewHelper.showSuccessDialog(
+              context, "تا چند لحظه دیگر به سایت دوره ها منتقل میشوید");
           Future.delayed(Duration(seconds: 5)).then((value) {
-          _launchURL("https://parsianedu.com/");
+            _launchURL("https://parsianedu.com/");
           });
-        }else{
-        Get.to(item.func,);
+        } else {
+          Get.to(
+            item.func,
+          );
         }
-
       },
       child: Container(
         height: size.height * .2,

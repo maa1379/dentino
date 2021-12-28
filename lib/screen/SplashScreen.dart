@@ -20,6 +20,8 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   Size size;
 
+  final slider = Get.put(SliderController());
+
   Retoken() async {
     if (await PrefHelper.getToken() == null) {
       Get.off(LoginScreen());
@@ -30,6 +32,9 @@ class _SplashScreenState extends State<SplashScreen> {
         if (value.statusCode == 200) {
           PrefHelper.removeToken();
           PrefHelper.setToken(value.data2['access']);
+          if (slider.loaded.value == true) {
+            startTimer();
+          }
         } else {
           Get.off(LoginScreen());
         }
@@ -43,21 +48,14 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
   }
 
-  getDate() async {
-    await Get.put(SliderController()).getSlider();
-    startTimer();
-  }
-
   getProfile() async {
     RequestHelper.getProfile(token: await PrefHelper.getToken())
         .then((value) async {
       if (value.isDone) {
-        Retoken();
         getProfileBlocInstance.getProfile(GetProfileModel.fromJson(value.data));
-        getDate();
+        Retoken();
       } else {
         Get.off(IntroScreen());
-        getDate();
         print("not ok");
       }
     });
