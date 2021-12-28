@@ -10,7 +10,6 @@ class ServicesScreen extends StatelessWidget {
   Size size;
   final exertiseController = Get.put(ExertiseController());
 
-  String url = "https://dentino.app";
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +58,6 @@ class ServicesScreen extends StatelessWidget {
 
   Widget _buildServiceItem(BuildContext context, int index) {
     var item = exertiseController.exertiseListData[index];
-    var image = url + item.image;
     return Padding(
       padding: EdgeInsets.all(8.0),
       child: GestureDetector(
@@ -87,7 +85,7 @@ class ServicesScreen extends StatelessWidget {
                 backgroundColor: ColorsHelper.mainColor,
                 radius: size.width * .12,
                 child: Image.network(
-                  image,
+                  item.image,
                   width: size.width * .15,
                 ),
               ),

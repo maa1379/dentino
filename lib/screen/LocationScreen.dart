@@ -129,7 +129,7 @@ class LocationScreen extends StatelessWidget {
                 items: cityController.ProvinceDataList.map(
                   (val) {
                     return DropdownMenuItem<String>(
-                      value: val.id.toString(),
+                      value: val.name.toString(),
                       child: Center(child: Text(val.name)),
                     );
                   },
@@ -202,7 +202,7 @@ class LocationScreen extends StatelessWidget {
                 items: cityController.CityDataList.map(
                   (val) {
                     return DropdownMenuItem<String>(
-                      value: val.id.toString(),
+                      value: val.name.toString(),
                       child: Center(child: Text(val.name)),
                     );
                   },
@@ -275,7 +275,7 @@ class LocationScreen extends StatelessWidget {
                 items: cityController.zoneDataList.map(
                   (val) {
                     return DropdownMenuItem<String>(
-                      value: val.id.toString(),
+                      value: val.name.toString(),
                       child: Center(child: Text(val.name)),
                     );
                   },
@@ -311,7 +311,7 @@ class LocationScreen extends StatelessWidget {
         controller: _btnController1,
         animateOnTap: true,
         onPressed: () {
-          Get.to(()=>ReserveScreen(),arguments: {"expertise_id2":expertise_id,"zone_id":cityController.dropDownValue5.value});
+          Get.to(()=>ReserveScreen(),arguments: {"expertise_id2":expertise_id,"zone_id":(cityController.dropDownValue5.value == "انتخاب کنید")?"":cityController.dropDownValue5.value.toString()});
           _btnController1.reset();
         },
       ),

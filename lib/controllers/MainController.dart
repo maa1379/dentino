@@ -63,7 +63,7 @@ class SliderController extends GetxController {
     RequestHelper.slider().then(
       (value) {
         if (value.isDone) {
-          print(value.data);
+          sliderList.clear();
           for (var i in value.data) {
             sliderList.add(SliderModel.fromJson(i));
           }
