@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
@@ -42,7 +42,7 @@ class _IntroScreenState extends State<IntroScreen> {
           children: [
             _buildSlider(),
             _buildIndicator(),
-            (_selectedIndex == 2) ? Container() :_buildSkipButton(),
+            (_selectedIndex == 2) ? Container() : _buildSkipButton(),
             (_selectedIndex != 2) ? Container() : _buildNextButton(),
           ],
         ));
@@ -118,11 +118,10 @@ class _IntroScreenState extends State<IntroScreen> {
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 10,
-                  spreadRadius: 2,
-                  offset: Offset(5,0)
-                ),
+                    color: Colors.black12,
+                    blurRadius: 10,
+                    spreadRadius: 2,
+                    offset: Offset(5, 0)),
               ],
               color: ColorsHelper.mainColor,
               borderRadius: BorderRadius.only(
@@ -148,16 +147,25 @@ class _IntroScreenState extends State<IntroScreen> {
                 SizedBox(
                   height: size.height * .05,
                 ),
-                AutoSizeText(
-                  "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد",
-                  maxFontSize: 22,
-                  minFontSize: 10,
-                  maxLines: 5,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: Get.width * .05),
+                  child: AutoSizeText(
+                    (_selectedIndex == 0)
+                        ? " با عضو شدن به اپلیکیشن دنتینو بدون معطلی هر دندان پزشکی که میخوای رو رزرو کن و این پلتفرم به شما این امکان را میدهد که خیلی سریع مشکل دندانهایتان را برطرف کنید"
+                        : (_selectedIndex == 1)
+                            ? "اپلیکیشن دنتینو شما را با دانش روز آشنا میکند و مطالب آموزشی تخصصی و عمومی را در اختیار کاربرانش میگذارد تا بتوانند دانش خود را در این زمینه بیشتر کنند"
+                            : (_selectedIndex == 2)
+                                ? "با دنتینو بدون صرف وقت از هر مطب یا کلینیک دندان پزشکی مشاوره انلاین بگیرید تا خیلی سریع مشکل خودتون را برطرف کنید"
+                                : "",
+                    maxFontSize: 22,
+                    minFontSize: 10,
+                    maxLines: 5,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
               ],
             ),

@@ -92,6 +92,14 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
             SizedBox(
               height: Get.height * .03,
             ),
+            _buildCompany(),
+            SizedBox(
+              height: Get.height * .03,
+            ),
+            _buildInsurance(),
+            SizedBox(
+              height: Get.height * .03,
+            ),
             _buildNetWork(),
             SizedBox(
               height: Get.height * .05,
@@ -258,6 +266,7 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
           //  fit: FlexFit.loose,
           constraints: BoxConstraints(
             maxHeight: Get.height,
+            minWidth: Get.width,
             minHeight: Get.height * .15,
             maxWidth: Get.width,
           ),
@@ -273,7 +282,7 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
               ],
             ),
             child: AutoSizeText(
-              clinicController.clinicProfile.description
+              clinicController.clinicProfile.clinicDescription
                   .replaceAll("</p>", "")
                   .replaceAll("<p>", ""),
               maxFontSize: 24,
@@ -354,6 +363,156 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
           ),
         ),
       ],
+    );
+  }
+
+
+  _buildCompany() {
+    return
+      Directionality(
+        textDirection: TextDirection.rtl,
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: EdgeInsets.only(right: Get.width * .08),
+              child: AutoSizeText(
+                "شرکت های طرف قرارداد:",
+                maxFontSize: 24,
+                minFontSize: 6,
+                textDirection: TextDirection.rtl,
+                maxLines: null,
+                textAlign: TextAlign.justify,
+                style: TextStyle(
+                  color: ColorsHelper.mainColor,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: Get.height * .02,
+          ),
+          ConstrainedBox(
+            //  fit: FlexFit.loose,
+            constraints: BoxConstraints(
+              maxHeight: Get.height,
+              minHeight: Get.height * .1,
+              maxWidth: Get.width,
+            ),
+            child: Container(
+              height: Get.height * .15,
+              width: Get.width,
+              margin: EdgeInsets.symmetric(horizontal: Get.width * .05),
+              padding: EdgeInsets.symmetric(
+                  horizontal: Get.width * .05, vertical: Get.height * .02),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black26, spreadRadius: 2, blurRadius: 5),
+                ],
+              ),
+              child: Center(
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: clinicController.CompanyList.length,
+                  itemBuilder: (BuildContext context , int index) {
+                    return AutoSizeText(
+                      "${clinicController.CompanyList[index].title}",
+                      maxFontSize: 24,
+                      minFontSize: 6,
+                      maxLines: null,
+                      textDirection: TextDirection.rtl,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 14,
+                      ),
+                    );
+                  }
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _buildInsurance() {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: EdgeInsets.only(right: Get.width * .08),
+              child: AutoSizeText(
+                "شرکت های بیمه:",
+                maxFontSize: 24,
+                minFontSize: 6,
+                textDirection: TextDirection.rtl,
+                maxLines: null,
+                textAlign: TextAlign.justify,
+                style: TextStyle(
+                  color: ColorsHelper.mainColor,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: Get.height * .02,
+          ),
+          ConstrainedBox(
+            //  fit: FlexFit.loose,
+            constraints: BoxConstraints(
+              maxHeight: Get.height,
+              minHeight: Get.height * .1,
+              maxWidth: Get.width,
+            ),
+            child: Container(
+              height: Get.height * .15,
+              width: Get.width,
+              margin: EdgeInsets.symmetric(horizontal: Get.width * .05),
+              padding: EdgeInsets.symmetric(
+                  horizontal: Get.width * .05, vertical: Get.height * .02),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black26, spreadRadius: 2, blurRadius: 5),
+                ],
+              ),
+              child: Center(
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                    itemCount: clinicController.InsuranceList.length,
+                    itemBuilder: (BuildContext context , int index) {
+                      return AutoSizeText(
+                        "${clinicController.InsuranceList[index].name}",
+                        maxFontSize: 24,
+                        minFontSize: 6,
+                        maxLines: null,
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 14,
+                        ),
+                      );
+                    }
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

@@ -24,8 +24,6 @@ import 'package:snapping_sheet/snapping_sheet.dart';
 import 'DoctorController.dart';
 
 class ExertiseController extends GetxController {
-
-
   @override
   void onInit() {
     exertiseList();
@@ -35,8 +33,6 @@ class ExertiseController extends GetxController {
   RxBool loading = false.obs;
 
   List<ExertiseListModel> exertiseListData = [];
-
-
 
   exertiseList() async {
     RequestHelper.exertiseGet().then(
@@ -64,14 +60,9 @@ class DoctorController extends GetxController {
     super.onInit();
   }
 
-
-
-
-
   final dropDownValue1 = "انتخاب کنید".obs;
   final dropDownValue2 = "انتخاب کنید".obs;
   final dropDownValue6 = "انتخاب کنید".obs;
-
 
   void setSelected1(String value) {
     dropDownValue1.value = value;
@@ -80,11 +71,10 @@ class DoctorController extends GetxController {
   void setSelected2(String value) {
     dropDownValue2.value = value;
   }
+
   void setSelected6(String value) {
     dropDownValue6.value = value;
   }
-
-
 
   TextEditingController phoneController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -110,10 +100,16 @@ class DoctorController extends GetxController {
   doctorFilter() async {
     RequestHelper.doctorFilter(
       expertise_id: Get.arguments["expertise_id2"].toString(),
-      clinic: (dropDownValue2.value == "انتخاب کنید")?"":dropDownValue2.value.toString(),
-      insurance: (dropDownValue1.value == "انتخاب کنید")?"":dropDownValue1.value.toString(),
+      clinic: (dropDownValue2.value == "انتخاب کنید")
+          ? ""
+          : dropDownValue2.value.toString(),
+      insurance: (dropDownValue1.value == "انتخاب کنید")
+          ? ""
+          : dropDownValue1.value.toString(),
       zone: Get.arguments["zone_id"],
-      clinic_type: (dropDownValue6.value == "انتخاب کنید")?"":dropDownValue6.value.toString(),
+      clinic_type: (dropDownValue6.value == "انتخاب کنید")
+          ? ""
+          : dropDownValue6.value.toString(),
     ).then(
       (value) {
         if (value.isDone == true || value.statusCode == 201) {
@@ -138,9 +134,6 @@ class DoctorController extends GetxController {
           for (var list in value.data['insurance']) {
             insuranceFilterList.add(InsuranceFilterModel.fromJson(list));
           }
-
-
-
           loading2.value = true;
         } else {
           loading2.value = false;
@@ -258,7 +251,6 @@ class DoctorController extends GetxController {
       },
     );
   }
-
 
   showDateTimeModal() {
     return showCupertinoModalBottomSheet(
@@ -747,14 +739,9 @@ class DoctorController extends GetxController {
       margin: EdgeInsets.symmetric(horizontal: Get.width * .1),
     );
   }
-
-
 }
 
-
-class CityController extends GetxController{
-
-
+class CityController extends GetxController {
   @override
   void onInit() {
     Province();
@@ -768,7 +755,6 @@ class CityController extends GetxController{
   RxList<ProvinceModel> ProvinceDataList = <ProvinceModel>[].obs;
   RxList<CityModel> CityDataList = <CityModel>[].obs;
   RxList<ZoneModel> zoneDataList = <ZoneModel>[].obs;
-
 
   void setSelected3(String value) {
     dropDownValue3.value = value;
@@ -787,7 +773,7 @@ class CityController extends GetxController{
 
   Province() async {
     RequestHelper.provinceList().then(
-          (value) {
+      (value) {
         if (value.isDone == true) {
           ProvinceDataList.clear();
           for (var list in value.data["province"]) {
@@ -803,7 +789,7 @@ class CityController extends GetxController{
 
   City({String province_id}) async {
     RequestHelper.CityList(province_id: province_id).then(
-          (value) {
+      (value) {
         if (value.isDone == true) {
           CityDataList.clear();
           for (var list in value.data["city"]) {
@@ -820,22 +806,18 @@ class CityController extends GetxController{
 
   Zone({String city_id}) async {
     RequestHelper.ZoneList(city_id: city_id).then(
-          (value) {
+      (value) {
         if (value.isDone == true) {
           zoneDataList.clear();
           for (var list in value.data) {
             zoneDataList.add(ZoneModel.fromJson(list));
           }
-            loadingZone.value = true;
+          loadingZone.value = true;
           EasyLoading.dismiss();
         } else {
-            loadingZone.value = false;
+          loadingZone.value = false;
         }
       },
     );
   }
-
-
-
-
 }

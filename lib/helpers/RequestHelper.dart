@@ -637,7 +637,7 @@ class RequestHelper {
   static Future<ApiResult> CityList({String province_id}) async {
     return await RequestHelper._makeRequest(
       webController: WebControllers.city_list,
-      body: {"province_id": province_id},
+      body: {"province": province_id},
     ).timeout(
       Duration(seconds: 180),
     );
@@ -646,7 +646,7 @@ class RequestHelper {
   static Future<ApiResult> ZoneList({String city_id}) async {
     return await RequestHelper._makeRequest(
       webController: WebControllers.zone_list,
-      body: {"city_id": city_id},
+      body: {"city": city_id},
     ).timeout(
       Duration(seconds: 180),
     );

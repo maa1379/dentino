@@ -1,63 +1,119 @@
-// To parse this JSON data, do
-//
-//     final clinicListModel = clinicListModelFromJson(jsonString);
+
+
+
 
 class ClinicListModel {
   ClinicListModel({
-    this.id,
     this.name,
     this.logo,
     this.address,
-    this.lat,
-    this.long,
     this.instagram,
     this.phoneNumber,
-    this.description,
+    this.clinicDescription,
     this.image1,
     this.image2,
     this.image3,
+    this.location,
+    this.type,
+    this.insurances,
+    this.zoneName,
+    this.companies,
+    this.id,
   });
 
-  int id;
   String name;
   String logo;
   String address;
-  double lat;
-  double long;
   String instagram;
   String phoneNumber;
-  String description;
+  String clinicDescription;
   String image1;
   String image2;
   String image3;
+  int location;
+  String type;
+  List<Insurance> insurances;
+  String zoneName;
+  List<Company> companies;
+  int id;
 
   factory ClinicListModel.fromJson(Map<String, dynamic> json) => ClinicListModel(
-    id: json["id"],
     name: json["name"],
     logo: json["logo"],
     address: json["address"],
-    lat: json["lat"],
-    long: json["long"],
     instagram: json["instagram"],
     phoneNumber: json["phone_number"],
-    description: json["description"],
+    clinicDescription: json["clinic_description"],
     image1: json["image1"],
     image2: json["image2"],
     image3: json["image3"],
+    location: json["location"],
+    type: json["type"],
+    insurances: List<Insurance>.from(json["insurances"].map((x) => Insurance.fromJson(x))),
+    zoneName: json["zone_name"],
+    companies: List<Company>.from(json["companies"].map((x) => Company.fromJson(x))),
+    id: json["id"],
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
     "name": name,
     "logo": logo,
     "address": address,
-    "lat": lat,
-    "long": long,
     "instagram": instagram,
     "phone_number": phoneNumber,
-    "description": description,
+    "clinic_description": clinicDescription,
     "image1": image1,
     "image2": image2,
     "image3": image3,
+    "location": location,
+    "type": type,
+    "insurances": List<dynamic>.from(insurances.map((x) => x.toJson())),
+    "zone_name": zoneName,
+    "companies": List<dynamic>.from(companies.map((x) => x.toJson())),
+    "id": id,
+  };
+}
+
+class Company {
+  Company({
+    this.title,
+    this.id,
+  });
+
+  String title;
+  int id;
+
+  factory Company.fromJson(Map<String, dynamic> json) => Company(
+    title: json["title"],
+    id: json["id"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "title": title,
+    "id": id,
+  };
+}
+
+class Insurance {
+  Insurance({
+    this.name,
+    this.image,
+    this.id,
+  });
+
+  String name;
+  String image;
+  int id;
+
+  factory Insurance.fromJson(Map<String, dynamic> json) => Insurance(
+    name: json["name"],
+    image: json["image"],
+    id: json["id"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "name": name,
+    "image": image,
+    "id": id,
   };
 }
