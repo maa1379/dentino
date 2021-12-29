@@ -23,6 +23,9 @@ class _IntroScreenState extends State<IntroScreen> {
     "assets/anim/1.json",
     "assets/anim/2.json",
     "assets/anim/3.json",
+    "assets/anim/s1.json",
+    "assets/anim/s2.json",
+
   ];
   bool revers = false;
 
@@ -42,8 +45,8 @@ class _IntroScreenState extends State<IntroScreen> {
           children: [
             _buildSlider(),
             _buildIndicator(),
-            (_selectedIndex == 2) ? Container() : _buildSkipButton(),
-            (_selectedIndex != 2) ? Container() : _buildNextButton(),
+            (_selectedIndex == 4) ? Container() : _buildSkipButton(),
+            (_selectedIndex != 4) ? Container() : _buildNextButton(),
           ],
         ));
   }
@@ -63,7 +66,7 @@ class _IntroScreenState extends State<IntroScreen> {
           },
         );
       },
-      itemCount: 3,
+      itemCount: 5,
       itemBuilder: (BuildContext context, int index) {
         return _buildPage(path: page[index]);
       },
@@ -135,7 +138,7 @@ class _IntroScreenState extends State<IntroScreen> {
                   height: size.height * .05,
                 ),
                 AutoSizeText(
-                  "دندان پزشکی",
+                  "دنتینو",
                   maxFontSize: 22,
                   minFontSize: 10,
                   maxLines: 1,
@@ -156,7 +159,7 @@ class _IntroScreenState extends State<IntroScreen> {
                             ? "اپلیکیشن دنتینو شما را با دانش روز آشنا میکند و مطالب آموزشی تخصصی و عمومی را در اختیار کاربرانش میگذارد تا بتوانند دانش خود را در این زمینه بیشتر کنند"
                             : (_selectedIndex == 2)
                                 ? "با دنتینو بدون صرف وقت از هر مطب یا کلینیک دندان پزشکی مشاوره انلاین بگیرید تا خیلی سریع مشکل خودتون را برطرف کنید"
-                                : "",
+                                : (_selectedIndex == 3)?"دنتینو فرشگاهی داره که مخصوص لوازم دندان پزشکی و بهترین متریال و لوازم ها را برای شما فراهم آورده است":(_selectedIndex == 4)?"شما میتوانید از تخفیفات و جشنواره های دنتینو استفاده کنید و یا عضو باشگاه مشتریان ما شوید و با امتیازگیری از خدمات دنتینو استفاده کنید":"",
                     maxFontSize: 22,
                     minFontSize: 10,
                     maxLines: 5,

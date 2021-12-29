@@ -84,7 +84,7 @@ class _MainWidgetState extends State<MainWidget> {
     CategoryModel(
       id: 9,
       image: "assets/images/gift.png",
-      title: "تخفیفات",
+      title: "تخفیفات مراکز",
       // func: InsuranceCompaniesScreen(),
     ),
   ];

@@ -383,9 +383,9 @@ class ReserveScreen extends StatelessWidget {
           SizedBox(
             height: size.height * .05,
           ),
-          _buildClinicDropDown(),
-          _buildInsuranceListDropDown(),
           _buildClinicTypeDropDown(),
+          _buildInsuranceListDropDown(),
+          _buildClinicDropDown(),
           SizedBox(
             height: size.height * .05,
           ),

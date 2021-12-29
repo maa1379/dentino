@@ -22,6 +22,7 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
   }
 
 
+
   @override
   Widget build(BuildContext context) {
     return Obx((){
@@ -378,7 +379,7 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
             child: Padding(
               padding: EdgeInsets.only(right: Get.width * .08),
               child: AutoSizeText(
-                "شرکت های طرف قرارداد:",
+                "سازمان های طرف قرارداد:",
                 maxFontSize: 24,
                 minFontSize: 6,
                 textDirection: TextDirection.rtl,
