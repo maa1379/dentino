@@ -138,7 +138,13 @@ class _IntroScreenState extends State<IntroScreen> {
                   height: size.height * .05,
                 ),
                 AutoSizeText(
-                  "دنتینو",
+                  (_selectedIndex == 0)
+                      ? "رزرو نوبت در دنتینو"
+                      : (_selectedIndex == 1)
+                      ? "آموزش در دنتینو"
+                      : (_selectedIndex == 2)
+                      ? "مشاوره آنلاین دنتینو"
+                      : (_selectedIndex == 3)?"فروشگاه دنتینو":(_selectedIndex == 4)?"باشگاه مشتریان دنتینو":"",
                   maxFontSize: 22,
                   minFontSize: 10,
                   maxLines: 1,
@@ -163,7 +169,8 @@ class _IntroScreenState extends State<IntroScreen> {
                     maxFontSize: 22,
                     minFontSize: 10,
                     maxLines: 5,
-                    textAlign: TextAlign.center,
+                    textDirection: TextDirection.rtl,
+                    textAlign: TextAlign.justify,
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 14,

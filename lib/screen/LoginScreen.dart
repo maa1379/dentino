@@ -1,15 +1,13 @@
-import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dentino/controllers/RegisterController.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
 import 'package:dentino/helpers/widgetHelper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
-import 'HomeScreen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -34,35 +32,44 @@ class _LoginScreenState extends State<LoginScreen> {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Container(
-          height: size.height,
-          width: size.width,
-          child: Column(
-            children: [
-              RotatedBox(
-                  quarterTurns: 10,
-                  child: Image.asset(
-                    "assets/images/wave(1).png",
-                  )),
-              AutoSizeText(
-                "ورود / ثبت نام",
-                maxLines: 1,
-                maxFontSize: 24,
-                minFontSize: 10,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black, fontSize: 18),
+        body: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: MediaQuery.of(context).viewInsets,
+                  child: Column(
+                    children: [
+                      RotatedBox(
+                          quarterTurns: 10,
+                          child: Image.asset(
+                            "assets/images/wave(1).png",
+                          )),
+                      AutoSizeText(
+                        "ورود / ثبت نام",
+                        maxLines: 1,
+                        maxFontSize: 24,
+                        minFontSize: 10,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.black, fontSize: 18),
+                      ),
+                      Lottie.asset("assets/anim/login.json", height: size.height * .4),
+                      _buildBody(),
+                    ],
+                  ),
+                ),
               ),
-              Lottie.asset("assets/anim/login.json", height: size.height * .4),
-              _buildBody(),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 
   _buildBody() {
-    return Expanded(
+    return Container(
+      height: Get.height * .38,
+      width: Get.width,
       child: Form(
         key: _formKey,
         child: Column(
@@ -144,6 +151,28 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
           WidgetHelper.onChange(value, registerController.mobileController);
         });
+        if(value.length == 11){
+          FocusScope.of(context).unfocus();
+          if (_formKey.currentState.validate()) {
+            registerController.register(mobile: registerController.mobileController.text);
+            registerController.btnController1.reset();
+          } else {
+            registerController.btnController1.error();
+            Get.snackbar("", "ارسال کد با خطا مواجه شد",
+                icon: Icon(Icons.error, color: Colors.red),
+                snackPosition: SnackPosition.TOP,
+                colorText: Colors.black,
+                borderWidth: 0.5,
+                backgroundColor: Colors.red.shade50,
+                borderColor: Colors.red,
+                borderRadius: 15);
+          }
+          _formKey.currentState.save();
+          EasyLoading.show(
+            indicator: CircularProgressIndicator(),
+            dismissOnTap: true,
+          );
+        }
       },
       maxLength: 11,
       icon: Icon(Icons.mobile_friendly_rounded),

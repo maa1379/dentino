@@ -1,3 +1,4 @@
+import 'package:dentino/helpers/AlertHelper.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
 import 'package:dentino/widgets/DrawerWidget.dart';
 import 'package:dentino/widgets/MainWidget.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:get/get.dart';
 import 'MyTurnScreen.dart';
+
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -56,68 +58,73 @@ class _HomeScreenState extends State<HomeScreen> {
   //   super.initState();
   // }
 
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      key: _key,
-      bottomNavigationBar: _buildNavbar(),
-      endDrawer: DrawerWidget(),
-      appBar: AppBar(
-        title: (this._selectedItemPosition == 1)
-            ? Text(
-                "Dentino",
-                style: TextStyle(color: ColorsHelper.mainColor),
-              )
-            : (this._selectedItemPosition == 0)
-                ? Text(
-                    "لیست سفارشات",
-                    style: TextStyle(color: ColorsHelper.mainColor),
-                  )
-                : (this._selectedItemPosition == 2)
-                    ? Text(
-                        "نوبت های من",
-                        style: TextStyle(color: ColorsHelper.mainColor),
-                      )
-                    : Container(),
-        centerTitle: true,
-        elevation: 5,
-        backgroundColor: Colors.white,
-        leading: Image.asset("assets/images/theesLogo.png"),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: GestureDetector(
-              onTap: () {
-                _key.currentState.openEndDrawer();
-              },
-              child: Icon(
-                Icons.menu,
-                color: ColorsHelper.mainColor,
+    return WillPopScope(
+      onWillPop: () => AlertHelpers.ExitDialog(context: Get.context,size: Get.size),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        key: _key,
+        bottomNavigationBar: _buildNavbar(),
+        endDrawer: DrawerWidget(),
+        appBar: AppBar(
+          title: (this._selectedItemPosition == 1)
+              ? Text(
+                  "Dentino",
+                  style: TextStyle(color: ColorsHelper.mainColor),
+                )
+              : (this._selectedItemPosition == 0)
+                  ? Text(
+                      "لیست سفارشات",
+                      style: TextStyle(color: ColorsHelper.mainColor),
+                    )
+                  : (this._selectedItemPosition == 2)
+                      ? Text(
+                          "نوبت های من",
+                          style: TextStyle(color: ColorsHelper.mainColor),
+                        )
+                      : Container(),
+          centerTitle: true,
+          elevation: 5,
+          backgroundColor: Colors.white,
+          leading: Image.asset("assets/images/theesLogo.png"),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: GestureDetector(
+                onTap: () {
+                  _key.currentState.openEndDrawer();
+                },
+                child: Icon(
+                  Icons.menu,
+                  color: ColorsHelper.mainColor,
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-      backgroundColor: Colors.white,
-      body: Container(
-        height: Get.height,
-        width: Get.width,
-        color: Colors.white,
-        child: PageView(
-          physics: NeverScrollableScrollPhysics(),
-          controller: pageController,
-          onPageChanged: (page) {
-            setState(() {
-              _selectedItemPosition = page;
-            });
-          },
-          children: [
-            // ProfileWidget(),
-            Container(),
-            MainWidget(),
-            MyTurnScreen(),
           ],
+        ),
+        backgroundColor: Colors.white,
+        body: Container(
+          height: Get.height,
+          width: Get.width,
+          color: Colors.white,
+          child: PageView(
+            physics: NeverScrollableScrollPhysics(),
+            controller: pageController,
+            onPageChanged: (page) {
+              setState(() {
+                _selectedItemPosition = page;
+              });
+            },
+            children: [
+              // ProfileWidget(),
+              Container(),
+              MainWidget(),
+              MyTurnScreen(),
+            ],
+          ),
         ),
       ),
     );

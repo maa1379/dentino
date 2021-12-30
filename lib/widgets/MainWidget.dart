@@ -7,8 +7,6 @@ import 'package:dentino/models/CategoryModel.dart';
 import 'package:dentino/screen/ClinicListScreen.dart';
 import 'package:dentino/screen/CommonCourseScreen.dart';
 import 'package:dentino/screen/DirectoryScreen.dart';
-import 'package:dentino/screen/InsuranceCompaniesScreen.dart';
-import 'package:dentino/screen/OrganizationScreen.dart';
 import 'package:dentino/screen/PrescriptionsScreen.dart';
 import 'package:dentino/screen/ServicesScreen.dart';
 import 'package:dentino/screen/ShopScreen.dart';
@@ -46,7 +44,7 @@ class _MainWidgetState extends State<MainWidget> {
     CategoryModel(
       id: 2,
       image: "assets/images/wallet.png",
-      title: "کیف پول",
+      title: "باشگاه مشتریان",
       func: WalletScreen(),
     ),
     CategoryModel(

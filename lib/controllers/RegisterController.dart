@@ -22,6 +22,7 @@ class RegisterController extends GetxController {
   register({String mobile}) async {
     RequestHelper.register(mobile: mobile).then(
       (value) {
+          EasyLoading.dismiss();
         if (!value.isDone) {
           Get.snackbar("", "ارسال کد با موفقیت انجام شد",
               icon: Icon(Icons.error, color: Colors.green),
@@ -44,10 +45,17 @@ class RegisterController extends GetxController {
       },
     );
   }
+
+  @override
+  void dispose() {
+    mobileController.dispose();
+    super.dispose();
+  }
 }
 
 class VerifyController extends GetxController {
   TextEditingController textEditingController = TextEditingController();
+
 
   final RoundedLoadingButtonController btnController2 =
       RoundedLoadingButtonController();
@@ -62,12 +70,14 @@ class VerifyController extends GetxController {
   @override
   void dispose() {
     timer.cancel();
+    textEditingController.dispose();
     super.dispose();
   }
 
   verifyCode({String code, mobile}) async {
     RequestHelper.verify(code: code, mobile: mobile).then(
       (value) {
+          EasyLoading.dismiss();
         if (value.statusCode == 201) {
           PrefHelper.setToken(value.data['access']);
           PrefHelper.setMobile(mobile);
@@ -90,15 +100,15 @@ class VerifyController extends GetxController {
     );
   }
 
-
   getDate() async {
     await Get.put(SliderController()).getSlider();
     startTimer();
   }
 
   getProfile() async {
-    RequestHelper.getProfile(token: await PrefHelper.getToken()).then((value)async {
-      if (value.isDone){
+    RequestHelper.getProfile(token: await PrefHelper.getToken())
+        .then((value) async {
+      if (value.isDone) {
         getProfileBlocInstance.getProfile(GetProfileModel.fromJson(value.data));
         getDate();
         await Get.put(HomeScreen());

@@ -3,11 +3,11 @@ import 'package:dentino/controllers/ProfileController.dart';
 import 'package:dentino/controllers/RegisterController.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-
 
 class PinCodeScreen extends StatelessWidget {
   String mobile;
@@ -23,10 +23,20 @@ class PinCodeScreen extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
-      body: Container(
-        height: Get.height,
-        width: Get.width,
-        child: _buildBody(),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+                child: Padding(
+                  padding: MediaQuery.of(Get.context).viewInsets,
+                  child: Column(
+              children: [
+                  _buildBody(),
+              ],
+            ),
+                )),
+          ),
+        ],
       ),
     );
   }
@@ -113,6 +123,30 @@ class PinCodeScreen extends StatelessWidget {
             },
             onChanged: (value) {
               print(value);
+              if(value.length == 4){
+                if (formKey.currentState.validate()) {
+                  print(mobile);
+                  verifyController.verifyCode(
+                      code: verifyController.textEditingController.text,
+                      mobile: mobile);
+                  verifyController.btnController2.reset();
+                } else {
+                  verifyController.btnController2.error();
+                  Get.snackbar("", "ورود با خطا مواجه شد",
+                      icon: Icon(Icons.error, color: Colors.red),
+                      snackPosition: SnackPosition.TOP,
+                      colorText: Colors.black,
+                      borderWidth: 0.5,
+                      backgroundColor: Colors.red.shade50,
+                      borderColor: Colors.red,
+                      borderRadius: 15);
+                }
+                formKey.currentState.save();
+                EasyLoading.show(
+                  indicator: CircularProgressIndicator(),
+                  dismissOnTap: true,
+                );
+              }
             },
             validator: (value) {
               if (value.isEmpty) {
@@ -151,7 +185,8 @@ class PinCodeScreen extends StatelessWidget {
             if (formKey.currentState.validate()) {
               print(mobile);
               verifyController.verifyCode(
-                  code: verifyController.textEditingController.text , mobile: mobile);
+                  code: verifyController.textEditingController.text,
+                  mobile: mobile);
               verifyController.btnController2.reset();
             } else {
               verifyController.btnController2.error();
@@ -171,7 +206,7 @@ class PinCodeScreen extends StatelessWidget {
 
   _buildTimer() {
     return Obx(
-          () => Container(
+      () => Container(
         height: Get.height * .1,
         width: Get.width,
         padding: EdgeInsets.symmetric(horizontal: Get.width * .25),
@@ -193,26 +228,26 @@ class PinCodeScreen extends StatelessWidget {
             ),
             (verifyController.start.value == 0)
                 ? GestureDetector(
-              onTap: () {
+                    onTap: () {
 // ViewHelper.showSuccessDialog(
 //     Get.context, "کد جدید با موفقیت ارسال شد");
-              },
-              child: GestureDetector(
-                onTap: (){
-                  RegisterController().register(mobile: mobile);
-                },
-                child: AutoSizeText(
-                  "ارسال مجدد",
-                  maxFontSize: 20,
-                  minFontSize: 8,
-                  maxLines: 1,
-                  style: TextStyle(
-                    color: Colors.purple,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-            )
+                    },
+                    child: GestureDetector(
+                      onTap: () {
+                        RegisterController().register(mobile: mobile);
+                      },
+                      child: AutoSizeText(
+                        "ارسال مجدد",
+                        maxFontSize: 20,
+                        minFontSize: 8,
+                        maxLines: 1,
+                        style: TextStyle(
+                          color: Colors.purple,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  )
                 : Text(""),
           ],
         ),
@@ -220,4 +255,3 @@ class PinCodeScreen extends StatelessWidget {
     );
   }
 }
-
