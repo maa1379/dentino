@@ -586,7 +586,7 @@ class BasketController extends GetxController {
                         padding: EdgeInsets.all(Get.width * .02),
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(15),
-                            child: Image.network(url + item.productImage))),
+                            child: Image.network(item.productImage))),
                   ),
                   SizedBox(
                     width: Get.width * .02,
