@@ -46,6 +46,7 @@ enum WebControllers {
   reserve_delete,
   dict_category,
   doctordictionarylist,
+  order_list,
 }
 // enum WebMethods {
 //
@@ -669,18 +670,24 @@ class RequestHelper {
     );
   }
 
-  static Future<ApiResult> DoctorDirectoryList({String cat_id}) async {
-    return await RequestHelper._makeRequest(
-      webController: WebControllers.doctordictionarylist,
-      body: {
-        "category_id": cat_id
-      }
+  static Future<ApiResult> orderList({String token}) async {
+    return await RequestHelper._makeRequestGet(
+      webController: WebControllers.order_list,
+        header: {
+          'Authorization': 'Bearer $token',
+        }
     ).timeout(
       Duration(seconds: 180),
     );
   }
 
-
+  static Future<ApiResult> DoctorDirectoryList({String cat_id}) async {
+    return await RequestHelper._makeRequest(
+        webController: WebControllers.doctordictionarylist,
+        body: {"category_id": cat_id}).timeout(
+      Duration(seconds: 180),
+    );
+  }
 }
 
 class ApiResult {

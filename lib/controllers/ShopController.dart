@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
 import 'package:dentino/helpers/RequestHelper.dart';
@@ -12,8 +11,11 @@ import 'package:dentino/models/GetCategoryShop.dart';
 import 'package:dentino/models/GetDetailProductModel.dart';
 import 'package:dentino/models/GetProductModel.dart';
 import 'package:dentino/models/OrderIDModel.dart';
+import 'package:dentino/models/OrderListModel.dart';
 import 'package:dentino/screen/IntroScreen.dart';
+import 'package:dentino/screen/OrderListScreen.dart';
 import 'package:dentino/screen/ProfileScreen.dart';
+import 'package:dentino/widgets/OrderListWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -659,7 +661,12 @@ class OrderCreateController extends GetxController {
       String code,
       String email}) async {
     RequestHelper.orderCreate(
-            token: await PrefHelper.getToken(), address: address,name: name,family: family,email: email,code: code)
+            token: await PrefHelper.getToken(),
+            address: address,
+            name: name,
+            family: family,
+            email: email,
+            code: code)
         .then((value) {
       if (value.isDone) {
         orderIdModel = OrderIdModel.fromJson(value.data);
@@ -683,6 +690,69 @@ class OrderCreateController extends GetxController {
     });
   }
 
+  ToBank2Api({String order_id}) async {
+    RequestHelper.ToBank(token: await PrefHelper.getToken(), order_id: order_id)
+        .then((value) {
+      if (value.isDone) {
+        _launchURL(value.data);
+      }
+    });
+  }
+}
 
+class checkOut extends GetxController {
+  StreamSubscription _sub;
 
+  Future<void> initUniLinks() async {
+    _sub = uriLinkStream.listen((Uri uri) {
+      print(jsonDecode(uri.queryParameters['status'].toString()));
+      final myMap = jsonDecode(uri.queryParameters['status'].toString());
+      if (myMap == 100 || myMap == "100") {
+        Get.find<BasketController>().GetCartList();
+        Get.find<OrderListController>().OrderListData();
+        Get.to(OrderListWidget());
+        ViewHelper.showSuccessDialog(
+            Get.context, "پرداخت موفق بود، سفارش شما با موفقیت پرداخت شد");
+      } else {
+        Get.to(OrderListWidget());
+        print("no ok");
+        ViewHelper.showErrorDialog(Get.context, "پرداخت موفق نبود");
+      }
+    }, onError: (err) {
+      print(err);
+    });
+  }
+
+  @override
+  void onInit() {
+    initUniLinks();
+    super.onInit();
+  }
+
+}
+
+class OrderListController extends GetxController {
+  RxBool loading = false.obs;
+  RxList<OrderListModel> order_list = <OrderListModel>[].obs;
+
+  OrderListData() async {
+    RequestHelper.orderList(token: await PrefHelper.getToken()).then(
+      (value) {
+        if (value.isDone) {
+          for (var i in value.data) {
+            order_list.add(OrderListModel.fromJson(i));
+          }
+          loading.value = true;
+        } else {
+          loading.value = false;
+          ViewHelper.showErrorDialog(Get.context, "ارتباط برقرار نشد");
+        }
+      },
+    );
+  }
+
+  @override
+  void onInit() {
+    OrderListData();
+  }
 }

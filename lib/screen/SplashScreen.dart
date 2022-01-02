@@ -26,70 +26,48 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   Size size;
 
-  // final slider = Get.put(SliderController());
-  //
-  // Retoken() async {
-  //   if (await PrefHelper.getToken() == null) {
-  //     Get.off(LoginScreen());
-  //   } else {
-  //     RequestHelper.Token(
-  //             password: "1234", username: await PrefHelper.getMobile())
-  //         .then((value) async {
-  //       if (value.statusCode == 200) {
-  //         PrefHelper.removeToken();
-  //         PrefHelper.setToken(value.data2['access']);
-  //         if (slider.loaded.value == true) {
-  //           startTimer();
-  //         }
-  //       } else {
-  //         Get.off(LoginScreen());
-  //       }
-  //     });
-  //   }
-  // }
+  final slider = Get.put(SliderController());
 
-  StreamSubscription _sub;
-
-  Future<void> initUniLinks() async {
-    _sub = uriLinkStream.listen((Uri uri) {
-      print(_sub);
-
-      final myMap = jsonDecode(uri.queryParameters['status']);
-      print(myMap.runtimeType);
-      if (myMap == "100") {
-        print("ok");
-        Get.to(ProfileScreen());
-        ViewHelper.showSuccessDialog(Get.context, "پرداخت موفق بود");
-      } else {
-        Get.to(IntroScreen());
-        print("no ok");
-        ViewHelper.showSuccessDialog(Get.context, "پرداخت موفق نبود");
-      }
-
-    }, onError: (err) {
-      print(err);
-    });
+  Retoken() async {
+    if (await PrefHelper.getToken() == null) {
+      Get.off(LoginScreen());
+    } else {
+      RequestHelper.Token(
+              password: "1234", username: await PrefHelper.getMobile())
+          .then((value) async {
+        if (value.statusCode == 200) {
+          PrefHelper.removeToken();
+          PrefHelper.setToken(value.data2['access']);
+          if (slider.loaded.value == true) {
+            startTimer();
+          }
+        } else {
+          Get.off(LoginScreen());
+        }
+      });
+    }
   }
+
+
 
   @override
   void initState() {
-    initUniLinks();
-    // getProfile();
+    getProfile();
     super.initState();
   }
 
-  // getProfile() async {
-  //   RequestHelper.getProfile(token: await PrefHelper.getToken())
-  //       .then((value) async {
-  //     if (value.isDone) {
-  //       getProfileBlocInstance.getProfile(GetProfileModel.fromJson(value.data));
-  //       Retoken();
-  //     } else {
-  //       Get.off(IntroScreen());
-  //       print("not ok");
-  //     }
-  //   });
-  // }
+  getProfile() async {
+    RequestHelper.getProfile(token: await PrefHelper.getToken())
+        .then((value) async {
+      if (value.isDone) {
+        getProfileBlocInstance.getProfile(GetProfileModel.fromJson(value.data));
+        Retoken();
+      } else {
+        Get.off(IntroScreen());
+        print("not ok");
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,12 +103,12 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  // void startTimer() async {
-  //   if (await PrefHelper.getToken() != null) {
-  //     NavHelper.pushR(context, HomeScreen());
-  //   } else {
-  //     NavHelper.pushR(context, IntroScreen());
-  //     // Get.off(IntroScreen());
-  //   }
-  // }
+  void startTimer() async {
+    if (await PrefHelper.getToken() != null) {
+      NavHelper.pushR(context, HomeScreen());
+    } else {
+      NavHelper.pushR(context, IntroScreen());
+      // Get.off(IntroScreen());
+    }
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:dentino/controllers/ShopController.dart';
 import 'package:dentino/helpers/AlertHelper.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
 import 'package:dentino/widgets/DrawerWidget.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:get/get.dart';
 import 'MyTurnScreen.dart';
+import 'OrderListScreen.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -14,6 +16,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  checkOut checkOutController = Get.put(checkOut());
   PageController pageController = PageController(initialPage: 1);
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   ShapeBorder bottomBarShape = const RoundedRectangleBorder(
@@ -35,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Color unselectedColor = Colors.blueGrey;
   Gradient unselectedGradient =
       const LinearGradient(colors: [Colors.red, Colors.blueGrey]);
+
 
   //
   // @override
@@ -120,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             children: [
               // ProfileWidget(),
-              Container(),
+              OrderListScreen(),
               MainWidget(),
               MyTurnScreen(),
             ],
