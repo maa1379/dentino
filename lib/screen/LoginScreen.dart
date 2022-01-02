@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
-
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -53,7 +52,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.black, fontSize: 18),
                       ),
-                      Lottie.asset("assets/anim/login.json", height: size.height * .4),
+                      Lottie.asset("assets/anim/login.json",
+                          height: size.height * .4),
                       _buildBody(),
                     ],
                   ),
@@ -143,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
       function: (value) {
         if (value == "") {
           return "!شماره موبایل خود را وارد کنید";
-        }else if(value == 11){
+        } else if (value == 11) {
           return "!شماره موبایل را درست وارد کنید";
         }
       },
@@ -151,10 +151,11 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
           WidgetHelper.onChange(value, registerController.mobileController);
         });
-        if(value.length == 11){
+        if (value.length == 11) {
           FocusScope.of(context).unfocus();
           if (_formKey.currentState.validate()) {
-            registerController.register(mobile: registerController.mobileController.text);
+            registerController.register(
+                mobile: registerController.mobileController.text);
             registerController.btnController1.reset();
           } else {
             registerController.btnController1.error();
@@ -204,7 +205,8 @@ class _LoginScreenState extends State<LoginScreen> {
         resetDuration: Duration(seconds: 2),
         onPressed: () {
           if (_formKey.currentState.validate()) {
-            registerController.register(mobile: registerController.mobileController.text);
+            registerController.register(
+                mobile: registerController.mobileController.text);
             registerController.btnController1.reset();
           } else {
             registerController.btnController1.error();
