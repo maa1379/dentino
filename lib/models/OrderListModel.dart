@@ -12,6 +12,7 @@ class OrderListModel {
     this.family,
     this.email,
     this.authority,
+    this.isSend,
     this.user,
   });
 
@@ -24,7 +25,8 @@ class OrderListModel {
   String name;
   String family;
   String email;
-  dynamic authority;
+  String authority;
+  bool isSend;
   int user;
 
   factory OrderListModel.fromJson(Map<String, dynamic> json) => OrderListModel(
@@ -38,6 +40,7 @@ class OrderListModel {
     family: json["family"],
     email: json["email"],
     authority: json["authority"],
+    isSend: json["is_send"],
     user: json["user"],
   );
 
@@ -52,6 +55,10 @@ class OrderListModel {
     "family": family,
     "email": email,
     "authority": authority,
+    "is_send": isSend,
     "user": user,
   };
 }
+
+
+

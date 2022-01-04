@@ -1,5 +1,11 @@
 
 
+
+
+
+
+
+
 class GetDetailProductModel {
   GetDetailProductModel({
     this.name,
@@ -14,13 +20,14 @@ class GetDetailProductModel {
     this.address,
     this.category,
     this.id,
+    this.discountPercent,
   });
 
   String name;
   String price;
   String image;
   String image2;
-  String image3;
+  dynamic image3;
   String image4;
   String description;
   DateTime created;
@@ -28,6 +35,7 @@ class GetDetailProductModel {
   String address;
   int category;
   int id;
+  int discountPercent;
 
   factory GetDetailProductModel.fromJson(Map<String, dynamic> json) => GetDetailProductModel(
     name: json["name"],
@@ -42,6 +50,7 @@ class GetDetailProductModel {
     address: json["address"],
     category: json["category"],
     id: json["id"],
+    discountPercent: json["discount_percent"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -57,5 +66,6 @@ class GetDetailProductModel {
     "address": address,
     "category": category,
     "id": id,
+    "discount_percent": discountPercent,
   };
 }

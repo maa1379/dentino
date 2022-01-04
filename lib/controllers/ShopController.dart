@@ -60,7 +60,6 @@ class ProductController extends GetxController {
       if (value.isDone) {
         for (var i in value.data) {
           productList.add(GetProductModel.fromJson(i));
-          print("category");
           loading.value = true;
         }
       } else {
@@ -101,15 +100,18 @@ class DetailProductController extends GetxController {
 
   AddToCartProduct({String quantity}) async {
     RequestHelper.AddToCart(
-            quantity: quantity,
-            product_id: Get.arguments['productItem_id'],
-            token: await PrefHelper.getToken())
+        quantity: quantity,
+        product_id: Get.arguments['productItem_id'],
+        token: await PrefHelper.getToken())
         .then((value) {
       if (value.isDone) {
         EasyLoading.dismiss();
         ViewHelper.showSuccessDialog(
             Get.context, "محصول با موفقیت به سبد خرید اضافه شد");
-        Get.find<BasketController>().CartList.clear();
+        Get
+            .find<BasketController>()
+            .CartList
+            .clear();
         Get.find<BasketController>().GetCartList();
       } else {
         ViewHelper.showErrorDialog(Get.context, "ارتباط برقرار نشد");
@@ -136,12 +138,13 @@ class BasketController extends GetxController {
   TextEditingController emailController = TextEditingController();
 
   final RoundedLoadingButtonController btnController2 =
-      RoundedLoadingButtonController();
+  RoundedLoadingButtonController();
 
   GetCartList() async {
     RequestHelper.GetCartList(token: await PrefHelper.getToken()).then(
-      (value) {
+          (value) {
         if (value.isDone || value.statusCode == 200) {
+          CartList.clear();
           for (var i in value.data['items']) {
             CartList.add(ItemList.fromJson(i));
           }
@@ -154,7 +157,7 @@ class BasketController extends GetxController {
 
   ClearITemCart({String row_id}) async {
     RequestHelper.ClearITemCart(
-            token: await PrefHelper.getToken(), row_id: row_id)
+        token: await PrefHelper.getToken(), row_id: row_id)
         .then((value) {
       if (value.isDone) {
         isRemove.value = true;
@@ -174,75 +177,77 @@ class BasketController extends GetxController {
       elevation: 0,
       enableDrag: false,
       isDismissible: true,
-      builder: (context) => Container(
-        height: Get.height * .8,
-        margin: EdgeInsets.all(Get.width * .02),
-        width: Get.width,
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(25)),
-        child: Stack(
-          children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: EdgeInsets.only(top: Get.height * .005),
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: Icon(Icons.close),
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: EdgeInsets.only(top: Get.height * .02),
-                child: AutoSizeText(
-                  "سبد خرید شما",
-                  maxFontSize: 24,
-                  minFontSize: 6,
-                  maxLines: 1,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: ColorsHelper.mainColor,
-                    fontSize: 18,
+      builder: (context) =>
+          Container(
+            height: Get.height * .8,
+            margin: EdgeInsets.all(Get.width * .02),
+            width: Get.width,
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(25)),
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: Get.height * .005),
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: Icon(Icons.close),
+                      color: Colors.black,
+                    ),
                   ),
                 ),
-              ),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: Get.height * .02),
+                    child: AutoSizeText(
+                      "سبد خرید شما",
+                      maxFontSize: 24,
+                      minFontSize: 6,
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: ColorsHelper.mainColor,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    height: Get.height * .75,
+                    width: Get.width,
+                    padding: EdgeInsets.symmetric(
+                        horizontal: Get.width * .04,
+                        vertical: Get.height * .02),
+                    child: Obx(() {
+                      if (CartList.length == 0) {
+                        return Center(child: Text("سبد خرید شما خالی می باشد"));
+                      } else {
+                        return AnimationLimiter(
+                          child: ListView.builder(
+                              itemCount: CartList.length,
+                              physics: BouncingScrollPhysics(),
+                              itemBuilder: buildCartListItem),
+                        );
+                      }
+                    }),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: Get.height * .02),
+                    child: (CartList.length == 0) ? Container() : _submitBtn(),
+                  ),
+                ),
+              ],
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                height: Get.height * .75,
-                width: Get.width,
-                padding: EdgeInsets.symmetric(
-                    horizontal: Get.width * .04, vertical: Get.height * .02),
-                child: Obx(() {
-                  if (CartList.length == 0) {
-                    return Center(child: Text("سبد خرید شما خالی می باشد"));
-                  } else {
-                    return AnimationLimiter(
-                      child: ListView.builder(
-                          itemCount: CartList.length,
-                          physics: BouncingScrollPhysics(),
-                          itemBuilder: buildCartListItem),
-                    );
-                  }
-                }),
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: EdgeInsets.only(bottom: Get.height * .02),
-                child: (CartList.length == 0) ? Container() : _submitBtn(),
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
     );
   }
 
@@ -279,75 +284,79 @@ class BasketController extends GetxController {
       elevation: 0,
       enableDrag: false,
       isDismissible: true,
-      builder: (context) => Padding(
-        padding: MediaQuery.of(context).viewInsets,
-        child: Container(
-          height: Get.height * .8,
-          margin: EdgeInsets.all(Get.width * .02),
-          width: Get.width,
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(25)),
-          child: Stack(
-            children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: Padding(
-                  padding: EdgeInsets.only(top: Get.height * .005),
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: Icon(Icons.close),
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.topCenter,
-                child: Padding(
-                  padding: EdgeInsets.only(top: Get.height * .02),
-                  child: AutoSizeText(
-                    "تکمیل سفارش",
-                    maxFontSize: 24,
-                    minFontSize: 6,
-                    maxLines: 1,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: ColorsHelper.mainColor,
-                      fontSize: 18,
+      builder: (context) =>
+          Padding(
+            padding: MediaQuery
+                .of(context)
+                .viewInsets,
+            child: Container(
+              height: Get.height * .8,
+              margin: EdgeInsets.all(Get.width * .02),
+              width: Get.width,
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(25)),
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: Get.height * .005),
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: Icon(Icons.close),
+                        color: Colors.black,
+                      ),
                     ),
                   ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  height: Get.height * .65,
-                  width: Get.width,
-                  padding: EdgeInsets.symmetric(
-                      horizontal: Get.width * .04, vertical: Get.height * .02),
-                  child: Column(
-                    children: [
-                      _buildNameField(),
-                      _buildLNameField(),
-                      _buildPostCodeField(),
-                      _buildEmailField(),
-                      _messageTextField(),
-                    ],
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: Get.height * .02),
+                      child: AutoSizeText(
+                        "تکمیل سفارش",
+                        maxFontSize: 24,
+                        minFontSize: 6,
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: ColorsHelper.mainColor,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      height: Get.height * .65,
+                      width: Get.width,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: Get.width * .04,
+                          vertical: Get.height * .02),
+                      child: Column(
+                        children: [
+                          _buildNameField(),
+                          _buildLNameField(),
+                          _buildPostCodeField(),
+                          _buildEmailField(),
+                          _messageTextField(),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: Get.height * .02),
+                      child: _ToBankBtn(),
+                    ),
+                  ),
+                ],
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: Get.height * .02),
-                  child: _ToBankBtn(),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
     );
   }
 
@@ -511,11 +520,11 @@ class BasketController extends GetxController {
               enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                   borderSide:
-                      BorderSide(color: ColorsHelper.mainColor, width: 3)),
+                  BorderSide(color: ColorsHelper.mainColor, width: 3)),
               disabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                   borderSide:
-                      BorderSide(color: ColorsHelper.mainColor, width: 3)),
+                  BorderSide(color: ColorsHelper.mainColor, width: 3)),
               errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                   borderSide: BorderSide(color: Colors.red, width: 3)),
@@ -526,11 +535,11 @@ class BasketController extends GetxController {
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                   borderSide:
-                      BorderSide(color: ColorsHelper.mainColor, width: 3)),
+                  BorderSide(color: ColorsHelper.mainColor, width: 3)),
               // labelText: text,
               hintText: "آدرس خود را وارد کنید",
               contentPadding:
-                  EdgeInsets.only(top: Get.width * .01, right: Get.width * .05),
+              EdgeInsets.only(top: Get.width * .01, right: Get.width * .05),
               counter: Offstage(),
               filled: true,
               hintStyle: TextStyle(
@@ -654,19 +663,18 @@ class OrderCreateController extends GetxController {
     // initUniLinks();
   }
 
-  OrderCreateData(
-      {String address,
-      String name,
-      String family,
-      String code,
-      String email}) async {
+  OrderCreateData({String address,
+    String name,
+    String family,
+    String code,
+    String email}) async {
     RequestHelper.orderCreate(
-            token: await PrefHelper.getToken(),
-            address: address,
-            name: name,
-            family: family,
-            email: email,
-            code: code)
+        token: await PrefHelper.getToken(),
+        address: address,
+        name: name,
+        family: family,
+        email: email,
+        code: code)
         .then((value) {
       if (value.isDone) {
         orderIdModel = OrderIdModel.fromJson(value.data);
@@ -681,8 +689,8 @@ class OrderCreateController extends GetxController {
 
   ToBankApi() async {
     RequestHelper.ToBank(
-            token: await PrefHelper.getToken(),
-            order_id: orderIdModel.orderId.toString())
+        token: await PrefHelper.getToken(),
+        order_id: orderIdModel.orderId.toString())
         .then((value) {
       if (value.isDone) {
         _launchURL(value.data);
@@ -728,7 +736,6 @@ class checkOut extends GetxController {
     initUniLinks();
     super.onInit();
   }
-
 }
 
 class OrderListController extends GetxController {
@@ -737,8 +744,9 @@ class OrderListController extends GetxController {
 
   OrderListData() async {
     RequestHelper.orderList(token: await PrefHelper.getToken()).then(
-      (value) {
+          (value) {
         if (value.isDone) {
+          order_list.clear();
           for (var i in value.data) {
             order_list.add(OrderListModel.fromJson(i));
           }

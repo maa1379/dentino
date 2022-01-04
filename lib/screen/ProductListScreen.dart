@@ -96,8 +96,7 @@ class ProductListScreen extends StatelessWidget {
         child: GridView.builder(
             itemCount: productController.productList.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-            ),
+                crossAxisCount: 2, mainAxisExtent: 220),
             padding: EdgeInsets.only(top: Get.height * .01),
             physics: BouncingScrollPhysics(),
             itemBuilder: itemBuilder),
@@ -114,7 +113,7 @@ class ProductListScreen extends StatelessWidget {
       child: ScaleAnimation(
         child: FadeInAnimation(
           child: Container(
-            height: Get.height * .15,
+            height: Get.height * .2,
             width: Get.width,
             padding: EdgeInsets.all(Get.width * .02),
             margin: EdgeInsets.symmetric(
@@ -130,81 +129,125 @@ class ProductListScreen extends StatelessWidget {
                 ),
               ],
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Stack(
               children: [
-                Container(
-                  height: Get.height * .08,
-                  width: Get.width * .22,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(item.image),
-                      // fit: BoxFit.cover
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        height: Get.height * .08,
+                        width: Get.width * .22,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(item.image),
+                            // fit: BoxFit.cover
+                          ),
+                          color: Colors.white,
+                          shape: BoxShape.rectangle,
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black26,
+                                spreadRadius: 2,
+                                blurRadius: 5),
+                          ],
+                        ),
+                      ),
                     ),
-                    color: Colors.white,
-                    shape: BoxShape.rectangle,
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black26,
-                          spreadRadius: 2,
-                          blurRadius: 5),
-                    ],
-                  ),
+                    AutoSizeText(
+                      item.name,
+                      maxFontSize: 24,
+                      minFontSize: 6,
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 14,
+                      ),
+                    ),
+                    AutoSizeText(
+                      "قیمت: ${ViewHelper.moneyFormat(double.parse(item.price))}",
+                      maxFontSize: 24,
+                      minFontSize: 6,
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        decoration: TextDecoration.lineThrough,
+                        color: Colors.red,
+                        fontSize: 12,
+                      ),
+                    ),
+                    AutoSizeText(
+                      "قیمت: ${ViewHelper.moneyFormat(double.parse(item.sell))}",
+                      maxFontSize: 24,
+                      minFontSize: 6,
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 12,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(() => ProductDetailScreen(),
+                            arguments: {"productItem_id": item.id.toString()});
+                      },
+                      child: Container(
+                        height: Get.height * .04,
+                        width: Get.width * .4,
+                        decoration: BoxDecoration(
+                          color: ColorsHelper.mainColor,
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black26,
+                                spreadRadius: 2,
+                                blurRadius: 5),
+                          ],
+                        ),
+                        child: Center(
+                          child: AutoSizeText(
+                            "جزئیات محصول",
+                            maxFontSize: 24,
+                            minFontSize: 6,
+                            maxLines: 1,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                AutoSizeText(
-                  item.name,
-                  maxFontSize: 24,
-                  minFontSize: 6,
-                  maxLines: 1,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black87,
-                    fontSize: 14,
-                  ),
-                ),
-                AutoSizeText(
-                  "قیمت: ${ViewHelper.moneyFormat(double.parse(item.price))}",
-                  maxFontSize: 24,
-                  minFontSize: 6,
-                  maxLines: 1,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black87,
-                    fontSize: 12,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Get.to(() => ProductDetailScreen(),
-                        arguments: {"productItem_id": item.id.toString()});
-                  },
+                Align(
+                  alignment: Alignment.topRight,
                   child: Container(
-                    height: Get.height * .04,
-                    width: Get.width * .4,
-                    decoration: BoxDecoration(
-                      color: ColorsHelper.mainColor,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black26,
-                            spreadRadius: 2,
-                            blurRadius: 5),
-                      ],
-                    ),
+                    margin: EdgeInsets.only(right: Get.width * .023),
+                    height: Get.height * .08,
+                    width: Get.width * .08,
                     child: Center(
                       child: AutoSizeText(
-                        "جزئیات محصول",
+                        "%" + item.discountPercent.toString(),
                         maxFontSize: 24,
                         minFontSize: 6,
                         maxLines: 1,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 12,
+                          fontSize: 14,
                         ),
                       ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
                     ),
                   ),
                 ),
@@ -215,6 +258,4 @@ class ProductListScreen extends StatelessWidget {
       ),
     );
   }
-
-
 }

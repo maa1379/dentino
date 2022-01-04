@@ -128,7 +128,15 @@ class OrderListScreen extends StatelessWidget {
                   ),
                   child: Center(
                     child: AutoSizeText(
-                      (item.paid == true) ? "درحال ارسال" : "پرداخت",
+                      (item.paid == true && item.isSend == false)
+                          ? "درحال آماده سازیم سفارش"
+                          : (item.paid == false && item.isSend == false)
+                              ? "پرداخت"
+                              : (item.isSend == true)
+                                  ? "ارسال شده"
+                                  : (item.isSend == false)
+                                      ? "درحال آماده سازی"
+                                      : "پرداخت",
                       maxFontSize: 24,
                       minFontSize: 6,
                       maxLines: 1,

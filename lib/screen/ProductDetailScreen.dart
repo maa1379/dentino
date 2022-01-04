@@ -217,6 +217,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       //  fit: FlexFit.loose,
       constraints: BoxConstraints(
         maxHeight: Get.height,
+        minWidth: Get.width,
         minHeight: Get.height * .15,
         maxWidth: Get.width,
       ),
@@ -248,7 +249,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   _buildPrice() {
     return Container(
-      height: Get.height * .08,
+      height: Get.height * .12,
       width: Get.width,
       margin: EdgeInsets.symmetric(horizontal: Get.width * .05),
       padding: EdgeInsets.all(Get.width * .05),
@@ -262,17 +263,36 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          AutoSizeText(
-            detailProductController.getDetailProductItem.price,
-            maxFontSize: 24,
-            minFontSize: 6,
-            textDirection: TextDirection.rtl,
-            maxLines: null,
-            textAlign: TextAlign.justify,
-            style: TextStyle(
-              color: Colors.red,
-              fontSize: 18,
-            ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              AutoSizeText(
+                detailProductController.getDetailProductItem.price,
+                maxFontSize: 24,
+                minFontSize: 6,
+                textDirection: TextDirection.rtl,
+                maxLines: null,
+                textAlign: TextAlign.justify,
+                style: TextStyle(
+                  decoration: TextDecoration.lineThrough,
+                  color: Colors.red,
+                  fontSize: 18,
+                ),
+              ),
+              AutoSizeText(
+                "11100",
+                maxFontSize: 24,
+                minFontSize: 6,
+                textDirection: TextDirection.rtl,
+                maxLines: null,
+                textAlign: TextAlign.justify,
+                style: TextStyle(
+                  decoration: TextDecoration.lineThrough,
+                  color: Colors.blue,
+                  fontSize: 20,
+                ),
+              ),
+            ],
           ),
           AutoSizeText(
             "قیمت:",
@@ -366,10 +386,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         if (quantity == 0) {
           ViewHelper.showErrorDialog(context, "لطفا تعداد محصول را وارد کنید");
         } else {
-          EasyLoading.show(indicator: CircularProgressIndicator(),dismissOnTap: false);
+          EasyLoading.show(
+              indicator: CircularProgressIndicator(), dismissOnTap: false);
           detailProductController.AddToCartProduct(
               quantity: quantity.toString());
-
         }
       },
       child: Container(
