@@ -9,17 +9,14 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class LocationScreen extends StatelessWidget {
-
   String expertise_id;
-
 
   LocationScreen({this.expertise_id});
 
   CityController cityController = Get.put(CityController());
 
   final RoundedLoadingButtonController _btnController1 =
-  RoundedLoadingButtonController();
-
+      RoundedLoadingButtonController();
 
   @override
   Widget build(BuildContext context) {
@@ -187,7 +184,7 @@ class LocationScreen extends StatelessWidget {
               () => DropdownButton(
                 hint: Center(
                   child: cityController.dropDownValue4.value == null
-                      ? Text('انتخاب کنید')
+                      ? Text('')
                       : Center(
                           child: Text(
                             cityController.dropDownValue4.value,
@@ -291,7 +288,6 @@ class LocationScreen extends StatelessWidget {
     );
   }
 
-
   submitBtn() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: Get.width * .05),
@@ -301,7 +297,7 @@ class LocationScreen extends StatelessWidget {
         successColor: Color(0xff077F7F),
         color: Colors.blue,
         child: AutoSizeText(
-          "ثبت نوبت",
+          "ادامه",
           maxLines: 1,
           maxFontSize: 22,
           minFontSize: 10,
@@ -311,11 +307,21 @@ class LocationScreen extends StatelessWidget {
         controller: _btnController1,
         animateOnTap: true,
         onPressed: () {
-          Get.to(()=>ReserveScreen(),arguments: {"expertise_id2":expertise_id,"zone_id":(cityController.dropDownValue5.value == "انتخاب کنید")?"":cityController.dropDownValue5.value.toString()});
+          Get.to(
+            () => ReserveScreen(),
+            arguments: {
+              "expertise_id2": expertise_id,
+              "city_id_dropdown": (cityController.dropDownValue4.value == "انتخاب کنید")
+                  ? ""
+                  : cityController.dropDownValue4.value.toString(),
+              "zone_id": (cityController.dropDownValue5.value == "انتخاب کنید")
+                  ? ""
+                  : cityController.dropDownValue5.value.toString(),
+            },
+          );
           _btnController1.reset();
         },
       ),
     );
   }
-
 }

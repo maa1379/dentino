@@ -2,6 +2,7 @@ import 'package:dentino/helpers/RequestHelper.dart';
 import 'package:dentino/helpers/ViewHelpers.dart';
 import 'package:dentino/helpers/prefHelper.dart';
 import 'package:dentino/models/ContactUsModel.dart';
+import 'package:dentino/models/DiscontListModel.dart';
 import 'package:dentino/models/DoctorProfileModel.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -153,5 +154,32 @@ class ComplimentCreate extends GetxController {
         ViewHelper.showErrorDialog(Get.context, "ارتباط برقرار نشد");
       }
     });
+  }
+}
+
+class DiscountController extends GetxController {
+  RxList<DiscountListModel> DiscountList = <DiscountListModel>[].obs;
+  RxBool loading = false.obs;
+
+  DiscountListApi() async {
+    RequestHelper.DiscountListApi().then(
+      (value) {
+        if (value.isDone) {
+          for (var i in value.data) {
+            DiscountList.add(DiscountListModel.fromJson(i));
+          }
+          loading.value = true;
+        } else {
+          loading.value = false;
+          ViewHelper.showErrorDialog(Get.context, "ارتباط برقرار نشد");
+        }
+      },
+    );
+  }
+
+  @override
+  void onInit() {
+    DiscountListApi();
+    super.onInit();
   }
 }

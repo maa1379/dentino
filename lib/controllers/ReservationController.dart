@@ -99,18 +99,19 @@ class DoctorController extends GetxController {
 
   doctorFilter() async {
     RequestHelper.doctorFilter(
-      expertise_id: Get.arguments["expertise_id2"].toString(),
-      clinic: (dropDownValue2.value == "انتخاب کنید")
-          ? ""
-          : dropDownValue2.value.toString(),
-      insurance: (dropDownValue1.value == "انتخاب کنید")
-          ? ""
-          : dropDownValue1.value.toString(),
-      zone: Get.arguments["zone_id"],
-      clinic_type: (dropDownValue6.value == "انتخاب کنید")
-          ? ""
-          : dropDownValue6.value.toString(),
-    ).then(
+            expertise_id: Get.arguments["expertise_id2"].toString(),
+            clinic: (dropDownValue2.value == "انتخاب کنید")
+                ? ""
+                : dropDownValue2.value.toString(),
+            insurance: (dropDownValue1.value == "انتخاب کنید")
+                ? ""
+                : dropDownValue1.value.toString(),
+            zone: Get.arguments["zone_id"],
+            clinic_type: (dropDownValue6.value == "انتخاب کنید")
+                ? ""
+                : dropDownValue6.value.toString(),
+            city: Get.arguments["city_id_dropdown"])
+        .then(
       (value) {
         if (value.isDone == true || value.statusCode == 201) {
           for (var list in value.data) {

@@ -5,8 +5,10 @@ import 'package:dentino/helpers/ColorHelpers.dart';
 import 'package:dentino/helpers/ViewHelpers.dart';
 import 'package:dentino/models/CategoryModel.dart';
 import 'package:dentino/screen/ClinicListScreen.dart';
+import 'package:dentino/screen/ClubScreen.dart';
 import 'package:dentino/screen/CommonCourseScreen.dart';
 import 'package:dentino/screen/DirectoryScreen.dart';
+import 'package:dentino/screen/DiscountScreen.dart';
 import 'package:dentino/screen/PrescriptionsScreen.dart';
 import 'package:dentino/screen/ServicesScreen.dart';
 import 'package:dentino/screen/ShopScreen.dart';
@@ -45,7 +47,7 @@ class _MainWidgetState extends State<MainWidget> {
       id: 2,
       image: "assets/images/wallet.png",
       title: "باشگاه مشتریان",
-      func: WalletScreen(),
+      func: ClubScreen(),
     ),
     CategoryModel(
       id: 3,
@@ -83,7 +85,7 @@ class _MainWidgetState extends State<MainWidget> {
       id: 9,
       image: "assets/images/gift.png",
       title: "تخفیفات مراکز",
-      // func: InsuranceCompaniesScreen(),
+      func: DiscountScreen(),
     ),
   ];
 

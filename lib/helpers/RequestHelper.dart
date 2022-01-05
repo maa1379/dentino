@@ -47,6 +47,7 @@ enum WebControllers {
   dict_category,
   doctordictionarylist,
   order_list,
+  discount,
 }
 // enum WebMethods {
 //
@@ -397,6 +398,8 @@ class RequestHelper {
       String insurance,
       String expertise_id,
       String clinic_type,
+      String province,
+      String city,
       String zone}) async {
     return await RequestHelper._makeRequest(
       webController: WebControllers.doctor_filter,
@@ -405,7 +408,8 @@ class RequestHelper {
         "insurance": insurance,
         "expertise_id": expertise_id,
         "zone": zone,
-        "clinic_type": clinic_type
+        "clinic_type": clinic_type,
+        "city": city,
       },
     ).timeout(
       Duration(seconds: 180),
@@ -672,11 +676,10 @@ class RequestHelper {
 
   static Future<ApiResult> orderList({String token}) async {
     return await RequestHelper._makeRequestGet(
-      webController: WebControllers.order_list,
+        webController: WebControllers.order_list,
         header: {
           'Authorization': 'Bearer $token',
-        }
-    ).timeout(
+        }).timeout(
       Duration(seconds: 180),
     );
   }
@@ -685,6 +688,14 @@ class RequestHelper {
     return await RequestHelper._makeRequest(
         webController: WebControllers.doctordictionarylist,
         body: {"category_id": cat_id}).timeout(
+      Duration(seconds: 180),
+    );
+  }
+
+  static Future<ApiResult> DiscountListApi() async {
+    return await RequestHelper._makeRequestGet(
+      webController: WebControllers.discount,
+    ).timeout(
       Duration(seconds: 180),
     );
   }
