@@ -55,44 +55,44 @@ class DirectoryScreen extends StatelessWidget {
 
   Widget itemBuilder(BuildContext context, int index) {
     var item = directoryController.CategoryList[index];
-    return Container(
-      height: Get.height * .1,
-      width: Get.width,
-      margin: EdgeInsets.symmetric(
-          horizontal: Get.width * .05, vertical: Get.height * .015),
-      padding: EdgeInsets.symmetric(horizontal: Get.width * .05),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(color: Colors.black12, blurRadius: 5, spreadRadius: 2),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          AutoSizeText(
-            item.name,
-            maxFontSize: 24,
-            minFontSize: 6,
-            maxLines: 1,
-            style: TextStyle(
-              color: ColorsHelper.mainColor,
-              fontSize: 18,
+    return GestureDetector(
+      onTap: () {
+        Get.to(() => DoctorDirectoryScreen(),
+            arguments: {"cat_id": item.id.toString()});
+      },
+      child: Container(
+        height: Get.height * .1,
+        width: Get.width,
+        margin: EdgeInsets.symmetric(
+            horizontal: Get.width * .05, vertical: Get.height * .015),
+        padding: EdgeInsets.symmetric(horizontal: Get.width * .05),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(color: Colors.black12, blurRadius: 5, spreadRadius: 2),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            AutoSizeText(
+              item.name,
+              maxFontSize: 24,
+              minFontSize: 6,
+              maxLines: 1,
+              style: TextStyle(
+                color: ColorsHelper.mainColor,
+                fontSize: 18,
+              ),
             ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Get.to(() => DoctorDirectoryScreen(),
-                  arguments: {"cat_id": item.id.toString()});
-            },
-            child: Icon(
+            Icon(
               Icons.arrow_forward_ios,
               size: Get.width * .04,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -1,13 +1,34 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dentino/controllers/DirectoryController.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
+import 'package:dentino/helpers/widgetHelper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class DoctorDirectoryScreen extends StatelessWidget {
+class DoctorDirectoryScreen extends StatefulWidget {
+  @override
+  State<DoctorDirectoryScreen> createState() => _DoctorDirectoryScreenState();
+}
 
+class _DoctorDirectoryScreenState extends State<DoctorDirectoryScreen> {
   DoctorDirectoryController doctorDirectoryController =
       Get.put(DoctorDirectoryController());
+
+  TextEditingController searchTextEditingController = TextEditingController();
+  RxList _filtered = [].obs;
+
+  _searchFunction() {
+    _filtered = [].obs;
+    for (int i = 0; i < doctorDirectoryController.DirectoryList.length; ++i) {
+      var item = doctorDirectoryController.DirectoryList[i];
+      if (item.word
+          .toLowerCase()
+          .contains(searchTextEditingController.text.toLowerCase())) {
+        _filtered.add(item);
+      }
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +104,7 @@ class DoctorDirectoryScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       // _buildDoctorList(),
+                      _searchTextField(),
                       _buildDoctorDirectoryList(),
                     ],
                   ),
@@ -95,7 +117,9 @@ class DoctorDirectoryScreen extends StatelessWidget {
   _buildDoctorDirectoryList() {
     return Expanded(
         child: ListView.builder(
-            itemCount: doctorDirectoryController.DirectoryList.length,
+            itemCount: searchTextEditingController.text.isEmpty
+                ? doctorDirectoryController.DirectoryList.length
+                : _filtered.length,
             itemBuilder: itemBuilder));
   }
 
@@ -103,14 +127,14 @@ class DoctorDirectoryScreen extends StatelessWidget {
     var item = doctorDirectoryController.DirectoryList[index];
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: GestureDetector(
-        onTap: () {
-          // Get.to()
-        },
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minWidth: Get.width,
+          minHeight: Get.height * .15,
+          maxWidth: Get.width,
+        ),
         child: Container(
-          height: Get.height * .15,
-          width: Get.width,
-          padding: EdgeInsets.symmetric(horizontal: Get.width * .05),
+          padding: EdgeInsets.symmetric(horizontal: Get.width * .05 , vertical: Get.height * .02),
           margin: EdgeInsets.symmetric(
               horizontal: Get.width * .05, vertical: Get.height * .02),
           decoration: BoxDecoration(
@@ -138,8 +162,8 @@ class DoctorDirectoryScreen extends StatelessWidget {
                           maxLines: 2,
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
+                            color: Colors.black,
+                            fontSize: 16,
                           ),
                         ),
                         SizedBox(
@@ -149,11 +173,11 @@ class DoctorDirectoryScreen extends StatelessWidget {
                           "معنی لغت: " + item.meaning,
                           maxFontSize: 24,
                           minFontSize: 6,
-                          maxLines: 2,
+                          maxLines: null,
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
+                            color: Colors.black,
+                            fontSize: 14,
                           ),
                         ),
                       ],
@@ -165,7 +189,7 @@ class DoctorDirectoryScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15),
                       child: Image.network(
                         item.logo,
-                        width: Get.width * .5,
+                        width: Get.width * .2,
                       ),
                     ),
                   ),
@@ -175,6 +199,33 @@ class DoctorDirectoryScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _searchTextField() {
+    return WidgetHelper.textField(
+      icon: Padding(
+        padding: EdgeInsets.symmetric(vertical: Get.height * .015),
+        child: Image.asset(
+          "assets/images/search.png",
+          color: Colors.black45,
+        ),
+      ),
+      text: "جستجو",
+      hintText: "جستجو ...",
+      width: Get.width * .9,
+      height: Get.height * .06,
+      // color: Color(0xfff5f5f5),
+      size: Get.size,
+      fontSize: 16,
+      controller: searchTextEditingController,
+      onChange: (text) {
+        _searchFunction();
+      },
+      maxLine: 1,
+      keyBoardType: TextInputType.text,
+      obscureText: false,
+      maxLength: 100,
     );
   }
 }

@@ -693,7 +693,6 @@ class RequestHelper {
     );
   }
 
-
   static Future<ApiResult> ShopSubCategory({String parent_id}) async {
     return await RequestHelper._makeRequest(
         webController: WebControllers.sub_category,

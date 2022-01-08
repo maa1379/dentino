@@ -7,7 +7,6 @@ import 'package:dentino/widgets/BasketWidget.dart';
 import 'ProductListScreen.dart';
 
 class ShopSubCategoryScreen extends StatelessWidget {
-
   ShopSubCategoryController shopSubCategoryController =
       Get.put(ShopSubCategoryController());
 

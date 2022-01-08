@@ -311,9 +311,10 @@ class LocationScreen extends StatelessWidget {
             () => ReserveScreen(),
             arguments: {
               "expertise_id2": expertise_id,
-              "city_id_dropdown": (cityController.dropDownValue4.value == "انتخاب کنید")
-                  ? ""
-                  : cityController.dropDownValue4.value.toString(),
+              "city_id_dropdown":
+                  (cityController.dropDownValue4.value == "انتخاب کنید")
+                      ? ""
+                      : cityController.dropDownValue4.value.toString(),
               "zone_id": (cityController.dropDownValue5.value == "انتخاب کنید")
                   ? ""
                   : cityController.dropDownValue5.value.toString(),
