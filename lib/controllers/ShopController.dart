@@ -49,6 +49,31 @@ class ShopController extends GetxController {
   }
 }
 
+
+class ShopSubCategoryController extends GetxController {
+  RxList<GetSubCategoryShop> SubcategoryList = <GetSubCategoryShop>[].obs;
+
+  GetSubCategory({String parent_id}) async {
+    RequestHelper.ShopSubCategory(parent_id: parent_id).then((value) {
+      if (value.isDone) {
+        for (var i in value.data) {
+          SubcategoryList.add(GetSubCategoryShop.fromJson(i));
+          EasyLoading.dismiss();
+        }
+      } else {
+        print("not ok");
+      }
+    });
+  }
+
+  @override
+  void onInit() {
+    GetSubCategory();
+    super.onInit();
+  }
+}
+
+
 class ProductController extends GetxController {
   RxList<GetProductModel> productList = <GetProductModel>[].obs;
 

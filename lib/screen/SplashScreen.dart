@@ -9,6 +9,7 @@ import 'package:dentino/helpers/ViewHelpers.dart';
 import 'package:dentino/helpers/prefHelper.dart';
 import 'package:dentino/models/GetProfileModel.dart';
 import 'package:dentino/screen/HomeScreen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -38,9 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
         if (value.statusCode == 200) {
           PrefHelper.removeToken();
           PrefHelper.setToken(value.data2['access']);
-          if (slider.loaded.value == true) {
-            startTimer();
-          }
+          getProfile();
         } else {
           Get.off(LoginScreen());
         }
@@ -52,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    getProfile();
+    startTimer();
     super.initState();
   }
 
@@ -61,7 +60,6 @@ class _SplashScreenState extends State<SplashScreen> {
         .then((value) async {
       if (value.isDone) {
         getProfileBlocInstance.getProfile(GetProfileModel.fromJson(value.data));
-        Retoken();
       } else {
         Get.off(IntroScreen());
         print("not ok");
@@ -78,37 +76,22 @@ class _SplashScreenState extends State<SplashScreen> {
         height: size.height,
         width: size.width,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(0xff0FE9E9),
-                Color(0xffFFFFFF),
-              ]),
+          color: Colors.white
         ),
-        child: Column(
-          children: [
-            SizedBox(
-              height: size.height * .15,
-            ),
-            Padding(
-              padding: EdgeInsets.all(size.width * .15),
-              child: Lottie.asset("assets/anim/dental.json"),
-            ),
-            Spacer(),
-            Lottie.asset("assets/anim/lineLoading.json"),
-          ],
-        ),
+        child: Image.asset("assets/anim/GetUserProjectVideo (2) (2).gif",fit: BoxFit.cover,repeat: ImageRepeat.noRepeat,),
       ),
     );
   }
 
   void startTimer() async {
-    if (await PrefHelper.getToken() != null) {
+    Future.delayed(Duration(seconds: 10)).then((value)async{
+      Retoken();
+      if (await PrefHelper.getToken() != null) {
       NavHelper.pushR(context, HomeScreen());
-    } else {
+      } else {
       NavHelper.pushR(context, IntroScreen());
       // Get.off(IntroScreen());
-    }
+      }
+    });
   }
 }

@@ -48,6 +48,7 @@ enum WebControllers {
   doctordictionarylist,
   order_list,
   discount,
+  sub_create,
 }
 // enum WebMethods {
 //
@@ -688,6 +689,15 @@ class RequestHelper {
     return await RequestHelper._makeRequest(
         webController: WebControllers.doctordictionarylist,
         body: {"category_id": cat_id}).timeout(
+      Duration(seconds: 180),
+    );
+  }
+
+
+  static Future<ApiResult> ShopSubCategory({String parent_id}) async {
+    return await RequestHelper._makeRequest(
+        webController: WebControllers.sub_create,
+        body: {"parent_id": parent_id}).timeout(
       Duration(seconds: 180),
     );
   }
