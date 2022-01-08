@@ -6,11 +6,10 @@ import 'package:dentino/helpers/ColorHelpers.dart';
 import 'package:dentino/widgets/BasketWidget.dart';
 import 'ProductListScreen.dart';
 
-
 class ShopSubCategoryScreen extends StatelessWidget {
 
-  ShopSubCategoryController shopSubCategoryController = Get.put(ShopSubCategoryController());
-
+  ShopSubCategoryController shopSubCategoryController =
+      Get.put(ShopSubCategoryController());
 
   @override
   Widget build(BuildContext context) {
@@ -46,17 +45,50 @@ class ShopSubCategoryScreen extends StatelessWidget {
   }
 
   _buildBody() {
-    return Container(
-      height: Get.height,
-      width: Get.width,
-      child: Column(
-        children: [
-          _buildGridView(),
-        ],
-      ),
+    return Obx(
+      () {
+        if (shopSubCategoryController.loading.value == false) {
+          return Align(
+            alignment: Alignment.center,
+            child: Container(
+              height: Get.height * .08,
+              width: Get.width * .15,
+              child: CircularProgressIndicator(),
+            ),
+          );
+        } else {
+          return (shopSubCategoryController.SubcategoryList.length == 0)
+              ? Container(
+                  height: Get.height,
+                  width: Get.width,
+                  child: Center(
+                    child: AutoSizeText(
+                      "هیچ دسته ای برای این خدمت ثبت نشده است",
+                      maxFontSize: 24,
+                      minFontSize: 6,
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                )
+              : Container(
+                  height: Get.height,
+                  width: Get.width,
+                  margin: EdgeInsets.only(top: Get.height * .015),
+                  child: Column(
+                    children: [
+                      _buildGridView(),
+                    ],
+                  ),
+                );
+        }
+      },
     );
   }
-
 
   _buildGridView() {
     return Expanded(
@@ -78,8 +110,9 @@ class ShopSubCategoryScreen extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(8.0),
       child: GestureDetector(
-        onTap: (){
-          Get.to(()=>ProductListScreen(),arguments: {"category_id": item.id.toString()});
+        onTap: () {
+          Get.to(() => ProductListScreen(),
+              arguments: {"Subcategory_id": item.id.toString()});
           // Get.to(ReserveScreen(),arguments: {});
         },
         child: Column(
@@ -96,8 +129,7 @@ class ShopSubCategoryScreen extends StatelessWidget {
               child: CircleAvatar(
                   backgroundColor: ColorsHelper.mainColor,
                   radius: Get.width * .12,
-                  child: Icon(Icons.shop)
-              ),
+                  child: Icon(Icons.shop)),
             ),
             SizedBox(
               height: Get.height * .01,
@@ -118,9 +150,4 @@ class ShopSubCategoryScreen extends StatelessWidget {
       ),
     );
   }
-
-
-
-
 }
-

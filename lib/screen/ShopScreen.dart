@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'ProductListScreen.dart';
+import 'ShopSubCategoryScreen.dart';
 
 
 class Shopscreen extends StatelessWidget {
@@ -80,7 +81,7 @@ class Shopscreen extends StatelessWidget {
         padding: EdgeInsets.all(8.0),
         child: GestureDetector(
           onTap: (){
-            Get.to(()=>ProductListScreen(),arguments: {"category_id": item.id.toString()});
+            Get.to(()=>ShopSubCategoryScreen(),arguments: {"category_id": item.id.toString()});
             // Get.to(ReserveScreen(),arguments: {});
           },
           child: Column(

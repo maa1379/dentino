@@ -12,9 +12,6 @@ import 'package:dentino/models/GetDetailProductModel.dart';
 import 'package:dentino/models/GetProductModel.dart';
 import 'package:dentino/models/OrderIDModel.dart';
 import 'package:dentino/models/OrderListModel.dart';
-import 'package:dentino/screen/IntroScreen.dart';
-import 'package:dentino/screen/OrderListScreen.dart';
-import 'package:dentino/screen/ProfileScreen.dart';
 import 'package:dentino/widgets/OrderListWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -52,15 +49,17 @@ class ShopController extends GetxController {
 
 class ShopSubCategoryController extends GetxController {
   RxList<GetSubCategoryShop> SubcategoryList = <GetSubCategoryShop>[].obs;
-
-  GetSubCategory({String parent_id}) async {
-    RequestHelper.ShopSubCategory(parent_id: parent_id).then((value) {
+  RxBool loading = false.obs;
+  GetSubCategory() async {
+    RequestHelper.ShopSubCategory(parent_id: Get.arguments['category_id']).then((value) {
       if (value.isDone) {
         for (var i in value.data) {
           SubcategoryList.add(GetSubCategoryShop.fromJson(i));
           EasyLoading.dismiss();
+          loading.value = true;
         }
       } else {
+        loading.value = false;
         print("not ok");
       }
     });
@@ -80,7 +79,7 @@ class ProductController extends GetxController {
   RxBool loading = false.obs;
 
   GetProductList() async {
-    RequestHelper.getProductList(id: Get.arguments["category_id"])
+    RequestHelper.getProductList(id: Get.arguments["Subcategory_id"])
         .then((value) {
       if (value.isDone) {
         for (var i in value.data) {
