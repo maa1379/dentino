@@ -2,14 +2,13 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dentino/controllers/ReservationController.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
 import 'package:dentino/screen/LocationScreen.dart';
-import 'package:dentino/screen/ReserveScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 
 class ServicesScreen extends StatelessWidget {
   Size size;
   final exertiseController = Get.put(ExertiseController());
-
 
   @override
   Widget build(BuildContext context) {
@@ -44,15 +43,17 @@ class ServicesScreen extends StatelessWidget {
 
   _buildGridView() {
     return Expanded(
-      child: GridView.builder(
-          physics: BouncingScrollPhysics(),
-          itemCount: exertiseController.exertiseListData.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              mainAxisSpacing: 2,
-              crossAxisSpacing: 2,
-              childAspectRatio: 0.9),
-          itemBuilder: _buildServiceItem),
+      child: AnimationLimiter(
+        child: GridView.builder(
+            physics: BouncingScrollPhysics(),
+            itemCount: exertiseController.exertiseListData.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisSpacing: 2,
+                crossAxisSpacing: 2,
+                childAspectRatio: 0.9),
+            itemBuilder: _buildServiceItem),
+      ),
     );
   }
 
@@ -70,41 +71,54 @@ class ServicesScreen extends StatelessWidget {
           );
           // Get.to(ReserveScreen(),arguments: {});
         },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 8,
-                  spreadRadius: 2,
-                ),
-              ]),
-              child: CircleAvatar(
-                backgroundColor: ColorsHelper.mainColor,
-                radius: size.width * .12,
-                child: Image.network(
-                  item.image,
-                  width: size.width * .15,
-                ),
+        child: AnimationConfiguration.staggeredGrid(
+          position: index,
+          duration: const Duration(milliseconds: 375),
+          columnCount: 3,
+          child: ScaleAnimation(
+            child: FadeInAnimation(
+              child: Column(
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                        decoration:
+                            BoxDecoration(shape: BoxShape.circle, boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 8,
+                            spreadRadius: 2,
+                          ),
+                        ]),
+                        child: CircleAvatar(
+                          backgroundColor: ColorsHelper.mainColor,
+                          radius: size.width * .12,
+                          child: Image.network(
+                            item.image,
+                            width: size.width * .15,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: size.height * .01,
+                  ),
+                  AutoSizeText(
+                    item.title,
+                    maxFontSize: 24,
+                    minFontSize: 6,
+                    maxLines: 1,
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  )
+                ],
               ),
             ),
-            SizedBox(
-              height: size.height * .01,
-            ),
-            AutoSizeText(
-              item.title,
-              maxFontSize: 24,
-              minFontSize: 6,
-              maxLines: 1,
-              style: TextStyle(
-                color: Colors.black87,
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

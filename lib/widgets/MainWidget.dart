@@ -15,6 +15,7 @@ import 'package:dentino/screen/ShopScreen.dart';
 import 'package:dentino/screen/WalletScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -99,36 +100,49 @@ class _MainWidgetState extends State<MainWidget> {
         width: size.width,
         color: Colors.white,
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: size.height * .01,
+          child: AnimationLimiter(
+            child: Column(
+              children: AnimationConfiguration.toStaggeredList(
+                delay: Duration(milliseconds: 125),
+                duration: const Duration(milliseconds: 275),
+                childAnimationBuilder: (widget) => SlideAnimation(
+                  horizontalOffset: 100.0,
+                  child: FadeInAnimation(
+                    curve: Curves.easeInOutCubic,
+                    child: widget,
+                  ),
+                ),
+                children: [
+                  SizedBox(
+                    height: size.height * .01,
+                  ),
+                  _buildTopSlider(),
+                  SizedBox(
+                    height: size.height * .05,
+                  ),
+                  Container(
+                    height: size.height * .8,
+                    width: size.width,
+                    margin: EdgeInsets.symmetric(horizontal: size.width * .05),
+                    padding: EdgeInsets.all(size.width * .03),
+                    decoration: BoxDecoration(
+                        color: ColorsHelper.mainColor.withOpacity(0.6),
+                        borderRadius: BorderRadius.circular(25),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black38,
+                            spreadRadius: 2,
+                            blurRadius: 8,
+                          ),
+                        ]),
+                    child: _buildCategory(),
+                  ),
+                  SizedBox(
+                    height: size.height * .015,
+                  ),
+                ],
               ),
-              _buildTopSlider(),
-              SizedBox(
-                height: size.height * .05,
-              ),
-              Container(
-                height: size.height * .8,
-                width: size.width,
-                margin: EdgeInsets.symmetric(horizontal: size.width * .05),
-                padding: EdgeInsets.all(size.width * .03),
-                decoration: BoxDecoration(
-                    color: ColorsHelper.mainColor.withOpacity(0.6),
-                    borderRadius: BorderRadius.circular(25),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black38,
-                        spreadRadius: 2,
-                        blurRadius: 8,
-                      ),
-                    ]),
-                child: _buildCategory(),
-              ),
-              SizedBox(
-                height: size.height * .015,
-              ),
-            ],
+            ),
           ),
         ),
       ),
