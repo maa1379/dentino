@@ -193,7 +193,6 @@ class BasketController extends GetxController {
       }
     });
   }
-
   BasketModal() {
     return showCupertinoModalBottomSheet(
       context: Get.context,
@@ -300,6 +299,7 @@ class BasketController extends GetxController {
           }),
     );
   }
+
 
   OrderModal() {
     return showCupertinoModalBottomSheet(

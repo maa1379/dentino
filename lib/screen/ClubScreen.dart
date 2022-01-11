@@ -1,5 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dentino/bloc/getProfileBloc.dart';
+import 'package:dentino/controllers/PrizeController.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
+import 'package:dentino/helpers/ViewHelpers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,6 +12,8 @@ class ClubScreen extends StatefulWidget {
 }
 
 class _ClubScreenState extends State<ClubScreen> {
+  PrizeController prizeController = Get.put(PrizeController());
+
   Size size;
   final List<String> images = [
     "assets/images/BaversCard.png",
@@ -149,18 +154,18 @@ class _ClubScreenState extends State<ClubScreen> {
               ),
               (indexList == 1)
                   ? _buildBody(
-                      disCount: "90",
+                      disCount: "20",
                       description: this.description,
                       title: "دنتینو کارت طلایی",
                       price: 500000)
                   : (indexList == 2)
                       ? _buildBody(
-                          disCount: "75",
+                          disCount: "15",
                           description: this.description,
                           title: "دنتینو کارت نقره ای",
                           price: 350000)
                       : _buildBody(
-                          disCount: "60",
+                          disCount: "5",
                           description: this.description,
                           title: "دنتینو کارت برنزی",
                           price: 200000),
@@ -260,7 +265,7 @@ class _ClubScreenState extends State<ClubScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   AutoSizeText(
-                    "50",
+                    getProfileBlocInstance.profile.userScore.toString(),
                     textAlign: TextAlign.center,
                     maxLines: 1,
                     minFontSize: 12,
@@ -334,7 +339,7 @@ class _ClubScreenState extends State<ClubScreen> {
           height: size.height * .02,
         ),
         // Spacer(),
-        _buildEndBtn(),
+        _buildEndBtn(discount: disCount),
         SizedBox(
           height: size.height * .01,
         ),
@@ -342,10 +347,18 @@ class _ClubScreenState extends State<ClubScreen> {
     );
   }
 
-  Widget _buildEndBtn() {
+
+  Widget _buildEndBtn({String discount}) {
     return GestureDetector(
       onTap: () {
-        // chargeCredit();
+        if (getProfileBlocInstance.profile.userScore.toString() == "100" ||
+            getProfileBlocInstance.profile.userScore.toString() == "300" ||
+            getProfileBlocInstance.profile.userScore.toString() == "500") {
+          prizeController.PrizeModal();
+        } else {
+          ViewHelper.showErrorDialog(
+              context, "شما امتیاز لازم برای دریافت این کارت را ندارید");
+        }
       },
       child: Container(
         height: size.height * .055,

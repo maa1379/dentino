@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:dentino/bloc/getProfileBloc.dart';
 import 'package:dentino/controllers/MainController.dart';
+import 'package:dentino/controllers/ReservationController.dart';
 import 'package:dentino/helpers/NavHelper.dart';
 import 'package:dentino/helpers/RequestHelper.dart';
 import 'package:dentino/helpers/prefHelper.dart';
@@ -21,6 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Size size;
 
   final slider = Get.put(SliderController());
+
 
   Retoken() async {
     if (await PrefHelper.getToken() == null) {

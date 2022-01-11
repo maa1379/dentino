@@ -50,6 +50,7 @@ enum WebControllers {
   discount,
   sub_category,
   referral_code,
+  prize,
 }
 // enum WebMethods {
 //
@@ -713,6 +714,22 @@ class RequestHelper {
   static Future<ApiResult> ReferralCode({String token}) async {
     return await RequestHelper._makeRequestGet(
         webController: WebControllers.referral_code,
+        header: {
+          'Authorization': 'Bearer $token',
+        }).timeout(
+      Duration(seconds: 180),
+    );
+  }
+
+  static Future<ApiResult> Prize(
+      {String expertise, String clinic, String discount, String token}) async {
+    return await RequestHelper._makeRequest(
+        webController: WebControllers.prize,
+        body: {
+          "expertise": expertise,
+          "clinic": clinic,
+          "discount": discount,
+        },
         header: {
           'Authorization': 'Bearer $token',
         }).timeout(
