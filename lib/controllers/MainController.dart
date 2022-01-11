@@ -183,3 +183,35 @@ class DiscountController extends GetxController {
     super.onInit();
   }
 }
+
+
+
+
+class ReferralCodeController extends GetxController {
+  RxList<DiscountListModel> DiscountList = <DiscountListModel>[].obs;
+  RxBool loading = false.obs;
+
+  String code = "";
+
+  ReferralCodeApi() async {
+    RequestHelper.ReferralCode(token: await PrefHelper.getToken()).then(
+          (value) {
+        if (value.isDone) {
+          code = value.data;
+          loading.value = true;
+        } else {
+          loading.value = false;
+          ViewHelper.showErrorDialog(Get.context, "ارتباط برقرار نشد");
+        }
+      },
+    );
+  }
+
+  @override
+  void onInit() {
+    ReferralCodeApi();
+    super.onInit();
+  }
+}
+
+

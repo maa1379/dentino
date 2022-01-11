@@ -6,6 +6,7 @@ import 'package:dentino/helpers/ColorHelpers.dart';
 import 'package:dentino/helpers/prefHelper.dart';
 import 'package:dentino/models/DrawerModel.dart';
 import 'package:dentino/screen/ComplimentCreateScreen.dart';
+import 'package:dentino/screen/InvateFriendScreen.dart';
 import 'package:dentino/screen/LoginScreen.dart';
 import 'package:dentino/screen/ProfileScreen.dart';
 import 'package:flutter/material.dart';
@@ -46,9 +47,9 @@ class DrawerWidget extends StatelessWidget {
     ),
     DrawerModel(
       id: 1,
-      title: "تخفيف های من",
+      title: "دعوت از دوستان",
       icon: Icons.local_offer_outlined,
-      // func: Container(),
+      func: InvateFriendPage(),
     ),
     DrawerModel(
       id: 1,

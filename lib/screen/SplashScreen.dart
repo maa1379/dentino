@@ -1,23 +1,16 @@
 import 'dart:async';
-import 'dart:convert';
-
 import 'package:dentino/bloc/getProfileBloc.dart';
 import 'package:dentino/controllers/MainController.dart';
 import 'package:dentino/helpers/NavHelper.dart';
 import 'package:dentino/helpers/RequestHelper.dart';
-import 'package:dentino/helpers/ViewHelpers.dart';
 import 'package:dentino/helpers/prefHelper.dart';
 import 'package:dentino/models/GetProfileModel.dart';
 import 'package:dentino/screen/HomeScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
-import 'package:uni_links/uni_links.dart';
-
 import 'IntroScreen.dart';
 import 'LoginScreen.dart';
-import 'ProfileScreen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -78,7 +71,7 @@ class _SplashScreenState extends State<SplashScreen> {
         decoration: BoxDecoration(
           color: Colors.white
         ),
-        child: Image.asset("assets/anim/GetUserProjectVideo (2) (2).gif",fit: BoxFit.cover,repeat: ImageRepeat.noRepeat,),
+        child: Image.asset("assets/anim/ezgif.com-gif-maker (3).gif",fit: BoxFit.cover,repeat: ImageRepeat.noRepeat,),
       ),
     );
   }
