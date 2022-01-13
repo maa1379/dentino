@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:dentino/bloc/getProfileBloc.dart';
 import 'package:dentino/controllers/MainController.dart';
-import 'package:dentino/controllers/ReservationController.dart';
 import 'package:dentino/helpers/NavHelper.dart';
 import 'package:dentino/helpers/RequestHelper.dart';
 import 'package:dentino/helpers/prefHelper.dart';
@@ -46,7 +45,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    startTimer();
+    Retoken();
+    // startTimer();
     super.initState();
   }
 
@@ -55,6 +55,7 @@ class _SplashScreenState extends State<SplashScreen> {
         .then((value) async {
       if (value.isDone) {
         getProfileBlocInstance.getProfile(GetProfileModel.fromJson(value.data));
+        startTimer();
       } else {
         Get.off(IntroScreen());
         print("not ok");
@@ -73,14 +74,13 @@ class _SplashScreenState extends State<SplashScreen> {
         decoration: BoxDecoration(
           color: Colors.white
         ),
-        child: Image.asset("assets/anim/ezgif.com-gif-maker (3).gif",fit: BoxFit.cover,repeat: ImageRepeat.noRepeat,),
+        child: Image.asset("assets/anim/logo.gif",fit: BoxFit.cover,gaplessPlayback: false,),
       ),
     );
   }
 
   void startTimer() async {
-    Future.delayed(Duration(seconds: 10)).then((value)async{
-      Retoken();
+    Future.delayed(Duration(seconds: 5)).then((value)async{
       if (await PrefHelper.getToken() != null) {
       NavHelper.pushR(context, HomeScreen());
       } else {
@@ -89,4 +89,7 @@ class _SplashScreenState extends State<SplashScreen> {
       }
     });
   }
+
+
+
 }
