@@ -5,6 +5,8 @@ import 'package:dentino/plugin/neumorphic-package-by-serge-software/neumorphic-c
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'HomePanelScreen.dart';
+
 class LoginClinicScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -94,24 +96,29 @@ class LoginClinicScreen extends StatelessWidget {
   }
 
   Widget _endBtn() {
-    return NeumorphicContainer(
-      alignment: Alignment.center,
-      width: Get.width,
-      margin: EdgeInsets.symmetric(horizontal: Get.width * .08),
-      height: Get.height * .06,
-      decoration: MyNeumorphicDecoration(
-        borderRadius: BorderRadius.circular(30),
-        color: ColorsHelper.colorBlack,
-      ),
-      curveType: CurveType.flat,
-      bevel: 15,
-      child: AutoSizeText(
-        "ورود",
-        maxLines: 1,
-        maxFontSize: 22,
-        minFontSize: 10,
-        textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.white, fontSize: 16),
+    return GestureDetector(
+      onTap: (){
+        Get.to(HomePanelScreen());
+      },
+      child: NeumorphicContainer(
+        alignment: Alignment.center,
+        width: Get.width,
+        margin: EdgeInsets.symmetric(horizontal: Get.width * .08),
+        height: Get.height * .06,
+        decoration: MyNeumorphicDecoration(
+          borderRadius: BorderRadius.circular(30),
+          color: ColorsHelper.colorBlack,
+        ),
+        curveType: CurveType.flat,
+        bevel: 15,
+        child: AutoSizeText(
+          "ورود",
+          maxLines: 1,
+          maxFontSize: 22,
+          minFontSize: 10,
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white, fontSize: 16),
+        ),
       ),
     );
   }
