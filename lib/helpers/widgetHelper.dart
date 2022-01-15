@@ -945,4 +945,171 @@ class WidgetHelper {
       ),
     );
   }
+
+  static Widget TextField1({
+    String text,
+    TextEditingController controller,
+    double height,
+    double width,
+    EdgeInsets margin,
+    int maxLine,
+    double fontSize,
+    Function function,
+    Function onTap,
+    Function onChange,
+    Size size,
+    TextInputAction textInputAction,
+    FocusNode focusNode,
+    GlobalKey formKey,
+    int maxLength,
+    bool obscureText,
+    TextInputType keyBoardType,
+    String errorText,
+    bool enabled,
+    Function onFieldSubmitted,
+  }) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Container(
+        margin: margin,
+        height: height,
+        width: width,
+        child: TextFormField(
+          onTap: onTap,
+          enabled: enabled,
+          onChanged: onChange,
+          textAlign: TextAlign.center,
+          maxLength: maxLength,
+          obscureText: obscureText,
+          controller: controller,
+          maxLines: maxLine,
+          textInputAction: textInputAction,
+          onFieldSubmitted: onFieldSubmitted,
+          focusNode: focusNode,
+          keyboardType: keyBoardType,
+          validator: function,
+          style: TextStyle(fontSize: 16,color: Colors.white),
+          cursorColor: Colors.white,
+          decoration: InputDecoration(
+              disabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              labelText: text,
+              contentPadding: EdgeInsets.only(right: 20),
+              labelStyle: TextStyle(
+                color: Colors.white,
+              ),
+              counter: Offstage(),
+              errorText: errorText,
+              // contentPadding: EdgeInsets.only(top: size.height * .01,right: size.width * .05),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+                borderRadius: const BorderRadius.all(
+                  const Radius.circular(30.0),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(30),
+                ),
+              ),
+              filled: true,
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: Colors.white),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(30),
+                ),
+              ),
+              hintStyle: TextStyle(
+                  fontSize: 14, color: Colors.white),
+              ),
+        ),
+      ),
+    );
+  }
+
+  static Widget TextField2({
+    String text,
+    TextEditingController controller,
+    double height,
+    double width,
+    EdgeInsets margin,
+    int maxLine,
+    double fontSize,
+    Function function,
+    Function onChange,
+    Size size,
+    GlobalKey formKey,
+    int maxLength,
+    bool obscureText,
+    TextInputType keyBoardType,
+    String errorText,
+    String hintText,
+    bool enabled,
+  }) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Container(
+        margin: margin,
+        height: height,
+        width: width,
+        child: TextFormField(
+          enabled: enabled,
+          onChanged: onChange,
+          maxLength: maxLength,
+          obscureText: obscureText,
+          controller: controller,
+          maxLines: maxLine,
+          keyboardType: keyBoardType,
+          validator: function,
+          style: TextStyle(fontSize: 14),
+          cursorColor: Colors.white,
+          decoration: InputDecoration(
+              disabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey.withOpacity(.40)),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              labelText: text,
+              hintText: hintText,
+              contentPadding: EdgeInsets.only(right: 20),
+              labelStyle: TextStyle(
+                color: Colors.black.withOpacity(.40),
+              ),
+              counter: Offstage(),
+              errorText: errorText,
+              // contentPadding: EdgeInsets.only(top: size.height * .01,right: size.width * .05),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey.withOpacity(.40)),
+                borderRadius: const BorderRadius.all(
+                  const Radius.circular(30.0),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey.withOpacity(.40)),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(30),
+                ),
+              ),
+              filled: true,
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: ColorsHelper.mainColor.withOpacity(.40)),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(30),
+                ),
+              ),
+              hintStyle: TextStyle(
+                  fontSize: 12, color: ColorsHelper.mainColor.withOpacity(.40)),
+              fillColor: Colors.white),
+        ),
+      ),
+    );
+  }
+
+
+
+
 }
