@@ -51,6 +51,8 @@ enum WebControllers {
   sub_category,
   referral_code,
   prize,
+  user_type,
+  clinic_Login,
 }
 // enum WebMethods {
 //
@@ -355,7 +357,7 @@ class RequestHelper {
   }
 
   static Future<ApiResult> getClinicList() async {
-    return await RequestHelper._makeRequestGet(
+    return await RequestHelper._makeRequest(
       webController: WebControllers.clinic_list,
     ).timeout(
       Duration(seconds: 180),
@@ -711,6 +713,16 @@ class RequestHelper {
     );
   }
 
+  static Future<ApiResult> userType({String token}) async {
+    return await RequestHelper._makeRequestGet(
+        webController: WebControllers.user_type,
+        header: {
+          'Authorization': 'Bearer $token',
+        }).timeout(
+      Duration(seconds: 180),
+    );
+  }
+
   static Future<ApiResult> ReferralCode({String token}) async {
     return await RequestHelper._makeRequestGet(
         webController: WebControllers.referral_code,
@@ -733,6 +745,19 @@ class RequestHelper {
         header: {
           'Authorization': 'Bearer $token',
         }).timeout(
+      Duration(seconds: 180),
+    );
+  }
+
+  static Future<ApiResult> clinicLogin(
+      {String username, String password}) async {
+    return await RequestHelper._makeRequest(
+      webController: WebControllers.clinic_Login,
+      body: {
+        "username": username,
+        "password": password,
+      },
+    ).timeout(
       Duration(seconds: 180),
     );
   }

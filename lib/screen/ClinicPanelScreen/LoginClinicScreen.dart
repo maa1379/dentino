@@ -1,13 +1,19 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dentino/controllers/LoginClinicPanelController.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
 import 'package:dentino/helpers/widgetHelper.dart';
 import 'package:dentino/plugin/neumorphic-package-by-serge-software/neumorphic-card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
-import 'HomePanelScreen.dart';
-
 class LoginClinicScreen extends StatelessWidget {
+  LoginClinicPanelController loginClinicPanelController =
+      Get.put(LoginClinicPanelController());
+
+  TextEditingController passwordTextEditingController = TextEditingController();
+  TextEditingController usernameTextEditingController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,14 +57,14 @@ class LoginClinicScreen extends StatelessWidget {
 
   Widget _mobileTextField() {
     return WidgetHelper.TextField1(
-      text: "موبایل",
+      text: "نام کاربری",
       width: Get.width,
       height: Get.height * .09,
       margin: EdgeInsets.symmetric(horizontal: Get.width * .08),
       size: Get.size,
       enabled: true,
       fontSize: 16,
-      // controller: mobileTextEditingController,
+      controller: usernameTextEditingController,
       maxLine: 1,
       keyBoardType: TextInputType.number,
       obscureText: false,
@@ -66,7 +72,7 @@ class LoginClinicScreen extends StatelessWidget {
       // formKey: _formKey,
       function: (value) {
         if (value.isEmpty) {
-          return "لطفا شماره موبایل خود را وارد کنید!";
+          return "لطفا نام کاربری خود را وارد کنید!";
         }
       },
     );
@@ -81,7 +87,7 @@ class LoginClinicScreen extends StatelessWidget {
       size: Get.size,
       enabled: true,
       fontSize: 16,
-      // controller: mobileTextEditingController,
+      controller: passwordTextEditingController,
       maxLine: 1,
       keyBoardType: TextInputType.number,
       obscureText: false,
@@ -97,8 +103,14 @@ class LoginClinicScreen extends StatelessWidget {
 
   Widget _endBtn() {
     return GestureDetector(
-      onTap: (){
-        Get.to(HomePanelScreen());
+      onTap: () {
+        EasyLoading.show(
+          indicator: CircularProgressIndicator(),
+          dismissOnTap: true,
+        );
+        loginClinicPanelController.LoginClinic(
+            password: passwordTextEditingController.text,
+            username: usernameTextEditingController.text);
       },
       child: NeumorphicContainer(
         alignment: Alignment.center,

@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dentino/bloc/timeBloc.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
 import 'package:dentino/helpers/RequestHelper.dart';
-import 'package:dentino/helpers/ViewHelpers.dart';
 import 'package:dentino/helpers/prefHelper.dart';
 import 'package:dentino/helpers/widgetHelper.dart';
 import 'package:dentino/models/DataFilterListModel.dart';
@@ -12,7 +11,6 @@ import 'package:dentino/models/DoctorTimeListModel.dart';
 import 'package:dentino/models/LocationModel.dart';
 import 'package:dentino/models/ProvinceModel.dart';
 import 'package:dentino/models/exertiseListModel.dart';
-import 'package:dentino/screen/ReserveScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -20,7 +18,6 @@ import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
-
 import 'DoctorController.dart';
 
 class ExertiseController extends GetxController {
@@ -225,7 +222,7 @@ class DoctorController extends GetxController {
     );
   }
 
-  List data = [];
+  List<MyList> data = [];
   List<DoctorTimeListModel> data2 = [];
 
   doctorTimeList({String doctorId, String dateId}) async {
@@ -236,12 +233,12 @@ class DoctorController extends GetxController {
         print(value.data['my_list']);
         if (value.isDone == true) {
           getTimeItemBlocInstance
-              .getItem(DoctorTimeListModel.fromJson(value.data['data']));
+              .getItem(DoctorTimeListModel.fromJson(value.data));
           doctorDateListData.clear();
           for (var list in value.data['my_list']) {
-            data.add(list);
+            data.add(MyList.fromJson(list));
           }
-          print(getTimeItemBlocInstance.timeItem.doctor.toString());
+          print(getTimeItemBlocInstance.timeItem.data.doctor.toString());
 
           EasyLoading.dismiss();
           loadingDate.value = true;
@@ -496,11 +493,11 @@ class DoctorController extends GetxController {
                 child: InkWell(
                   onTap: () {
                     _buildPatientProfileModal(
-                        time: data[index],
-                        doctor_id:
-                            getTimeItemBlocInstance.timeItem.doctor.toString(),
-                        date_id:
-                            getTimeItemBlocInstance.timeItem.id.toString());
+                        time: data[index].name,
+                        doctor_id: getTimeItemBlocInstance.timeItem.data.doctor
+                            .toString(),
+                        date_id: getTimeItemBlocInstance.timeItem.data.id
+                            .toString());
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -514,7 +511,7 @@ class DoctorController extends GetxController {
                           width: Get.width * .12,
                         ),
                         AutoSizeText(
-                          "ساعت:${data[index]}",
+                          "ساعت:${data[index].name}",
                           maxFontSize: 24,
                           minFontSize: 6,
                           maxLines: 1,
