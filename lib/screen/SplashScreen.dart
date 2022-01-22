@@ -28,12 +28,12 @@ class _SplashScreenState extends State<SplashScreen> {
     RequestHelper.userType(token: await PrefHelper.getToken()).then((value) {
       print(value.data);
       if (value.isDone) {
-        if (value.data == "عادی"){
+        if (value.data == "عادی") {
           Retoken();
         } else if (value.data == "کلینیک") {
           Get.to(HomePanelScreen());
         }
-      }else {
+      } else {
         loading();
       }
     });

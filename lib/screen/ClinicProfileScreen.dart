@@ -21,12 +21,10 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
     await launch(url);
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    return Obx((){
-      if(clinicController.loading == true){
+    return Obx(() {
+      if (clinicController.loading == true) {
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
@@ -55,7 +53,7 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
           ),
           body: _buildBody(),
         );
-      }else{
+      } else {
         return Align(
           alignment: Alignment.center,
           child: Container(
@@ -65,7 +63,6 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
           ),
         );
       }
-
     });
   }
 
@@ -367,11 +364,9 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
     );
   }
 
-
   _buildCompany() {
-    return
-      Directionality(
-        textDirection: TextDirection.rtl,
+    return Directionality(
+      textDirection: TextDirection.rtl,
       child: Column(
         children: [
           Align(
@@ -418,23 +413,22 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
               ),
               child: Center(
                 child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: clinicController.CompanyList.length,
-                  itemBuilder: (BuildContext context , int index) {
-                    return AutoSizeText(
-                      "${clinicController.CompanyList[index].title}",
-                      maxFontSize: 24,
-                      minFontSize: 6,
-                      maxLines: null,
-                      textDirection: TextDirection.rtl,
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 14,
-                      ),
-                    );
-                  }
-                ),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: clinicController.CompanyList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return AutoSizeText(
+                        "${clinicController.CompanyList[index].title}",
+                        maxFontSize: 24,
+                        minFontSize: 6,
+                        maxLines: null,
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 14,
+                        ),
+                      );
+                    }),
               ),
             ),
           ),
@@ -492,9 +486,9 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
               ),
               child: Center(
                 child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
+                    scrollDirection: Axis.horizontal,
                     itemCount: clinicController.InsuranceList.length,
-                    itemBuilder: (BuildContext context , int index) {
+                    itemBuilder: (BuildContext context, int index) {
                       return AutoSizeText(
                         "${clinicController.InsuranceList[index].name}",
                         maxFontSize: 24,
@@ -507,8 +501,7 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
                           fontSize: 14,
                         ),
                       );
-                    }
-                ),
+                    }),
               ),
             ),
           ),
@@ -529,7 +522,6 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
             flex: 1,
             child: Container(
               height: Get.height * .15,
-
               width: Get.width * .3,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -542,19 +534,22 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Image.asset("assets/images/1024px-Telegram_logo.svg.png",width: Get.width * .12,),
-              AutoSizeText(
-                "تلگرام ما",
-                maxFontSize: 24,
-                minFontSize: 6,
-                maxLines: null,
-                textDirection: TextDirection.rtl,
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                  color: Colors.black87,
-                  fontSize: 14,
-                ),
-                ),
+                  Image.asset(
+                    "assets/images/1024px-Telegram_logo.svg.png",
+                    width: Get.width * .12,
+                  ),
+                  AutoSizeText(
+                    "تلگرام ما",
+                    maxFontSize: 24,
+                    minFontSize: 6,
+                    maxLines: null,
+                    textDirection: TextDirection.rtl,
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 14,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -565,7 +560,7 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
           Flexible(
             flex: 1,
             child: GestureDetector(
-              onTap: (){
+              onTap: () {
                 _launchURL(clinicController.clinicProfile.instagram);
               },
               child: Container(
@@ -582,7 +577,10 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Image.asset("assets/images/Instagram_logo_2016.svg.png",width: Get.width * .12,),
+                    Image.asset(
+                      "assets/images/Instagram_logo_2016.svg.png",
+                      width: Get.width * .12,
+                    ),
                     AutoSizeText(
                       "اینستاگرام ما",
                       maxFontSize: 24,
@@ -619,19 +617,22 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Image.asset("assets/images/unnamed (1).png",width: Get.width * .14,),
-              AutoSizeText(
-                "واتس اپ ما",
-                maxFontSize: 24,
-                minFontSize: 6,
-                maxLines: null,
-                textDirection: TextDirection.rtl,
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                  color: Colors.black87,
-                  fontSize: 14,
-                ),
-                ),
+                  Image.asset(
+                    "assets/images/unnamed (1).png",
+                    width: Get.width * .14,
+                  ),
+                  AutoSizeText(
+                    "واتس اپ ما",
+                    maxFontSize: 24,
+                    minFontSize: 6,
+                    maxLines: null,
+                    textDirection: TextDirection.rtl,
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 14,
+                    ),
+                  ),
                 ],
               ),
             ),

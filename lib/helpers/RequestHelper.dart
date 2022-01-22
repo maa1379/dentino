@@ -53,6 +53,7 @@ enum WebControllers {
   prize,
   user_type,
   clinic_Login,
+  clinic_panel,
 }
 // enum WebMethods {
 //
@@ -761,6 +762,17 @@ class RequestHelper {
       Duration(seconds: 180),
     );
   }
+
+  static Future<ApiResult> clinicItemNumber({String token}) async {
+    return await RequestHelper._makeRequestGet(
+        webController: WebControllers.clinic_panel,
+        header: {
+          'Authorization': 'Bearer $token',
+        }).timeout(
+      Duration(seconds: 180),
+    );
+  }
+
 }
 
 class ApiResult {

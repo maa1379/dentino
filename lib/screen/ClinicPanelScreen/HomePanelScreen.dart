@@ -1,10 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dentino/controllers/LoginClinicPanelController.dart';
 import 'package:dentino/helpers/ColorHelpers.dart';
 import 'package:dentino/plugin/neumorphic-package-by-serge-software/neumorphic-card.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
 class HomePanelScreen extends StatelessWidget {
+  itemNumberController numberController = Get.put(itemNumberController());
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -22,17 +25,25 @@ class HomePanelScreen extends StatelessWidget {
             style: TextStyle(color: Colors.white, fontSize: 18),
           ),
         ),
-        body: Container(
-          height: Get.height,
-          width: Get.width,
-          color: ColorsHelper.colorBlack,
-          child: Column(
-            children: [
-              _buildTopTab(),
-              _buildMenu(),
-            ],
-          ),
-        ),
+        body: Obx(() {
+          if (numberController.loading.value == false) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return Container(
+              height: Get.height,
+              width: Get.width,
+              color: ColorsHelper.colorBlack,
+              child: Column(
+                children: [
+                  _buildTopTab(),
+                  _buildMenu(),
+                ],
+              ),
+            );
+          }
+        }),
       ),
     );
   }
@@ -50,23 +61,42 @@ class HomePanelScreen extends StatelessWidget {
         ),
         curveType: CurveType.emboss,
         bevel: 15,
-        child: GridView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: 4,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                _tabsItemBuilder(
+                    name: "تعداد نوبت ها",
+                    number: numberController.item.reservtionNumber.toString()),
+                _tabsItemBuilder(
+                    name: "تعداد پزشکان",
+                    number: numberController.item.doctorNumber.toString()),
+              ],
             ),
-            itemBuilder: _tabsItemBuilder));
+            Row(
+              children: [
+                _tabsItemBuilder(
+                    name: "تعداد شرکت ها",
+                    number: numberController.item.companiesNumber.toString()),
+                _tabsItemBuilder(
+                    name: "تعداد تخفیفات",
+                    number:
+                        numberController.item.clinicDiscountNumber.toString()),
+              ],
+            ),
+          ],
+        ));
   }
 
-  Widget _tabsItemBuilder(BuildContext context, int index) {
+  _tabsItemBuilder({String name, String number}) {
     return NeumorphicContainer(
       alignment: Alignment.center,
-      width: Get.width,
-      margin: EdgeInsets.all(Get.width * .05),
+      width: Get.width * .3,
+      margin: EdgeInsets.symmetric(
+          horizontal: Get.width * .05, vertical: Get.height * .025),
       padding: EdgeInsets.symmetric(
           horizontal: Get.width * .05, vertical: Get.height * .035),
-      height: Get.height * .5,
+      height: Get.height * .15,
       decoration: MyNeumorphicDecoration(
         borderRadius: BorderRadius.circular(30),
         color: ColorsHelper.colorBlack,
@@ -77,7 +107,7 @@ class HomePanelScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           AutoSizeText(
-            "تعداد نوبت ها",
+            name,
             maxLines: 1,
             maxFontSize: 22,
             minFontSize: 10,
@@ -85,7 +115,7 @@ class HomePanelScreen extends StatelessWidget {
             style: TextStyle(color: ColorsHelper.colorOrange, fontSize: 16),
           ),
           AutoSizeText(
-            "15",
+            number,
             maxLines: 1,
             maxFontSize: 22,
             minFontSize: 10,
