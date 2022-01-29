@@ -149,7 +149,7 @@ class DoctorProfile extends StatelessWidget {
                         right: Get.height * .02,
                         left: 15),
                     child: AutoSizeText(
-                      doctorProfileController.doctorProfileModel.clinic.name,
+                      "کلینیک معلم",
                       maxFontSize: 24,
                       minFontSize: 6,
                       maxLines: 1,
@@ -264,7 +264,7 @@ class DoctorProfile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               AutoSizeText(
-                doctorProfileController.doctorProfileModel.clinic.name,
+                "کلینیک معلم",
                 maxFontSize: 24,
                 minFontSize: 6,
                 maxLines: 1,

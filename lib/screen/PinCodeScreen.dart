@@ -28,13 +28,13 @@ class PinCodeScreen extends StatelessWidget {
           Expanded(
             child: SingleChildScrollView(
                 child: Padding(
-                  padding: MediaQuery.of(Get.context).viewInsets,
-                  child: Column(
-              children: [
+              padding: MediaQuery.of(Get.context).viewInsets,
+              child: Column(
+                children: [
                   _buildBody(),
-              ],
-            ),
-                )),
+                ],
+              ),
+            )),
           ),
         ],
       ),
@@ -123,7 +123,7 @@ class PinCodeScreen extends StatelessWidget {
             },
             onChanged: (value) {
               print(value);
-              if(value.length == 4){
+              if (value.length == 4) {
                 if (formKey.currentState.validate()) {
                   print(mobile);
                   verifyController.verifyCode(

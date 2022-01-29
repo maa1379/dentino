@@ -91,7 +91,7 @@ class PrescriptionsScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(15),
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage("https://dentino.app"+item.image),
+                              image: NetworkImage(item.image),
                             )
                           ),
                           margin: EdgeInsets.symmetric(horizontal: Get.width * .05,vertical: Get.height * .02),

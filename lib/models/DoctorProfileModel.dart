@@ -14,8 +14,10 @@ class DoctorProfileModel {
     this.bio,
     this.age,
     this.star,
-    this.clinic,
+    this.parvanehTebabat,
+    this.verified,
     this.insurance,
+    this.clinic,
     this.expertise,
   });
 
@@ -31,8 +33,10 @@ class DoctorProfileModel {
   String bio;
   int age;
   int star;
-  Clinic clinic;
+  String parvanehTebabat;
+  bool verified;
   List<Insurance> insurance;
+  List<Clinic> clinic;
   List<Expertise> expertise;
 
   factory DoctorProfileModel.fromJson(Map<String, dynamic> json) => DoctorProfileModel(
@@ -48,8 +52,10 @@ class DoctorProfileModel {
     bio: json["bio"],
     age: json["age"],
     star: json["star"],
-    clinic: Clinic.fromJson(json["clinic"]),
+    parvanehTebabat: json["parvaneh_tebabat"],
+    verified: json["verified"],
     insurance: List<Insurance>.from(json["insurance"].map((x) => Insurance.fromJson(x))),
+    clinic: List<Clinic>.from(json["clinic"].map((x) => Clinic.fromJson(x))),
     expertise: List<Expertise>.from(json["expertise"].map((x) => Expertise.fromJson(x))),
   );
 
@@ -66,8 +72,10 @@ class DoctorProfileModel {
     "bio": bio,
     "age": age,
     "star": star,
-    "clinic": clinic.toJson(),
+    "parvaneh_tebabat": parvanehTebabat,
+    "verified": verified,
     "insurance": List<dynamic>.from(insurance.map((x) => x.toJson())),
+    "clinic": List<dynamic>.from(clinic.map((x) => x.toJson())),
     "expertise": List<dynamic>.from(expertise.map((x) => x.toJson())),
   };
 }
@@ -78,45 +86,66 @@ class Clinic {
     this.name,
     this.logo,
     this.address,
-    this.lat,
-    this.long,
     this.instagram,
+    this.whatsUp,
+    this.telegram,
     this.phoneNumber,
     this.description,
     this.image1,
     this.image2,
     this.image3,
+    this.type,
+    this.verified,
+    this.contracted,
+    this.parvanehClinic,
+    this.parvanehMasole,
+    this.notification,
     this.location,
+    this.company,
   });
 
   int id;
   String name;
   String logo;
   String address;
-  double lat;
-  double long;
   String instagram;
+  String whatsUp;
+  String telegram;
   String phoneNumber;
   String description;
   String image1;
   String image2;
   String image3;
+  String type;
+  bool verified;
+  bool contracted;
+  String parvanehClinic;
+  String parvanehMasole;
+  String notification;
   int location;
+  List<int> company;
 
   factory Clinic.fromJson(Map<String, dynamic> json) => Clinic(
     id: json["id"],
     name: json["name"],
     logo: json["logo"],
     address: json["address"],
-    lat: json["lat"].toDouble(),
-    long: json["long"].toDouble(),
     instagram: json["instagram"],
+    whatsUp: json["whats_up"],
+    telegram: json["telegram"],
     phoneNumber: json["phone_number"],
     description: json["description"],
     image1: json["image1"],
     image2: json["image2"],
     image3: json["image3"],
+    type: json["type"],
+    verified: json["verified"],
+    contracted: json["contracted"],
+    parvanehClinic: json["parvaneh_clinic"],
+    parvanehMasole: json["parvaneh_masole"],
+    notification: json["notification"],
     location: json["location"],
+    company: List<int>.from(json["company"].map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
@@ -124,15 +153,22 @@ class Clinic {
     "name": name,
     "logo": logo,
     "address": address,
-    "lat": lat,
-    "long": long,
     "instagram": instagram,
+    "whats_up": whatsUp,
+    "telegram": telegram,
     "phone_number": phoneNumber,
     "description": description,
     "image1": image1,
     "image2": image2,
     "image3": image3,
+    "type": type,
+    "verified": verified,
+    "contracted": contracted,
+    "parvaneh_clinic": parvanehClinic,
+    "parvaneh_masole": parvanehMasole,
+    "notification": notification,
     "location": location,
+    "company": List<dynamic>.from(company.map((x) => x)),
   };
 }
 

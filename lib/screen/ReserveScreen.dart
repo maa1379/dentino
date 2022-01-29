@@ -362,7 +362,7 @@ class ReserveScreen extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: CircleAvatar(
                   radius: size.width * .1,
-                  backgroundImage: NetworkImage(url + item.profileUrl),
+                  backgroundImage: NetworkImage(item.profileUrl),
                   backgroundColor: ColorsHelper.mainColor,
                 ),
               ),

@@ -21,7 +21,7 @@ class _CommonCourseDetailScreenState extends State<CommonCourseDetailScreen> {
   void initState() {
     super.initState();
     _controller = VideoPlayerController.network(
-      'https://dentino.app/media/common_course/video/16197165-732685233.mp4',
+      'https://dentinostorage-mohammadaa1379-qtg7akj7.darkube.app/media/common_course/video/16197165-732685233_kEhTt7A.mp4',
       videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
     );
     _controller.play();

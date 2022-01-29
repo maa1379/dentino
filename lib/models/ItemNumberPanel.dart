@@ -1,17 +1,17 @@
 class ItemNumberPanel {
   ItemNumberPanel({
     this.name,
-    this.companiesNumber,
-    this.clinicDiscountNumber,
-    this.doctorNumber,
-    this.reservtionNumber,
+    this.companiesNumber = 0,
+    this.clinicDiscountNumber = 0,
+    this.doctorNumber = 0,
+    this.reservtionNumber = 0,
   });
 
   String name;
-  int companiesNumber;
-  int clinicDiscountNumber;
-  int doctorNumber;
-  int reservtionNumber;
+  int companiesNumber = 0;
+  int clinicDiscountNumber = 0;
+  int doctorNumber = 0;
+  int reservtionNumber= 0;
 
   factory ItemNumberPanel.fromJson(Map<String, dynamic> json) => ItemNumberPanel(
     name: json["name"],

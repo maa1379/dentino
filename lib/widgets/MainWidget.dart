@@ -12,13 +12,12 @@ import 'package:dentino/screen/DiscountScreen.dart';
 import 'package:dentino/screen/PrescriptionsScreen.dart';
 import 'package:dentino/screen/ServicesScreen.dart';
 import 'package:dentino/screen/ShopScreen.dart';
-import 'package:dentino/screen/WalletScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MainWidget extends StatefulWidget {
@@ -177,8 +176,9 @@ class _MainWidgetState extends State<MainWidget> {
                           ]),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
-                        child: Image.network(
-                          i.picture,
+                        child: FadeInImage.assetNetwork(
+                          placeholder: "assets/anim/loading.gif",
+                          image: i.picture,
                           fit: BoxFit.fill,
                           width: double.maxFinite,
                         ),

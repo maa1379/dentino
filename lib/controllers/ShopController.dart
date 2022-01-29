@@ -580,7 +580,6 @@ class BasketController extends GetxController {
 
   Widget buildCartListItem(BuildContext context, int index) {
     var item = CartList[index];
-    String url = "https://dentino.app";
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Padding(
